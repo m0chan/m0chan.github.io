@@ -10,7 +10,7 @@ As I am aiming to become OSCP certified and undertake the dreaded OSCP course at
 
 *Any boxes with 'Coming Soon' means I have rooted / gained system privs on the box however it is has not yet been retired by HTB*
 
-* Valentine - [Link](http://m0chan.github.io/HackTheBox/ValentineHTB.md)
+* Valentine - [Link](http://m0chan.github.io/HackTheBox/ValentineHTB)
 * Sunday - Coming Soon
 * Poison - Coming Soon
 * Bounty - Coming Soon
