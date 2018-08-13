@@ -33,6 +33,7 @@ As I have recently discovered that the server is running apache, It was fairly o
 I kicked ```dirb``` off with the following syntax ``` dirb http://10.10.10.79``` This will automatically use the common.txt wordlist that comes with ```dirb```. I like to start with common.txt and if it finds nothing I can create custom wordlists depending on the nature of the box.
 
 Luckily for me this time ```common.txt``` was more than enough and successfully  informed of directories on the server which could take me further. 
+
 ``` DIRB v2.22    
 By The Dark Raver
 START_TIME: Mon Jul 23 09:04:48 2018
@@ -43,7 +44,7 @@ GENERATED WORDS: 4612
 Scanning URL: http://10.10.10.79/ 
  http://10.10.10.79/cgi-bin/ (CODE:403|SIZE:287)                                                      
  http://10.10.10.79/decode (CODE:200|SIZE:552)                                                        
-==> DIRECTORY: http://10.10.10.79/dev/                                                                 
+ DIRECTORY: http://10.10.10.79/dev/                                                                 
  http://10.10.10.79/encode (CODE:200|SIZE:554)                                                        
  http://10.10.10.79/index (CODE:200|SIZE:38)                                                          
  http://10.10.10.79/index.php (CODE:200|SIZE:38)
