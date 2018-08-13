@@ -6,9 +6,17 @@ I am known as m0chan/mochan online & Aidan in real life - I have a strong passio
 
 ## HackTheBox Writeups
 
-As I am aiming to become OSCP certified and undertake the dreaded OSCP course at some point I work on HackTheBox boxes and aiming to root as many as I possibly can! Below you can find writeups of retired boxes which I have succesfully rooted / gained system privs on. 
+As I am aiming to become OSCP certified and undertake the dreaded OSCP course at some point I work on HackTheBox boxes and aim to root as many as I possibly can! Below you can find writeups of retired boxes which I have succesfully rooted / gained system privs on. 
 
 * Valentine - [Link](http://m0chan.github.io/HackTheBox/ValentineHTB.md)
+
+## Access All My Resources
+
+Over the past few months I have been self-studying ALOT as I work towards increasing my penetration testing skills - I am slowly amassing a huge amount of resources relating to everything Cyber Security + Penetration Testing. I shared my Dropbox on Reddit and it got a huge amount of attention so I feel as if I should share it here as well.
+
+* Shared Dropbox Link [Click Me](https://www.dropbox.com/sh/ba0t59c5fnccgms/AACvUbUSflWB1_AAgj8okEUra?dl=0)
+
+
 ```markdown
 Syntax highlighted code block
 
