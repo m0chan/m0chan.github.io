@@ -58,7 +58,7 @@ Very interesting, now I do not want to blabber on for ages about what was happen
 * ``dev(directory)`` This was where I found something interesting... Inside the dev directory there was 2 things.
 * 1. Notes.txt
 * 2. hype_key
-
+![Image Of Notes.txt](https://i.imgur.com/ES2ZBRs.png)
 As you can see in the notes.txt screenshot it appears as if the decode/encode application running on the web server handles everything __server-side...__ as well as notes.txt we also discovered `hype_key`. Upon opening hype_key we are presented with a `hex` string. I used the following [website](http://www.convertstring.com/EncodeDecode/HexDecode) to convert `hex` to `text`. 
 
 Upon successfully converting the `hex` string I was greeted with an SSH Private Key - Woo! Maybe I could use this to SSH into Valentine?
