@@ -8,7 +8,16 @@ I am known as m0chan/mochan online & Aidan in real life - I have a strong passio
 
 As I am aiming to become OSCP certified and undertake the dreaded OSCP course at some point I work on HackTheBox boxes and aim to root as many as I possibly can! Below you can find writeups of retired boxes which I have succesfully rooted / gained system privs on. 
 
+*Any boxes with 'Coming Soon' means I have rooted / gained system privs on the box however it is has not yet been retired by HTB *
+
 * Valentine - [Link](http://m0chan.github.io/HackTheBox/ValentineHTB.md)
+* Sunday - Coming Soon
+* Poison - Coming Soon
+* Bounty - Coming Soon
+* DevOops - Coming Soon
+* Active - Coming Soon
+* Waldo - Coming Soon
+
 
 ## Access All My Resources
 
