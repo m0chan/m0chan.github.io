@@ -25,25 +25,6 @@ Over the past few months I have been self-studying ALOT as I work towards increa
 
 * Shared Dropbox Link [Click Me](https://www.dropbox.com/sh/ba0t59c5fnccgms/AACvUbUSflWB1_AAgj8okEUra?dl=0)
 
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
 ## Contact Me
 
 If you would like to contact me regarding any of my projects / work feel free to drop me an email at - aidan@aidesigns.net
