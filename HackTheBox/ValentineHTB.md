@@ -271,7 +271,7 @@ LINUX PRIVILEGE ESCALATION CHECKER
 After I ran LinuxPrivChecker something immediately jumped out at me : 
 * `Linux version 3.2.0-23-generic (buildd@crested) (gcc version 4.6.3 (Ubuntu/Linaro 4.6.3-1ubuntu4) ) #36-Ubuntu SMP Tue Apr 10 20:39:51 UTC 2012`
 
-This kernel certainly looks vulnerable to the famous Dirty Cow that effected most Linux Systems when it was first release. 
+This kernel certainly looks vulnerable to the famous Dirty Cow that effected most Linux Systems when it was first released. 
 
 Before I talk about exploiting Dirty Cow in Practice let's first talk about what it is. Dirty Cow is a vulnerability within certain linux kernels *(2.6.22 <3.9)* which could allow an attack to escalate to __root__ privileges. Let's exploit it. 
 
