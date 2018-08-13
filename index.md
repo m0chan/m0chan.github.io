@@ -2,12 +2,13 @@
 
 ## About Me
 
-I am known as m0chan/mochan online & Aidan in real life - I have a strong passion to persue a career in Cyber Security or as part of a Red Team carrying out penetration testing. I created this GitHub so I have a platform to share my scripts, resources & finally oo publish any CTF/VulnHub writeups. 
+I am known as m0chan/mochan online & Aidan in real life - I have a strong passion to persue a career in Cyber Security with the end goal being able to be apart of a Red Team carrying out penetration testing. I created this GitHub so I have a platform to share my scripts, resources & finally oo publish any CTF/VulnHub writeups. 
 
-### Markdown
+## HackTheBox Writeups
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+As I am aiming to become OSCP certified and undertake the dreaded OSCP course at some point I work on HackTheBox boxes and aiming to root as many as I possibly can! Below you can find writeups of retired boxes which I have succesfully rooted / gained system privs on. 
 
+[Link](m0chan.github.io/HackTheBox/ValentineHTB.md)
 ```markdown
 Syntax highlighted code block
 
