@@ -6,7 +6,7 @@
 ![Image of Valentine](https://i.imgur.com/8HVRNyG.jpg)
 ### Introduction
 
-Valentine was a extremely fun box for me which I would say is aimed at Beginner - Intermediate. If you are aware of industry recognised exploits & particularly exploits that are famous within the InfoSec community you will probably blitz straight through it in half an hour. Nevertheless it was a great box. 
+Valentine was a extremely fun box for me which I would say is aimed at Beginner - Intermediate's. If you are aware of industry recognised exploits & particularly exploits that are famous within the InfoSec community you will probably blitz straight through it in half an hour. Nevertheless it was a great box. 
 
 Ps: If you do not know what HackTheBox is it is a Free/Paid resource found [Here](http://hackthebox.eu) which offers you a lab network littered with intentionally vulnerable boxes (Desktops, Servers, Web Applications, Domain Controllers etc) It really has so much to offer. 
 
