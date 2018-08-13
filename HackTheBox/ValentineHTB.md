@@ -148,3 +148,19 @@ Perfect! I was now logged into Valentine as the user hype and able to capture th
 Time to try escalate privileges and take over the whole machine. 
 
 ## Privilege Escalation - Further Enumeration!
+
+As always one of the first things I do after logging into a linux machine as a limited user besides having a general snoop around is run `linuxprivchecker.py`.
+
+LinuxPrivChecker.py is a great python script that enumerates the system overall and provides us a vast array of information that may help us to escalate privileges. 
+
+I transferred LinuxPrivChecker to `/tmp` on Valentine using `python -m SimpleHTTPServer` & `wget`. 
+
+From here it was as simple as running `Chmod 777` against `linuxprivchecker.py` and running it with `python linuxprivchecker.py > results.txt` - This saved the results of LinuxPrivChecker to a results.txt for later consultation. (*I am not going to share the full results of LinuxPrivChecker here as it is very long*.)
+
+### Privilege Escalation - Dirty Cow / Method #1 
+
+After I ran LinuxPrivChecker something immediately jumped out at me : 
+* `Linux version 3.2.0-23-generic (buildd@crested) (gcc version 4.6.3 (Ubuntu/Linaro 4.6.3-1ubuntu4) ) #36-Ubuntu SMP Tue Apr 10 20:39:51 UTC 2012`
+
+This kernal certainly looks vulnerable to the famous Dirty Cow that effected most Linux Systems when first release. 
+
