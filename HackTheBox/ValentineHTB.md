@@ -35,23 +35,18 @@ I kicked ```dirb``` off with the following syntax ``` dirb http://10.10.10.79```
 Luckily for me this time ```common.txt``` was more than enough and successfully  informed of directories on the server which could take me further. 
 ``` DIRB v2.22    
 By The Dark Raver
------------------
-
 START_TIME: Mon Jul 23 09:04:48 2018
 URL_BASE: http://10.10.10.79/
 WORDLIST_FILES: /usr/share/dirb/wordlists/common.txt
-
------------------
-
 GENERATED WORDS: 4612                                                          
 
----- Scanning URL: http://10.10.10.79/ ----
-+ http://10.10.10.79/cgi-bin/ (CODE:403|SIZE:287)                                                      
-+ http://10.10.10.79/decode (CODE:200|SIZE:552)                                                        
+Scanning URL: http://10.10.10.79/ 
+ http://10.10.10.79/cgi-bin/ (CODE:403|SIZE:287)                                                      
+ http://10.10.10.79/decode (CODE:200|SIZE:552)                                                        
 ==> DIRECTORY: http://10.10.10.79/dev/                                                                 
-+ http://10.10.10.79/encode (CODE:200|SIZE:554)                                                        
-+ http://10.10.10.79/index (CODE:200|SIZE:38)                                                          
-+ http://10.10.10.79/index.php (CODE:200|SIZE:38)
+ http://10.10.10.79/encode (CODE:200|SIZE:554)                                                        
+ http://10.10.10.79/index (CODE:200|SIZE:38)                                                          
+ http://10.10.10.79/index.php (CODE:200|SIZE:38)
 ```
 
 Very interesting, now I do not want to blabber on for ages about what was happening on each page but here's a breakdown of each page & directory.
