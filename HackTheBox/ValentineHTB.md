@@ -32,7 +32,7 @@ As I have recently discovered that the server is running apache, It was fairly o
 
 I kicked ```dirb``` off with the following syntax ``` dirb http://10.10.10.79``` This will automatically use the common.txt wordlist that comes with ```dirb```. I like to start with common.txt and if it finds nothing I can create custom wordlists depending on the nature of the box.
 
-Luckily for me this time ```common.txt``` was more than enough and succesfully informed of directories on the server which could take me further. 
+Luckily for me this time ```common.txt``` was more than enough and successfully  informed of directories on the server which could take me further. 
 ``` DIRB v2.22    
 By The Dark Raver
 -----------------
@@ -64,7 +64,7 @@ Very interesting, now I do not want to blabber on for ages about what was happen
 
 As you can see in the notes.txt screenshot it appears as if the decode/encode application running on the web server handles everything __server-side...__ as well as notes.txt we also discovered `hype_key`. Upon opening hype_key we are presented with a `hex` string. I used the following [website](http://www.convertstring.com/EncodeDecode/HexDecode) to convert `hex` to `text`. 
 
-Upon succesfully converting the `hex` string I was greeted with an SSH Private Key - Woo! Maybe I could use this to SSH into Valentine?
+Upon successfully converting the `hex` string I was greeted with an SSH Private Key - Woo! Maybe I could use this to SSH into Valentine?
 
 ### Enumeration - SSL
 
@@ -99,7 +99,7 @@ Pay attention to the last 3 lines __vulnerable to heartbleed__ - Great! Perhaps 
 
 ## Exploiting - Piecing the Pieces Together!
 
-Before we begin exploiting lets first talk about the `heartbleed` vulnerability we just discoverved the server is vulnerable too. The heartbleed bug was a critical vulnerability in the OpenSSL libary which can allow an attacker to read data from the server-memory which should be protected. 
+Before we begin exploiting lets first talk about the `heartbleed` vulnerability we just discoverved the server is vulnerable too. The heartbleed bug was a critical vulnerability in the OpenSSL library which can allow an attacker to read data from the server-memory which should be protected. 
 
 Perhaps we can use heartbleed to read the server memory and intercept any encoding/decoding happening __server-side__.
 
