@@ -157,6 +157,68 @@ I transferred LinuxPrivChecker to `/tmp` on Valentine using `python -m SimpleHTT
 
 From here it was as simple as running `Chmod 777` against `linuxprivchecker.py` and running it with `python linuxprivchecker.py > results.txt` - This saved the results of LinuxPrivChecker to a results.txt for later consultation. (*I am not going to share the full results of LinuxPrivChecker here as it is very long*.)
 
+Here is a small snippet of my results.txt
+```
+=================================================================================================
+LINUX PRIVILEGE ESCALATION CHECKER
+=================================================================================================
+
+[*] GETTING BASIC SYSTEM INFO...
+
+[+] Kernel
+    Linux version 3.2.0-23-generic (buildd@crested) (gcc version 4.6.3 (Ubuntu/Linaro 4.6.3-1ubuntu4) ) #36-Ubuntu SMP Tue Apr 10 20:39:51 UTC 2012
+
+[+] Hostname
+    Valentine
+
+[+] Operating System
+    Ubuntu 12.04 LTS \n \l
+
+[*] GETTING NETWORKING INFO...
+
+[+] Interfaces
+    eth0      Link encap:Ethernet  HWaddr 00:50:56:bf:ab:ef
+    inet addr:10.10.10.79  Bcast:10.10.10.255  Mask:255.255.255.0
+    inet6 addr: dead:beef::250:56ff:febf:abef/64 Scope:Global
+    inet6 addr: fe80::250:56ff:febf:abef/64 Scope:Link
+    inet6 addr: dead:beef::351e:ef73:6022:a1ee/64 Scope:Global
+    UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+    RX packets:18533 errors:0 dropped:0 overruns:0 frame:0
+    TX packets:1066 errors:0 dropped:0 overruns:0 carrier:0
+    collisions:0 txqueuelen:1000
+    RX bytes:1566181 (1.5 MB)  TX bytes:304284 (304.2 KB)
+    lo        Link encap:Local Loopback
+    inet addr:127.0.0.1  Mask:255.0.0.0
+    inet6 addr: ::1/128 Scope:Host
+    UP LOOPBACK RUNNING  MTU:16436  Metric:1
+    RX packets:4450 errors:0 dropped:0 overruns:0 frame:0
+    TX packets:4450 errors:0 dropped:0 overruns:0 carrier:0
+    collisions:0 txqueuelen:0
+    RX bytes:1135452 (1.1 MB)  TX bytes:1135452 (1.1 MB)
+
+[+] Netstat
+    Active Internet connections (servers and established)
+    Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name
+    tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      -
+    tcp        0      0 127.0.0.1:631           0.0.0.0:*               LISTEN      -
+    tcp        0     40 10.10.10.79:22          10.10.14.9:41198        ESTABLISHED -
+    tcp6       0      0 :::80                   :::*                    LISTEN      -
+    tcp6       0      0 :::22                   :::*                    LISTEN      -
+    tcp6       0      0 ::1:631                 :::*                    LISTEN      -
+    tcp6       0      0 :::443                  :::*                    LISTEN      -
+    udp        0      0 0.0.0.0:60360           0.0.0.0:*                           -
+    udp        0      0 0.0.0.0:5353            0.0.0.0:*                           -
+    udp6       0      0 :::5353                 :::*                                -
+    udp6       0      0 :::57582                :::*                                -
+
+[+] Route
+    Kernel IP routing table
+    Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
+    default         10.10.10.2      0.0.0.0         UG    100    0        0 eth0
+    10.10.10.0      *               255.255.255.0   U     0      0        0 eth0
+    link-local      *               255.255.0.0     U     1000   0        0 eth0
+```
+
 ### Privilege Escalation - Dirty Cow
 
 After I ran LinuxPrivChecker something immediately jumped out at me : 
@@ -177,3 +239,7 @@ Finally switch user with `su firefart` and you should be logged in as __root!__ 
 
 ------
 ### Conclusion
+
+Overall Valentine was a great back and allowed me to learn a couple of neat tricks and be able to exploit heartbleed in practice - Stay tuned for my next writeup as I have a few coming once they are finally retired! 
+
+m0chan / Aidan
