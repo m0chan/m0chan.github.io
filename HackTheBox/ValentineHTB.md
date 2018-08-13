@@ -1,5 +1,4 @@
-
-# Valentine on HTB
+#Valentine on HackTheBox
 ------
 ## 10th August 2018
 ------
@@ -14,32 +13,12 @@ Lets begin.
 
 ### Enumeration
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+To kick off my enumeration I started it off as I usually do with a simple ```nMap``` Top 100 Ports Scan using the following syntax
 
-```markdown
-Syntax highlighted code block
+``` nMap -A -verbose 4 10.10.10.78 ```
+- The ``` -A ``` flag tells nMap to use aggresive scanning which bundles Service Detection & OS Detection into one. (Not necessary but I like to use it)
+- The ``` -verbose 4 ``` sets the verbosity of the scan to 4 which provides me more information than a normal scan in real-time. (Highly useful if scanning all ports & need updates in real-time and not once the scan has finished) 
 
-# Header 1
-## Header 2
-### Header 3
+nmap scan output here
 
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/m0chan/m0chan.github.io/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+I also ran ``` nMap -A -p- -verbose 4 10.10.10.78 ``` which scanned all ```65,535``` TCP Ports however I will not show the output of this as the Top 100 ports output is all we need.
