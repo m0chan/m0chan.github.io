@@ -35,7 +35,7 @@ I kicked ```dirb``` off with the following syntax ``` dirb http://10.10.10.79```
 
 Luckily for me this time ```common.txt``` was more than enough and successfully  informed of directories on the server which could take me further. 
 
-` DIRB v2.22    
+``` DIRB v2.22    
 By The Dark Raver
 START_TIME: Mon Jul 23 09:04:48 2018
 URL_BASE: http://10.10.10.79/
@@ -49,7 +49,7 @@ Scanning URL: http://10.10.10.79/
  http://10.10.10.79/encode (CODE:200|SIZE:554)                                                        
  http://10.10.10.79/index (CODE:200|SIZE:38)                                                          
  http://10.10.10.79/index.php (CODE:200|SIZE:38)
-`
+```
 
 Very interesting, now I do not want to blabber on for ages about what was happening on each page but here's a breakdown of each page & directory.
 
@@ -69,7 +69,7 @@ Now I have gathered the above information regarding Port `80` I decided to carry
 
 I decided to utilise a tool that comes with `kali` called `sslscan` - It is a great lightweight tool that is always worth running against a box with `HTTPS` open. 
 
-`
+```
 root@kali:~/Desktop/Scripts/Valentine# sslscan 10.10.10.79
 Version: 1.11.10-static
 OpenSSL 1.0.2-chacha (1.0.2g-dev)
@@ -89,7 +89,7 @@ Compression disabled
 TLS 1.2 vulnerable to heartbleed
 TLS 1.1 vulnerable to heartbleed
 TLS 1.0 vulnerable to heartbleed
-`
+```
 
 Pay attention to the last 3 lines __vulnerable to heartbleed__ - Great! Perhaps we can exploit the famous heartbleed vulnerability to read the memory on the server. 
 
