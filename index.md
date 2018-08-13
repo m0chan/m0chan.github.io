@@ -1,7 +1,8 @@
-## m0chan's GitHub Page
+# m0chan's GitHub Page
 
-# About Me
+## About Me
 
+I am known as m0chan/mochan online & Aidan in real life - I have a strong passion to persue a career in Cyber Security or as part of a Red Team carrying out penetration testing. I created this GitHub so I have a platform to share my scripts, resources & finally oo publish any CTF/VulnHub writeups. 
 
 ### Markdown
 
