@@ -20,8 +20,58 @@ To kick off my enumeration I started it off as I usually do with a simple ```nMa
 - The ``` -A ``` flag tells nMap to use aggresive scanning which bundles Service Detection & OS Detection into one. (Not necessary but I like to use it)
 - The ``` -verbose 4 ``` sets the verbosity of the scan to 4 which provides me more information than a normal scan in real-time. (Highly useful if scanning all ports & need updates in real-time and not once the scan has finished) 
 
-
 I also ran ``` nMap -A -p- -verbose 4 10.10.10.79 ``` which scanned all ```65,535``` TCP Ports however I will not show the output of this as the Top 100 ports output is all we need.
+
+```
+nmap -A 10.10.10.79
+
+Starting Nmap 7.60 ( https://nmap.org ) at 2018-08-13 18:56 BST
+Nmap scan report for 10.10.10.79
+Host is up (0.041s latency).
+Not shown: 997 closed ports
+PORT    STATE SERVICE  VERSION
+22/tcp  open  ssh      OpenSSH 5.9p1 Debian 5ubuntu1.10 (Ubuntu Linux; protocol 2.0)
+| ssh-hostkey: 
+|   1024 96:4c:51:42:3c:ba:22:49:20:4d:3e:ec:90:cc:fd:0e (DSA)
+|   2048 46:bf:1f:cc:92:4f:1d:a0:42:b3:d2:16:a8:58:31:33 (RSA)
+|_  256 e6:2b:25:19:cb:7e:54:cb:0a:b9:ac:16:98:c6:7d:a9 (ECDSA)
+80/tcp  open  http     Apache httpd 2.2.22 ((Ubuntu))
+|_http-server-header: Apache/2.2.22 (Ubuntu)
+|_http-title: Site doesn't have a title (text/html).
+443/tcp open  ssl/http Apache httpd 2.2.22 ((Ubuntu))
+|_http-server-header: Apache/2.2.22 (Ubuntu)
+|_http-title: Site doesn't have a title (text/html).
+| ssl-cert: Subject: commonName=valentine.htb/organizationName=valentine.htb/stateOrProvinceName=FL/countryName=US
+| Not valid before: 2018-02-06T00:45:25
+|_Not valid after:  2019-02-06T00:45:25
+|_ssl-date: 2018-08-13T17:52:21+00:00; -4m25s from scanner time.
+No exact OS matches for host (If you know what OS is running on it, see https://nmap.org/submit/ ).
+TCP/IP fingerprint:
+OS:SCAN(V=7.60%E=4%D=8/13%OT=22%CT=1%CU=35676%PV=Y%DS=2%DC=T%G=Y%TM=5B71C66
+OS:0%P=x86_64-pc-linux-gnu)SEQ(SP=FA%GCD=1%ISR=108%TI=Z%CI=Z%II=I%TS=8)OPS(
+OS:O1=M54DST11NW4%O2=M54DST11NW4%O3=M54DNNT11NW4%O4=M54DST11NW4%O5=M54DST11
+OS:NW4%O6=M54DST11)WIN(W1=3890%W2=3890%W3=3890%W4=3890%W5=3890%W6=3890)ECN(
+OS:R=Y%DF=Y%T=40%W=3908%O=M54DNNSNW4%CC=Y%Q=)T1(R=Y%DF=Y%T=40%S=O%A=S+%F=AS
+OS:%RD=0%Q=)T2(R=N)T3(R=Y%DF=Y%T=40%W=3890%S=O%A=S+%F=AS%O=M54DST11NW4%RD=0
+OS:%Q=)T4(R=Y%DF=Y%T=40%W=0%S=A%A=Z%F=R%O=%RD=0%Q=)T5(R=Y%DF=Y%T=40%W=0%S=Z
+OS:%A=S+%F=AR%O=%RD=0%Q=)T6(R=Y%DF=Y%T=40%W=0%S=A%A=Z%F=R%O=%RD=0%Q=)T7(R=Y
+OS:%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)U1(R=Y%DF=N%T=40%IPL=164%UN=0%RI
+OS:PL=G%RID=G%RIPCK=G%RUCK=G%RUD=G)IE(R=Y%DFI=N%T=40%CD=S)
+
+Network Distance: 2 hops
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Host script results:
+|_clock-skew: mean: -4m25s, deviation: 0s, median: -4m25s
+
+TRACEROUTE (using port 1723/tcp)
+HOP RTT      ADDRESS
+1   39.48 ms 10.10.14.1
+2   39.87 ms 10.10.10.79
+
+OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 27.82 seconds
+```
 
 From the above nMap Scan we gather 3 ports of interest ```22 (SSH)```, ```80 (http)``` & ```443 (SSL/HTTPS)``` - Anytime I see Port 80 open on a box I immediately visit the box inside a web browser to see what is being hosted on the web server. 
 
