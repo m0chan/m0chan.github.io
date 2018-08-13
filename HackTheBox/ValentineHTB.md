@@ -157,10 +157,23 @@ I transferred LinuxPrivChecker to `/tmp` on Valentine using `python -m SimpleHTT
 
 From here it was as simple as running `Chmod 777` against `linuxprivchecker.py` and running it with `python linuxprivchecker.py > results.txt` - This saved the results of LinuxPrivChecker to a results.txt for later consultation. (*I am not going to share the full results of LinuxPrivChecker here as it is very long*.)
 
-### Privilege Escalation - Dirty Cow / Method #1 
+### Privilege Escalation - Dirty Cow
 
 After I ran LinuxPrivChecker something immediately jumped out at me : 
 * `Linux version 3.2.0-23-generic (buildd@crested) (gcc version 4.6.3 (Ubuntu/Linaro 4.6.3-1ubuntu4) ) #36-Ubuntu SMP Tue Apr 10 20:39:51 UTC 2012`
 
-This kernal certainly looks vulnerable to the famous Dirty Cow that effected most Linux Systems when first release. 
+This kernel certainly looks vulnerable to the famous Dirty Cow that effected most Linux Systems when it was first release. 
 
+Before I talk about exploiting Dirty Cow in Practice let's first talk about what it is. Dirty Cow is a vulnerability within certain linux kernels *(2.6.22 <3.9)* which could allow an attack to escalate to __root__ privileges. Let's exploit it. 
+
+To exploit DirtyCow I used Exploit [40616](https://www.exploit-db.com/exploits/40616/), here's how!
+* 1. Transfer cowroot.c using `wget` to Valentine 
+* 2. Compile cowroot.c with the following command `gcc cowroot.c -o cowroot -pthread`
+* 3. Run the compiled binary `./cowroot`
+
+This will now proceed to add a new user entitled `Firefart` into `/etc/passwd` with __root__ privileges
+
+Finally switch user with `su firefart` and you should be logged in as __root!__ - You now completely own this box.
+
+------
+### Conclusion
