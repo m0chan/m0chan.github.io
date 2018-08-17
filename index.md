@@ -17,6 +17,7 @@ As I am aiming to become OSCP certified and undertake the dreaded OSCP course at
 * DevOops - Coming Soon
 * Active - Coming Soon
 * Waldo - Coming Soon
+* Hawk - Coming Soon
 
 
 ## Access All My Resources
