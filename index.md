@@ -19,6 +19,7 @@ As I am aiming to become OSCP certified and undertake the dreaded OSCP course at
 * Waldo - Coming Soon
 * Hawk - Coming Soon
 * Canape - Coming Soon
+* Olympus - Coming Soon
 
 ## Access All My Resources
 
