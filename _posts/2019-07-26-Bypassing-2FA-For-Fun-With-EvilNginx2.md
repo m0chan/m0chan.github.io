@@ -1,11 +1,13 @@
 ---
-title: Yet Another Sample Page
+title: Bypassing 2FA For Fun with Evilginx2
 published: true
 ---
 
 Text can be **bold**, _italic_, ~~strikethrough~~ or `keyword`.
 
-[Link to another page](another-page).
+Evilginx2 - _A Standalone man-in-the-middle attack framework used for phishing login credentials along with session cookies, allowing for the bypass of 2-factor authentication_
+
+TL;DR: [https://github.com/kgretzky/evilginx2](Evilginx2 Github).
 
 There should be whitespace between paragraphs.
 
