@@ -1,7 +1,4 @@
----
-title: Bypassing 2FA For Fun with Evilginx2
-published: true
----
+
 
 ## [](#header-2)Introduction
 
@@ -138,89 +135,61 @@ Now upon visiting my link I was granted with the below page
 
 
 
-Unless you had a very keen eye you would struggle to notice anything was amiss.
+Unless you had a very keen eye you would struggle to notice anything was amiss. So now if I log in with my test account `m0chanxxxxxxxx@outlook.com` and enter my password I will get a `2FA` prompt which will send a text message to my phone. 
 
-#### [](#header-4)Header 4
+I enter the code as normal and get successfully logged in to Outlook like nothing ever happened. 
 
-*   This is an unordered list following a header.
-*   This is an unordered list following a header.
-*   This is an unordered list following a header.
-
-##### [](#header-5)Header 5
-
-1.  This is an ordered list following a header.
-2.  This is an ordered list following a header.
-3.  This is an ordered list following a header.
-
-###### [](#header-6)Header 6
-
-| head1        | head two          | three |
-|:-------------|:------------------|:------|
-| ok           | good swedish fish | nice  |
-| out of stock | good and plenty   | nice  |
-| ok           | good `oreos`      | hmm   |
-| ok           | good `zoute` drop | yumm  |
-
-### There's a horizontal rule below this.
-
-* * *
-
-### Here is an unordered list:
-
-*   Item foo
-*   Item bar
-*   Item baz
-*   Item zip
-
-### And an ordered list:
-
-1.  Item one
-1.  Item two
-1.  Item three
-1.  Item four
-
-### And a nested list:
-
-- level 1 item
-  - level 2 item
-  - level 2 item
-    - level 3 item
-    - level 3 item
-- level 1 item
-  - level 2 item
-  - level 2 item
-  - level 2 item
-- level 1 item
-  - level 2 item
-  - level 2 item
-- level 1 item
-
-### Small image
-
-![](https://assets-cdn.github.com/images/icons/emoji/octocat.png)
-
-### Large image
-
-![](https://breakdev.org/content/images/2018/07/evilginx2_diagram.png)
+![](https://i.imgur.com/96vtqu7.png)
 
 
-### Definition lists can be used with HTML syntax.
 
-<dl>
-<dt>Name</dt>
-<dd>Godzilla</dd>
-<dt>Born</dt>
-<dd>1952</dd>
-<dt>Birthplace</dt>
-<dd>Japan</dd>
-<dt>Color</dt>
-<dd>Green</dd>
-</dl>
+As you can see we are perfectly logged in and can see our Inbox
 
-```
-Long, single-line code blocks should not wrap. They should horizontally scroll if they are too long. This line should be long enough to demonstrate this.
-```
 
-```
-The final element.
-```
+
+Now lets jump back over to my `evilginx` instance and see what I have retrieved. 
+
+![](https://i.imgur.com/CnSb5QS.png)
+
+**Boom** - We have the Username & Password in clear text as well as all authorization tokens. This is bad. Really bad. 
+
+If we have the auth/session tokens we can now import these into any browser with a Cookie Manager and get logged straight in without even entering the username & password. We just simply hijack the users session.
+
+
+
+
+
+![](https://i.imgur.com/UVFehzh.png)
+
+
+
+As you can see in the above screenshot we have got the full details including username/password and the auth token which can import into our browser with Cookie Manager for Chrome. See below screenshot.
+
+![](https://i.imgur.com/8LoGTjg.png)
+
+
+
+Once we click the green tick, boom we are straight into the account. No further action required. No new 2fa tokens pushed to our devices. Nothing. **We are in**.
+
+
+
+## [](#header-2)Defending Yourself From Evilginx2
+
+The major flaw in this attack is the fact that you have to use a domain controlled by yourself but I have demonstrated how easy it is to get a lookalike domain such as `offffice.co.uk` 
+
+That being said users should always check the domain in full and compare it to known sources especially when logging into sensitive platforms.
+
+Also this attack will not work where platforms have `U2F` aka `Universal 2nd Factor Authentication` enabled. 
+
+`U2F` are hardware keys such as Yubi keys, `U2F` has a very clever security mechanism inbuilt where it will not issue a `2FA` token if the domain does not match the legit domain. In this case `offffice.co.uk` does not match `office.co.uk`
+
+
+
+## [](#header-2)Conclusion
+
+
+
+I hope you have enjoyed reading this write-up and have a better picture of why organizations should not solely rely on `2FA` to protect there sensitive resources. 
+
+Also. Hardware Keys ftw.... 
+
