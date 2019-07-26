@@ -93,7 +93,7 @@ Let's jump straight into it and jump into it by running `evilginx2` - Little tip
 
 
 
-https://i.imgur.com/WtRxfT5.png
+![](https://i.imgur.com/WtRxfT5.png)
 
 
 
@@ -126,7 +126,19 @@ For my testing I primarily used `outlook` & `o365` but for this article I will s
 
 
 
+I will leave the delivery of this link upto your own imagination, we have all seen spam emails and how easily it is to design something that looks identical to a normal `Microsoft` email alert. It's only basic html. 
 
+
+
+Now upon visiting my link I was granted with the below page
+
+
+
+![](https://i.imgur.com/LOv53fN.jpg)
+
+
+
+Unless you had a very keen eye you would struggle to notice anything was amiss.
 
 #### [](#header-4)Header 4
 
