@@ -16,15 +16,9 @@ Evilginx2 - _A Standalone man-in-the-middle attack framework used for phishing l
 
 TL;DR: [https://github.com/kgretzky/evilginx2](Evilginx2 Github).
 
-There should be whitespace between paragraphs.
-
 
 
 ## [](#header-2)Infrastructure Setup
-
-> This is a blockquote following a header.
->
-> When something is important enough, you do it even if the odds are not in your favor.
 
 Once I found out about Evilginx2 I had to try it for myself so as the Github said I opt'd for a VPS with Digital Ocean. You can use my referral link here & get $50 free credit (Enough for 1 Month VPS )[https://m.do.co/c/aa9fa82f580a](Digital Ocean Referral).
 
