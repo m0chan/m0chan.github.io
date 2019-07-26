@@ -17,12 +17,11 @@ permalink: /:categories/:title/
 title: m0chan Hacks
 email:
 description: >- # this means to ignore newlines until "baseurl:"
-  Infosec Blog , CTF and Hack The Box write-ups , articles and other stuff
+  CyberSec Blog , CTF and Hack The Box write-ups 
 baseurl: "/" # the subpath of your site, e.g. /blog
 url: "https://m0chan.github.io" # the base hostname & protocol for your site, e.g. http://example.com
-twitter_username: Ahm3d_H3sham
-github_username:  0xRick
-facebook_username: Ahm3d.H3sham
+twitter_username: m0chan
+github_username:  m0chan
 # Build settings
 markdown: kramdown
 theme: minima
