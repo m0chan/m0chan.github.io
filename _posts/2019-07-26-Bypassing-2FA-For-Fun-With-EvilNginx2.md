@@ -7,9 +7,9 @@ published: true
 
 I recently decided to explore phishing techniques and 2FA Bypasses to further understand how attackers are compromising accounts/networks with 2FA enabled and to further demonstrate why organisation should not solely rely on 2FA to protect there sensitive assets. 
 
-Of course there are convential phishing techniques where an attacker can clone a login interface, host it on there own web server and siphon the credentials but 2FA mitigate's this... Then I discovered Evilginx2 - Evilginx2 is a little bit different in the sense that it acts as a MITM-Proxy connecting to 2FA protected sites and handling the authenticating itself and merely just acting as a passthrough from the victim -> server. The below images provides a good picture.
+Of course there are conventional phishing techniques where an attacker can clone a login interface, host it on there own web server and siphon the credentials but 2FA mitigate's this... Then I discovered Evilginx2 - Evilginx2 is a little bit different in the sense that it acts as a MITM-Proxy connecting to 2FA protected sites and handling the authenticating itself and merely just acting as a passthrough from the victim -> server. The below images provides a good picture.
 
-### Large image
+Evilginx2 has the ability to bypass 2FA on Outlook, Linkedin, O365, Twitter, Instagram, Github, Amazing, Reddit, Facebook & more...
 
 ![](https://breakdev.org/content/images/2018/07/evilginx2_diagram.png)
 
@@ -21,15 +21,27 @@ TL;DR: [https://github.com/kgretzky/evilginx2](Evilginx2 Github).
 
 There should be whitespace between paragraphs.
 
-# [](#header-1)Header 1
 
-This is a normal paragraph following a header. GitHub is a code hosting platform for version control and collaboration. It lets you and others work together on projects from anywhere.
 
-## [](#header-2)Header 2
+## [](#header-2)Infrastructure Setup
 
 > This is a blockquote following a header.
 >
 > When something is important enough, you do it even if the odds are not in your favor.
+
+Once I found out about Evilginx2 I had to try it for myself so as the Github said I opt'd for a VPS with Digital Ocean. You can use my referral link here & get $50 free credit (Enough for 1 Month VPS )[https://m.do.co/c/aa9fa82f580a](Digital Ocean Referral).
+
+
+
+I also picked myself up a domain for testing purposes (https://offffice.co.uk) - Yes I managed to get 'Office' with 4 F's for £1... 
+
+
+
+Now I was armed with a Ubuntu box & a domain I was ready to start configuring Evilnginx2 & start phishing :) 
+
+
+
+
 
 ### [](#header-3)Header 3
 
