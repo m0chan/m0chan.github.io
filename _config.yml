@@ -14,12 +14,12 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 permalink: /:categories/:title/
-title: 0xRick Owned Root !
+title: m0chan Hacks
 email:
 description: >- # this means to ignore newlines until "baseurl:"
   Infosec Blog , CTF and Hack The Box write-ups , articles and other stuff
 baseurl: "/" # the subpath of your site, e.g. /blog
-url: "https://0xrick.github.io" # the base hostname & protocol for your site, e.g. http://example.com
+url: "https://m0chan.github.io" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: Ahm3d_H3sham
 github_username:  0xRick
 facebook_username: Ahm3d.H3sham
