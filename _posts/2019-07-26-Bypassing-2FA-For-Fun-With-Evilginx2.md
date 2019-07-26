@@ -22,7 +22,7 @@ TL;DR: [https://github.com/kgretzky/evilginx2](Evilginx2 Github).
 
 Once I found out about Evilginx2 I had to try it for myself so as the Github said I opt'd for a VPS with Digital Ocean. You can use my referral link here & get $50 free credit (Enough for 1 Month VPS) 
 
-[https://m.do.co/c/aa9fa82f580a](Digital Ocean Referral).
+[Digital Ocean Referral](https://m.do.co/c/aa9fa82f580a).
 
 
 
