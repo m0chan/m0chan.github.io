@@ -1,6 +1,6 @@
 ---
 title: Windows Notes / Cheatsheet
-published: false
+published: true
 ---
 
 # [](#header-1)Windows Notes / Cheatsheet
