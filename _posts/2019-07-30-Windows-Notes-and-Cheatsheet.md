@@ -31,6 +31,95 @@ Get-DomainGroup
 Get-DomainGroupMember -identity "Domain Admins" -Domain m0chanAD.local -DomainController 10.10.14.10
 netdiscover -r subnet/24
 Find-DomainShare
+```
+
+https://github.com/tevora-threat/SharpView
+
+Users with SPN
+
+```powershell
+Get-DomainUser -SPN
+
+Get-ADComputer -filter {ServicePrincipalName -like <keyword>} -Properties OperatingSystem,OperatingSystemVersion,OperatingSystemServicePack,
+PasswordLastSet,LastLogonDate,ServicePrincipalName,TrustedForDelegation,TrustedtoAuthForDelegation
+```
+
+
+
+Kerberos Enumeration
+
+```powershell
+nmap $TARGET -p 88 --script krb5-enum-users --script-args krb5-enum-users.realm='test'
+```
+
+
+
+Active Directory
+
+```powershell
+nltest /DCLIST:DomainName
+nltest /DCNAME:DomainName
+nltest /DSGETDC:DomainName
+
+# current domain info
+[System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain()
+
+# domain trusts
+([System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain()).GetAllTrustRelationships()
+
+# current forest info
+[System.DirectoryServices.ActiveDirectory.Forest]::GetCurrentForest()
+
+# get forest trust relationships
+([System.DirectoryServices.ActiveDirectory.Forest]::GetForest((New-Object System.DirectoryServices.ActiveDirectory.DirectoryContext('Forest', 'forest-of-interest.local')))).GetAllTrustRelationships()
+
+# get DCs of a domain
+nltest /dclist:offense.local
+net group "domain controllers" /domain
+
+# get DC for currently authenticated session
+nltest /dsgetdc:offense.local
+
+# get domain trusts from cmd shell
+nltest /domain_trusts
+
+# get user info
+nltest /user:"spotless"
+
+# get DC for currently authenticated session
+set l
+
+# get domain name and DC the user authenticated to
+klist
+
+# get all logon sessions. Includes NTLM authenticated sessions
+klist sessions
+
+# kerberos tickets for the session
+klist
+
+# cached krbtgt
+klist tgt
+
+# whoami on older Windows systems
+set u
+
+# Forest information
+[System.DirectoryServices.ActiveDirectory.Forest]::GetCurrentForest()
+# Domain information
+[System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain()
+
+
+Shout out to XTC (vulndev.io) for the above trick.
+```
+
+
+
+SharpView Enumeration
+
+```powershell
+#https://github.com/tevora-threat/SharpView
+
 Get-DomainFileServer
 Get-DomainGPOUserLocalGroupMapping
 Find-GPOLocation
@@ -158,86 +247,6 @@ Get-DomainPolicyData
 Get-DomainPolicy
 Get-DomainGPOLocalGroup
 Get-NetGPOGroup
-```
-
-https://github.com/tevora-threat/SharpView
-
-Users with SPN
-
-```powershell
-Get-DomainUser -SPN
-
-Get-ADComputer -filter {ServicePrincipalName -like <keyword>} -Properties OperatingSystem,OperatingSystemVersion,OperatingSystemServicePack,
-PasswordLastSet,LastLogonDate,ServicePrincipalName,TrustedForDelegation,TrustedtoAuthForDelegation
-```
-
-
-
-Kerberos Enumeration
-
-```powershell
-nmap $TARGET -p 88 --script krb5-enum-users --script-args krb5-enum-users.realm='test'
-```
-
-
-
-Active Directory
-
-```powershell
-nltest /DCLIST:DomainName
-nltest /DCNAME:DomainName
-nltest /DSGETDC:DomainName
-
-# current domain info
-[System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain()
-
-# domain trusts
-([System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain()).GetAllTrustRelationships()
-
-# current forest info
-[System.DirectoryServices.ActiveDirectory.Forest]::GetCurrentForest()
-
-# get forest trust relationships
-([System.DirectoryServices.ActiveDirectory.Forest]::GetForest((New-Object System.DirectoryServices.ActiveDirectory.DirectoryContext('Forest', 'forest-of-interest.local')))).GetAllTrustRelationships()
-
-# get DCs of a domain
-nltest /dclist:offense.local
-net group "domain controllers" /domain
-
-# get DC for currently authenticated session
-nltest /dsgetdc:offense.local
-
-# get domain trusts from cmd shell
-nltest /domain_trusts
-
-# get user info
-nltest /user:"spotless"
-
-# get DC for currently authenticated session
-set l
-
-# get domain name and DC the user authenticated to
-klist
-
-# get all logon sessions. Includes NTLM authenticated sessions
-klist sessions
-
-# kerberos tickets for the session
-klist
-
-# cached krbtgt
-klist tgt
-
-# whoami on older Windows systems
-set u
-
-# Forest information
-[System.DirectoryServices.ActiveDirectory.Forest]::GetCurrentForest()
-# Domain information
-[System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain()
-
-
-Shout out to XTC (vulndev.io) for the above trick.
 ```
 
 
