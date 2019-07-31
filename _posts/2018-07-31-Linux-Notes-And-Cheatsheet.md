@@ -5,11 +5,11 @@ published: true
 
 
 
-> A place for me to store my notes/tricks for Linux Based Systems. 
->
-> Note: These notes are heavily based off other articles, cheat sheets and guides etc. I just wanted a central place to store the best ones.
->
-> Also this will probably be a lot smaller than my Windows Cheat sheet :D I hate linux.
+A place for me to store my notes/tricks for Linux Based Systems. 
+
+Note: These notes are heavily based off other articles, cheat sheets and guides etc. I just wanted a central place to store the best ones.
+
+Also this will probably be a lot smaller than my Windows Cheat sheet :D I hate linux.
 
 ## [](#header-2)Enumeration
 
