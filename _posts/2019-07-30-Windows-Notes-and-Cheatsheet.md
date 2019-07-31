@@ -1,5 +1,4 @@
 ---
-title: Windows Notes / Cheatsheet
 published: true
 ---
 
