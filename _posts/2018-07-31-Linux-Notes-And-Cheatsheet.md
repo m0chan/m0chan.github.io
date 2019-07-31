@@ -1,6 +1,6 @@
 ---
 title: Linux Notes / Cheatsheet
-categories: Linux,Cheatsheet,Enumeration,Exploitation,Privilege Escalation,Post Exploit,File Transfer,Lateral Movement
+categories: Linux,Cheatsheet,Enumeration,Exploitation,Priv Esc,Post Exploit,File Transfer,Lateral Movement,
 published: true
 ---
 
