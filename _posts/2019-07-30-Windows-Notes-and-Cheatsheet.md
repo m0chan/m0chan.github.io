@@ -5,7 +5,9 @@ published: true
 
 
 
-A place for me to store my notes/tricks for Windows Based Systems. 
+> A place for me to store my notes/tricks for Windows Based Systems. 
+>
+> Note: These notes are heavily based off other articles, cheat sheets and guides etc. I just wanted a central place to store the best ones.
 
 
 
