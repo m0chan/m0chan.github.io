@@ -1265,12 +1265,12 @@ mimikatz # kerberos::ptt <ticket_kirbi_file>
 
 Child Domain to Forest Compromise
 
-```
+```powershell
 Domain = Logical group of objects (users, computers, servers etc etc) supported from a central location like a DC
 
 Tree = Set of domains using same name space (DNS Name)
 
-Trust = Agreement between 2 domains that allow cross-domain access to resources etc. i/e Michelle@dev.m0chan.com may be able to access resources inside HR.
+Trust = Agreement between 2 domains that allow cross-domain access to resources etc. i/e Michelle@dev.m0chan.com may be able to access resources inside HR.m0chan.com.
 
 Forest = Largest Structure composed of all trees.
 
@@ -1278,14 +1278,21 @@ Most trees are linked with dual sided trust relationships to allow for sharing o
 
 By default the first domain created if the Forest Root.
 
-Let's say we have owned a domain controller and got the KRBTGT Hash (The keys to the castle) we can now create 
+Lets say we have owned a domain controller and got the KRBTGT Hash (The keys to the castle) we can now create 
 
 Covert-NameToSid target.domain.com\krbtgt
 S-1-5-21-2941561648-383941485-1389968811-502
 
 Replace 502 with 519 to represent Enterprise Admins
 
-Create golden ticket and attack parent domain.
+Create golden ticket and attack parent domain. 
+
+
+This will not work if there is SID Filtering in place for respective target domain.
+
+harmj0y's article explains it best. 
+
+#http://www.harmj0y.net/blog/redteaming/a-guide-to-attacking-domain-trusts/
 ```
 
 
@@ -1666,5 +1673,43 @@ tzsync
 powershell
 
 Where .DLL is your payload i/e reverse shell, beacon etc. 
+```
+
+
+
+MSBuild Powershell/CMD Bypass
+
+```powershell
+You can use this if cmd is not disabled but powershell is
+
+https://github.com/Cn33liz/MSBuildShell/blob/master/MSBuildShell.csproj
+
+C:\Windows\Microsoft.NET\Framework64\v4.0.30319\MSBuild.exe pshell.csproj
+
+Also https://gist.github.com/NickTyrer/92344766f1d4d48b15687e5e4bf6f93c
+
+MSBuild PSAttack :D :D 
+```
+
+
+
+PSAttack
+
+```powershell
+#https://github.com/jaredhaight/PSAttack
+
+Use if Powershell.exe is not available. this does not rely on powershell.exe, but Instead directly calls powershell through .NET Framework circumvating most application whitelisting etc.
+
+Has numerous modules prebuilt in and is built in C Sharp / .NET so can be reflectively loaded :)
+```
+
+
+
+NoPowerShell
+
+```powershell
+#https://github.com/bitsadmin/nopowershell
+
+Primiarily to be used with Cobalt & Execute Assembly but can also be reflectively loaded from any other C2 infra.
 ```
 
