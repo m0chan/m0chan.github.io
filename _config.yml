@@ -19,7 +19,7 @@ plainwhite:
 
   # generate social links in footer
   social_links:
-    twitter: m0chan
+    twitter: m0chan98
     github:  m0chan
     linkedIn: in/m0chan
     rss: rss
@@ -46,7 +46,7 @@ plainwhite:
 # If you want to link only specific pages in your header, uncomment
 # this and add the path to the pages in order as they should show up
 #header_pages:
-# - about.md
+    about.md
 
 # Build settings
 theme: plainwhite
