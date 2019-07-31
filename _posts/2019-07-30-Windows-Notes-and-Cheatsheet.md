@@ -1,6 +1,6 @@
 ---
 title: Windows Notes / Cheatsheet
-Category: Windows
+categories: Windows
 tags: windows, cheatsheet, active directory
 published: true
 ---
