@@ -1,6 +1,6 @@
 ---
 title: Bypassing 2fa For Fun With Evilginx2
-categories: 2FA Bypass,Phishing,Evilginx2
+categories: [2FA Bypass,Phishing,Evilginx2]
 published: true
 ---
 
