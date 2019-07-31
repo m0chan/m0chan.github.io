@@ -1568,6 +1568,8 @@ Windows Startup Folder
 This has been around for years as basically every version of Windows contains a startup folder. 
 
 Windows 10 - C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp
+
+Current User Startup - C:\Users\Username\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup
 ```
 
 
