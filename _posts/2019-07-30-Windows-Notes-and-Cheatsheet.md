@@ -1158,7 +1158,7 @@ reg query HKLM\Software\Policies\Microsoft\Windows\PowerShell\Transcription
 
 
 
-Run Seatbelt
+Run Seatbelt (ABSOLUTELY MUST)
 
 ```powershell
 #https://github.com/GhostPack/Seatbelt
