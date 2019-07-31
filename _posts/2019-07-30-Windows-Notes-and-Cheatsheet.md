@@ -1,6 +1,6 @@
 ---
 title: Windows Notes / Cheatsheet
-categories: [Windows-Cheatsheet, Active Directory, Exploitation, Privilege Escalation, Post Exploit, File Transfer, Lateral Movement]
+categories: [WindowsCheatsheet,Active Directory, Exploitation, Privilege Escalation, Post Exploit, File Transfer, Lateral Movement]
 published: true
 ---
 
