@@ -4,13 +4,13 @@ categories: [2FA Bypass,Phishing,Evilginx2]
 published: true
 ---
 
+> Evilginx2 has the ability to bypass 2FA on Outlook, Linkedin, O365, Twitter, Instagram, Github, Amazing, Reddit, Facebook & more...
+
 ## [](#header-2)Introduction
 
 I recently decided to explore phishing techniques and 2FA Bypasses to further understand how attackers are compromising accounts/networks with 2FA enabled and to further demonstrate why organisation should not solely rely on 2FA to protect there sensitive assets. 
 
 Of course there are conventional phishing techniques where an attacker can clone a login interface, host it on there own web server and siphon the credentials but 2FA mitigate's this... Then I discovered Evilginx2 - Evilginx2 is a little bit different in the sense that it acts as a MITM-Proxy connecting to 2FA protected sites and handling the authentication itself and merely just acting as a passthrough from the victim -> server. The below images provides a good picture.
-
-*Evilginx2 has the ability to bypass 2FA on Outlook, Linkedin, O365, Twitter, Instagram, Github, Amazing, Reddit, Facebook & more...*
 
 ![](https://breakdev.org/content/images/2018/07/evilginx2_diagram.png)
 
