@@ -5,7 +5,7 @@ Description: Test Descritpion
 published: true
 ---
 
-*Evilginx2 - _A Standalone man-in-the-middle attack framework used for phishing login credentials along with session cookies, allowing for the bypass of 2-factor authentication*
+Evilginx2 - _A Standalone man-in-the-middle attack framework used for phishing login credentials along with session cookies, allowing for the bypass of 2-factor authentication
 
 ## [](#header-2)Introduction
 
