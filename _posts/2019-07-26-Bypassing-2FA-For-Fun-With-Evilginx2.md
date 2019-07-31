@@ -1,10 +1,9 @@
 ---
 title: Bypassing 2fa For Fun With Evilginx2
 categories: [2FA Bypass,Phishing,Evilginx2]
+Description: Test Descritpion
 published: true
 ---
-
-> Evilginx2 has the ability to bypass 2FA on Outlook, Linkedin, O365, Twitter, Instagram, Github, Amazing, Reddit, Facebook & more...
 
 ## [](#header-2)Introduction
 
