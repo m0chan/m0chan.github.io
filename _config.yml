@@ -10,7 +10,7 @@ show_excerpts: true # set to true to show excerpts on the homepage
 sass:
   sass_dir: _sass
 plainwhite:
-  name: Aidan Preston 2
+  name: Aidan Preston
   tagline: Penetration Tester
   date_format: "%b %-d, %Y"
   sitemap: true # set to true to generate sitemap.xml content
