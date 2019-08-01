@@ -580,7 +580,7 @@ nmap -verbose 4 -p 88 --script krb5-enum-users --script-args krb5-enum-users-rea
 
 
 
-## [](#header-5)kerbrute.py 
+## [](#header-4)kerbrute.py 
 
 
 
