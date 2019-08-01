@@ -1003,6 +1003,8 @@ I believe I have explained now how we use Golden Tickets and hinted at how dange
 
 ### [](#header-3)From Windows
 
+
+
 *copy and paste ftw*
 
 Once again as we are attacking a protocol that is primarily used within Microsoft AD environments I do recommend you carry out the attacks from a Windows Box / **Domain-Joined Machine** but ofc it is possible from Linux but we will start with Windows. 
@@ -1185,3 +1187,105 @@ Golden Tickets are really hard to monitor for as effectively they are just legit
 
 
 
+You may have already noticed me chatting about `Pass-The-Ticket` above or `PTT` but I figured it required it's own section as it can be extremely useful for not only importing Silver/Golden tickets into a current session but also dumping current Kerberos tickets
+
+
+
+Similar to the famous `Pass-The-Hash` exploit where can pass a users `NTLM` without even cracking it and authenticate as them we can pass stored kerberos tickets to access other network resources. 
+
+We can dump 2 types of tickets `TGT` or `TGS`. If you dump `TGT` (depends on level of access) we can then request access to any service within the context of this user or if we dump a `TGS` then we can `PTT` to the respective service.
+
+
+
+### [](#header-3)From Windows
+
+
+
+On Windows Operating Systems there is a very important process entitled `Local Security Authority Subsystem Service` aka `LSASS`. Everyone who's interested in InfoSec has heard of it as it is usually a treasure cove of credentials once you have pwned a box and ran good old mimikatz. 
+
+Well Kerberos tickets are also stored in `LSASS` so to dump them you also need to elevate to local admin, you could run it as normal user but you will only dump the tickets for your current context hence if you want to dump other users credentials I advise you elevate. 
+
+
+
+#### [](#header-4)Dumping Ticket with Rubeus & PTT 
+
+
+
+> Rubeus is effectively a Kerberos attack tool which we will cover a lot in this article that is developed in C#/.NET meaning it is a lot harder for defenders to detect it it's reflectively loaded using something like Cobalt's `execute-assembly` or `SILENTTRINITY` You can also reflectively load it from PowerShell but I will be covering `.NET` in greater detail in a future article. 
+>
+> https://github.com/GhostPack/Rubeus
+
+
+
+Triage All Current Tickets (If Elevated List all Users)
+
+```powershell
+PS C:\Users\m0chan> .\Rubeus.exe triage
+```
+
+List all Current Tickets in Details (If Elevated List all Users)
+
+```powershell
+PS C:\Users\m0chan> .\Rubeus.exe klist
+```
+
+Dump all Current Ticket Data (If Elevated List all Users)
+
+```powershell
+PS C:\Users\m0chan> .\Rubeus.exe dump
+```
+
+
+
+I want to take this time to talk about what exactly leaves Kerberos tickets (TGS/TGT's) in `LSSAS` on Windows Machines as this had me confused for a while, due to the wide range of logon-types available.
+
+
+
+When you authenticate to a Kerberos service with your `TGT` you are granted a `TGS` which is stored in `LSSAS` for future use as per it's expire time etc, your `TGT` won't even end up on the remote host. 
+
+
+
+However there are ways for your `TGT` to be left on a remote host and that is if you create a interactive logon-session to a remote host your `TGT` will be left present on the remote-host.
+
+
+
+Types of Interactive Logon-Sessions
+
+```
+Local Login: Physically Logging in at Your Workstation
+runas: Perhaps you are a Low Level Helpdesk who uses /runas to spawn a CMD with DA Account, this will result in a TGT for the DA account be cached in LSSAS
+```
+
+
+
+
+
+Picture this:
+
+
+
+**Injection / PTT**
+
+
+
+Now presuming we were in a high-integrity process when we run `Rubeus.exe dump` we will have dumped all `TGTs` and all `TGS` for any users with a session to the target box. Now we can `pass-the-ticket`
+
+
+
+PTT Syntax with Base64
+
+```powershell
+PS C:\Users\m0chan> .\Rubeus.exe /ticket:base64blob
+```
+
+PTT Syntax with Ticket
+
+```
+PS C:\Users\m0chan> .\Rubeus.exe /ticket:m0chan.kirbi
+```
+
+
+
+Now if we `PTT` of a `TGT` into our current session we will therefore be able to access any services that this respective user has access too as we can request `TGS` however if we only passed a `TGS` we will be limited to the respective service. 
+
+Realistically when you are dumping tickets if you are limited to `TGS` then you are limited so the true aim here is to get a `TGT` ticket of a user.  
