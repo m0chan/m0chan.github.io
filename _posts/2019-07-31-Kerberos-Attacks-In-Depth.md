@@ -23,7 +23,7 @@ Below is a list of the outlined attacks.
 
 But First Let's talk about Kerberos and how it **really **works.
 
-## [](#header-1)About Kerberos
+# [](#header-1)About Kerberos
 
 
 
@@ -56,7 +56,7 @@ Kerberoasting involves requesting a Kerb Service Ticket (TGS) from a Windows Dom
 
 
 
-## [](#header-3)From Windows
+### [](#header-3)From Windows
 
 
 
@@ -64,7 +64,7 @@ There are numerous ways to enumerate service accounts and find Kerberoast target
 
 
 
-## [](#header-5)Powerview
+##### [](#header-5)Powerview
 
 The First will be PowerView.ps1 - If you have not heard of PowerView.ps1 by now and you are researching Kerberos attacks then you need to go back a little... 
 
@@ -129,7 +129,7 @@ Of course this is as simple cracking attack as it's just against a simple wordli
 
 
 
-## [](#header-5)Rubeus
+##### [](#header-5)Rubeus
 
 
 
@@ -216,7 +216,7 @@ There is also the ability to Roast users in a foreign trust domain providing the
 
 
 
-## [](#header-5)Invoke-Kerberoast.ps1
+##### [](#header-5)Invoke-Kerberoast.ps1
 
 
 
@@ -237,7 +237,7 @@ Invoke-Kerberoast -OutputFormat hashcat | % { $_.Hash } | Out-File -Encoding ASC
 
 
 
-## [](#header-3)From Linux
+### [](#header-3)From Linux
 
 
 
@@ -265,7 +265,7 @@ This outputted file can now be sent to Hashcat to crack, there are alternative m
 
 
 
-## [](#header-3)Mitigation / Defending **against Kerberoast**
+### [](#header-3)Mitigation / Defending **against Kerberoast**
 
 The most effective technique of defending against this is of course to make sure Service Accounts have extremely long passwords, 32 of extremely high complexity.
 
@@ -297,7 +297,7 @@ Get-ADUser -Filter 'useraccountcontrol -band 4194304' -Properties useraccountcon
 
 
 
-## [](#header-3)From Windows
+### [](#header-3)From Windows
 
 
 
@@ -305,7 +305,7 @@ Just like Kerberoasting AS-REP Roasting can be done from both Windows & Linux bu
 
 
 
-## [](#header-5)Powerview
+##### [](#header-5)Powerview
 
 
 
@@ -373,7 +373,7 @@ hashcat64.exe -a 0 -m 7500 asrep.hash /wordlists/rockyou.txt
 
 
 
-## [](#header-5)Rebeus 
+##### [](#header-5)Rebeus 
 
 
 
@@ -445,7 +445,7 @@ PS C:\Users\m0chan\Desktop > .\Rubeus asrep /user:mssqlservice /format:hashcat
 
 
 
-## [](#header-3)From Linux
+### [](#header-3)From Linux
 
 
 
@@ -471,7 +471,7 @@ m0chan@kali:/scripts/> python GetNPUsers.py m0chanAD/ -usersfile TargetUsers.txt
 
 
 
-## [](#header-3)Mitigation / Defending against AS-REP Roasting
+### [](#header-3)Mitigation / Defending against AS-REP Roasting
 
 
 
@@ -499,7 +499,7 @@ Ps: Be careful when Brute forcing/Enumerating as accounts can still be locked ou
 
 
 
-## [](#header-3)From Windows
+### [](#header-3)From Windows
 
 
 
@@ -507,7 +507,7 @@ Here we find ourselves again... Truthfully I only know of one way to brute-force
 
 *https://github.com/Zer1t0/Rubeus*
 
-## [](#header-5)Rebeus 
+##### [](#header-5)Rebeus 
 
 
 
@@ -548,7 +548,7 @@ The `brute` force module is really clever as if you crack a `Username` and `Pass
 
 
 
-## [](#header-3)From Linux
+### [](#header-3)From Linux
 
 
 
@@ -560,7 +560,7 @@ Let's first talk about **nMap**
 
 
 
-## [](#header-5)nMap 
+##### [](#header-5)nMap 
 
 
 
@@ -580,7 +580,7 @@ nmap -verbose 4 -p 88 --script krb5-enum-users --script-args krb5-enum-users-rea
 
 
 
-## [](#header-4)kerbrute.py 
+##### [](#header-5)kerbrute.py 
 
 
 
@@ -639,7 +639,7 @@ Before I proceed with the Windows / Linux practical sections I would just like t
 
 
 
-## [](#header-5)Examples
+##### [](#header-5)Examples
 
 
 
@@ -746,7 +746,7 @@ I hope this makes sense to people, now for the practical examples.
 
 
 
-## [](#header-3)From Windows
+### [](#header-3)From Windows
 
 
 
@@ -760,7 +760,7 @@ Let's go.
 
 
 
-## [](#header-5)Creating Ticket with Mimikatz
+##### [](#header-5)Creating Ticket with Mimikatz
 
 ```
   .#####.   mimikatz 2.0 alpha (x86) release "Kiwi en C" (Apr  6 2014 22:02:03)
@@ -827,7 +827,7 @@ We can then use this `kirbi` ticket for a certain level of persistence and/or in
 
 
 
-## [](#header-5)Injecting Ticket with Rubeus
+##### [](#header-5)Injecting Ticket with Rubeus
 
 
 
@@ -891,7 +891,7 @@ PS C:\Users\m0chan> .\Rubeus.exe klist
 
 
 
-## [](#header-3)From Linux 
+### [](#header-3)From Linux 
 
 
 
@@ -899,7 +899,7 @@ I am going to try my best here to show how you can use Silver Tickets/Inject the
 
 
 
-## [](#header-5)ticketer.py
+##### [](#header-5)ticketer.py
 
 Here we find ourselves again on a Linux machine wanting to do Windows things so where do we look? You have one guess. Yep you're right. **Impacket** has a script called `ticketer.py`
 
@@ -927,7 +927,7 @@ Truthfully that's all I have for Linux, I am more than happy for someone to subm
 
 
 
-## [](#header-3)Mitigation / Defending Silver Tickets
+### [](#header-3)Mitigation / Defending Silver Tickets
 
 
 
@@ -981,7 +981,7 @@ I believe I have explained now how we use Golden Tickets and hinted at how dange
 
 
 
-## [](#header-3)From Windows
+### [](#header-3)From Windows
 
 *copy and paste ftw*
 
@@ -993,7 +993,7 @@ Let's go.
 
 
 
-## [](#header-5)Creating Ticket with Mimikatz
+##### [](#header-5)Creating Ticket with Mimikatz
 
 ```
   .#####.   mimikatz 2.0 alpha (x86) release "Kiwi en C" (Apr  6 2014 22:02:03)
@@ -1041,7 +1041,7 @@ kerberos::ptt persistance4life.kirbi
 
 
 
-## [](#header-5)Injecting Ticket with Rubeus
+##### [](#header-5)Injecting Ticket with Rubeus
 
 
 
@@ -1107,7 +1107,7 @@ PS C:\Users\m0chan> .\Rubeus.exe klist
 
 
 
-## [](#header-3)From Linux 
+### [](#header-3)From Linux 
 
 
 
@@ -1119,7 +1119,7 @@ I am going to try my best here to show how you can use Golden Tickets/Inject the
 
 
 
-## [](#header-5)ticketer.py
+##### [](#header-5)ticketer.py
 
 Here we find ourselves again on a Linux machine wanting to do Windows things so where do we look? You have one guess. Yep you're right. **Impacket** has a script called `ticketer.py`
 
@@ -1143,17 +1143,19 @@ We can then pass the -K switch through with any other Impacket scripts and it wi
 
 
 
-## [](#header-3)Golden Tickets + SID History 
+### [](#header-3)Golden Tickets + SID History 
 
 *talk about sid filtering*
 
 
 
-## [](#header-3)Mitigation / Defending Golden Tickets
+### [](#header-3)Mitigation / Defending Golden Tickets
 
 
 
 Golden Tickets are really hard to monitor for as effectively they are just legitamate`TGT` tickets that are signed/encrypted by the official `KRBTGT` account.  However by default Mimikatz will generate a golden ticket with a life-span of 10 years but can easily be detected. 
+
+
 
 
 
