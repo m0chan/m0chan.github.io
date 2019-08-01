@@ -4,52 +4,80 @@ categories: [Windows,Kerberos,Active Directory,AS REP,Kerberoast,PowerView,Rubeu
 published: false
 ---
 
+
+
+The purpose of this article is to give me a reason to full explore Kerberos relatively in depth and to cement my existing knowledge into place and perhaps learn something new.
+
+
+
 In this article I will discuss all the primary attacks on Kerberos, how to enumerate for them & finally how to exploit them using a wide range of toolsets. I will also try my best to outline how to carry out these attacks from both a domain joined Windows box & an external Linux VM i/e an attackers platform.
 
 
 
-Below is a list of the outlined attacks.
+Below is a list of the outlined attacks & topics.
 
+- Kerberos Fundamentals 
 - Kerberoast (Of Course?)
 - AS-REP Roasting
 - Kerberos User Enumeration & Brute Force
 - Silver Ticket
 - Golden Ticket
 - Methods to Injection & Pass-The-Ticket
-- Unconstrained Delegation Attacks
-- Constrained Delegation Attack
+- Unconstrained Delegation 
+- Constrained Delegation 
 
 
 
 But First Let's talk about Kerberos and how it **really **works.
 
-# [](#header-1)About Kerberos
+# [](#header-1)Kerberos Fundamentals 
 
 
 
-```
-1a. Password converted to NTLM hash, a timestamp is encrypted with the hash and sent to the KDC as an authenticator in the authentication ticket (TGT) request (AS-REQ).
-1b. The Domain Controller (KDC) checks user information (logon restrictions, group membership, etc) & creates Ticket-Granting Ticket (TGT).
+*Kerberos is a network authentication protocol that works on the principle of issuing tickets to nodes to allow access to services/resources based on privilege level.* 
 
-2. The TGT is encrypted, signed, & delivered to the user (AS-REP). Only the Kerberos service (KRBTGT) in the domain can open and read TGT data.
+*Kerberos is widely used throughout Active Directory and sometimes Linux but truthfully mainly Active Directory environments.* 
 
-3. The User presents the TGT to the DC when requesting a Ticket Granting Service (TGS) ticket (TGS-REQ). The DC opens the TGT & validates PAC checksum – If the DC can open the ticket & the checksum check out, TGT = valid. The data in the TGT is effectively copied to create the TGS ticket.
+**TLDR: https://www.roguelynn.com/words/explain-like-im-5-kerberos/**
 
-4. The TGS is encrypted using the target service accounts’ NTLM password hash and sent to the user (TGS-REP).
-
-5.The user connects to the server hosting the service on the appropriate port & presents the TGS (AP-REQ). The service opens the TGS ticket using its NTLM password hash.
-```
+I am aiming to approaching this writeup with a medium-high level overview, if you would like a true low level understanding of Kerberos I advise you look into harmj0y & Sean Metcalf. They are true wizards and know every single little detail. 
 
 
 
+To provide a brief overview I want to summarize the common Kerberos terminologies you may found being thrown about.
+
+**Server/Client Terminologies:**
 
 
 
+- **Client Machine** - Machine whom wants to access service that supports Kerberos authentication.
+- **Service Machine** - Server/Computer hosting "Service" that supports Kerberos authentication
+- **KDC (Key Distribution Centre**) - The KDC is a very very important part of a Active Directory infrastructure as it is responsible for authenticating and distributing tickets. In AC Environments the KDC is installed on the Domain Controller **(DC)**
 
 
 
+**Ticket Terminologies:**
 
-# [](#header-1)Kerberoast
+- **Ticket Granting Ticket (TGT)** - This is a ticket assigned on a per-user basic that each user uses to authenticate to the **KDC** with and request a `TGS` ticket
+- **Ticket Granting Server (TGS)** - A authentication subset of the **KDC** that issues **Service Tickets** after verifying an end user **TGT** and if they have access to the requested resource.
+- **Service Ticket (ST)** - This is a ticket granted to you by the **TGS **for authentication purposes against services. 
+
+Slight Disclaimer: Throughout this writeup I commonly refer to **Service Tickets (ST)** as **TGS Tickets**... Just bare with me okay. You know what I mean right?
+
+
+
+Now I could ramble on now about the complete process of Requesting a **TGT**, the encryption etc etc, but I want to keep this at medium-high level and if you want that true in depth information check out the **TLDR** link here
+
+**https://www.roguelynn.com/words/explain-like-im-5-kerberos/**
+
+**I also want to leave this Diagram here as it's the clearest high level overview picture I could find out there.**
+
+![a simple Kerberos authentication diagram](https://www.varonis.com/blog/wp-content/uploads/2018/07/Kerberos-Graphics-1-v2-787x790.jpg)
+
+****
+
+
+#  [](#header-1)Kerberoast
 
 
 
@@ -274,7 +302,7 @@ This outputted file can now be sent to Hashcat to crack, there are alternative m
 
 The most effective technique of defending against this is of course to make sure Service Accounts have extremely long passwords, 32 of extremely high complexity.
 
-In terms of detecting Kerberoast it can be quite tricky as it's normal activity for TGS to be requested however you can enable `Audit Kerberos Service Ticket Operations` under Account Logon to log TGS ticket requests.
+In terms of detecting Kerberoast it can be quite tricky as it's normal activity for `TGS` tickets to be requested however you can enable `Audit Kerberos Service Ticket Operations` under Account Logon to log `TGS `ticket requests.
 
 However as this is normal operation you will get ALOT ALOT of `Event 4769` & `Event 4770` alerts
 
@@ -728,7 +756,7 @@ The first example I am going to cover is if you have compromised the `NTLM` hash
 
 1. Dump NTLM Hash of `Computer Account`
 2. Create Silver Ticket Targeting CIFS Service on Computer
-3. Forged TGS (Ticket Granting Service) is created allow you to access target service.
+3. Forged TGS (Service Ticket) ticket is created allow you to access target service.
 4. Access \\\computername\C$ (Providing User has Access to Said Computer)
 5. Copy payload.exe C:\Temp\payload.exe
 6. Create Another Silver Ticket Targeting HOST Service
@@ -971,7 +999,7 @@ Now you thought Silver Tickets were dangerous? Imagine if you could forge a Kerb
 
 
 
-That's what Golden Tickets are except they are slightly different in the fact that Silver Tickets request `TGS` (Ticket Granting Service) tickets which grant you access to individual target service. Whereas with Golden Ticket you forge a `TGT` with the `krbtgt` hash which grants you access to every service and/or machine in the entire Domain. 
+That's what Golden Tickets are except they are slightly different in the fact that Silver Tickets request `TGS`  tickets which grant you access to individual target service. Whereas with Golden Ticket you forge a `TGT` with the `krbtgt` hash which grants you access to every service and/or machine in the entire Domain. 
 
 
 
@@ -1193,7 +1221,7 @@ You may have already noticed me chatting about `Pass-The-Ticket` above or `PTT` 
 
 Similar to the famous `Pass-The-Hash` exploit where can pass a users `NTLM` without even cracking it and authenticate as them we can pass stored kerberos tickets to access other network resources. 
 
-We can dump 2 types of tickets `TGT` or `TGS`. If you dump `TGT` (depends on level of access) we can then request access to any service within the context of this user or if we dump a `TGS` then we can `PTT` to the respective service.
+We can dump 2 types of tickets `TGT` or `TGS` tickets. If you dump `TGT` (depends on level of access) we can then request access to any service within the context of this user or if we dump a `TGS` ticket then we can `PTT` to the respective service.
 
 
 
@@ -1299,7 +1327,7 @@ PS C:\Users\m0chan> .\Rubeus.exe /ticket:m0chan.kirbi
 
 
 
-Now if we `PTT` of a `TGT` into our current session we will therefore be able to access any services that this respective user has access too as we can request `TGS` however if we only passed a `TGS` we will be limited to the respective service. .  
+Now if we `PTT` of a `TGT` into our current session we will therefore be able to access any services that this respective user has access too as we can request `TGS` however if we only passed a `TGS` we will be limited to the respective service.
 
 
 
