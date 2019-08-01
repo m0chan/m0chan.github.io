@@ -13,9 +13,34 @@ Below is a list of the outlined attacks.
 - Kerberoast (Of Course?)
 - AS-REP Roasting
 - Kerberos User Enumeration & Brute Force
-- Golden Ticket
 - Silver Ticket
-- PTT (Pass-The-Ticket)
+- Golden Ticket
+- PTT (Pass-The-Ticket) / Ticket Injection
+
+
+
+But First Let's talk about Kerberos and how it **really **works.
+
+## [](#header-1)About Kerberos
+
+
+
+```
+1a. Password converted to NTLM hash, a timestamp is encrypted with the hash and sent to the KDC as an authenticator in the authentication ticket (TGT) request (AS-REQ).
+1b. The Domain Controller (KDC) checks user information (logon restrictions, group membership, etc) & creates Ticket-Granting Ticket (TGT).
+
+2. The TGT is encrypted, signed, & delivered to the user (AS-REP). Only the Kerberos service (KRBTGT) in the domain can open and read TGT data.
+
+3. The User presents the TGT to the DC when requesting a Ticket Granting Service (TGS) ticket (TGS-REQ). The DC opens the TGT & validates PAC checksum – If the DC can open the ticket & the checksum check out, TGT = valid. The data in the TGT is effectively copied to create the TGS ticket.
+
+4. The TGS is encrypted using the target service accounts’ NTLM password hash and sent to the user (TGS-REP).
+
+5.The user connects to the server hosting the service on the appropriate port & presents the TGS (AP-REQ). The service opens the TGS ticket using its NTLM password hash.
+```
+
+
+
+
 
 ## [](#header-2)Kerberoast
 
@@ -108,9 +133,11 @@ Of course this is as simple cracking attack as it's just against a simple wordli
 
 Second up we have Rubeus which is a relatively new tool developed and released by the wizards at SpectreOps. Without them the hacking community wouldn't be the same. 
 
-Rubeus is effectively a Kerberos attack tool which we will cover a lot in this article that is developed in C#/.NET meaning it is a lot harder for defenders to detect it it's reflectively loaded using something like Cobalt's `execute-assembly` or `SILENTTRINITY.` You can also reflectively load it from PowerShell but I will be covering `.NET` in greater detail in a future article. 
 
-`https://github.com/GhostPack/Rubeus`
+
+> Rubeus is effectively a Kerberos attack tool which we will cover a lot in this article that is developed in C#/.NET meaning it is a lot harder for defenders to detect it it's reflectively loaded using something like Cobalt's `execute-assembly` or `SILENTTRINITY.` You can also reflectively load it from PowerShell but I will be covering `.NET` in greater detail in a future article. 
+>
+> https://github.com/GhostPack/Rubeus`
 
 
 
@@ -208,14 +235,6 @@ Invoke-Kerberoast -OutputFormat hashcat | % { $_.Hash } | Out-File -Encoding ASC
 
 
 
-**Mitigation / Defending** **against Kerberoast**
-
-The most effective technique of defending against this is of course to make sure Service Accounts have extremely long passwords, 32 of extremely high complexity.
-
-In terms of detecting Kerberoast it can be quite tricky as it's normal activity for TGS to be requested however you can enable `Audit Kerberos Service Ticket Operations` under Account Logon to log TGS ticket requests.
-
-However as this is normal operation you will get ALOT ALOT of `Event 4769` & `Event 4770` alerts
-
 ## [](#header-3)From Linux
 
 
@@ -241,6 +260,16 @@ m0chan@kali:/scripts/> python GetUserSPNs.py m0chanAD/pwneduser:pwnedcreds -outp
 
 
 This outputted file can now be sent to Hashcat to crack, there are alternative means to cracking on Linux but in all my time Hacking I have never once had a good time trying to crack on Linux. I find Hashcat on a Windows machine with NVIDIA cards is the best route (personally).
+
+
+
+## [](#header-3)Mitigation / Defending **against Kerberoast**
+
+The most effective technique of defending against this is of course to make sure Service Accounts have extremely long passwords, 32 of extremely high complexity.
+
+In terms of detecting Kerberoast it can be quite tricky as it's normal activity for TGS to be requested however you can enable `Audit Kerberos Service Ticket Operations` under Account Logon to log TGS ticket requests.
+
+However as this is normal operation you will get ALOT ALOT of `Event 4769` & `Event 4770` alerts
 
 
 
@@ -339,4 +368,274 @@ hashcat64.exe -a 0 -m 7500 asrep.hash /wordlists/rockyou.txt
 *PS: You will have to install the latest version of Hashcat to get the support for AS-REP Cracking* 
 
 *John also support AS-REP Cracking but I have never tried it*
+
+
+
+## [](#header-5)Rebeus 
+
+
+
+> Rubeus is effectively a Kerberos attack tool which we will cover a lot in this article that is developed in C#/.NET meaning it is a lot harder for defenders to detect it it's reflectively loaded using something like Cobalt's `execute-assembly` or `SILENTTRINITY` You can also reflectively load it from PowerShell but I will be covering `.NET` in greater detail in a future article. 
+>
+> https://github.com/GhostPack/Rubeus
+
+
+
+The `asreproast` functionality of `Rebeus` actually is intended to fully replace harmj0ys `ASREPRoast` Powershell module I coupled with PowerView in the section above.
+
+
+
+**Enumeration**
+
+Like Kerberoasting `Rubeus` does not have a specific enumeration functionality and is more intended for the exploiting section so I will leave the enumeration section above to do the talking.
+
+**TLDR:** Use PowerView to Enumeration or `Get-ADUser` coupled with `LDAP` queries to find your targets.
+
+
+
+**Exploit**
+
+
+
+*Sorry for the Copy & Paste ;)*
+
+To get Rubeus you will actually need `Visual Studio 2017` or anything that can compile `.NET`. In my case I use Visual Studio and build myself an assembly. Luckily at the moment the default build of Rubeus is only detected by one AV vendor on Virus Total however if your AV is flagging it just change some strings and comments and rebuild the project and your AV will shut up.  That's the beauty of open-source C# / .NET Projects, much easier to circumvent anti-virus solutions.
+
+
+
+Armed with our assembly/exe we can simply drop it on the target **Domain-Joined Machine** in the context of a domain user or execute it from our Windows Machine providing we can see the `KDC` 
+
+
+
+Rubeus Github has an amazing explanation on all it's features and it's ability to target specific `OU's` `Users` etc etc so I will try not to copy it word-for-word but merely show it's capabilities. 
+
+
+
+First we can try to Roast all Users in the Current Domain (May be Noise)
+
+```powershell
+PS C:\Users\m0chan\Desktop > .\Rubeus asrep /format:hashcat
+```
+
+
+
+ASREP All Users in a Specific OU (Good if Organization has all Service Accounts in a Specific OU)
+
+```powershell
+PS C:\Users\m0chan\Desktop > .\Rubeus asrep /ou:OU=SerivceAcc,DC=m0chanAD,DC=local /format:hashcat
+```
+
+
+
+This may generate a lot of Output so we can Output all the Hashes to a file for easier Management and Cracking.
+
+```
+/outfile:C:\Temp\TotallyNotHashes.txt
+```
+
+
+
+Roasting a Specific Users 
+
+```powershell
+PS C:\Users\m0chan\Desktop > .\Rubeus asrep /user:mssqlservice /format:hashcat
+```
+
+
+
+## [](#header-3)From Linux
+
+
+
+Just like Kerberoasting, AS-REP Roasting can be done from both Windows & Linux and I will cover Linux in this section even though I highly recommend you do this from a Windows Machine and/or a Domain Joined Machine for ease of access.
+
+
+
+Similar to Kerberoasting there is a very useful python script from the `Impacket` library that helps request `TGT's` for accounts with Pre-Auth disabled from Linux. 
+
+*https://github.com/SecureAuthCorp/impacket/blob/master/examples/GetNPUsers.py*
+
+
+
+Enumerate accounts with `PRE_AUTH` disabled from Linux is a little tricky unless you have already enumerated a target or have another Domain Users credentials in which you can execute LDAP Commands from Linux with something like `ldapsearch` 
+
+
+
+However let's say we are armed with `GetNPUsers.py` and a target in mind we can simply run the below
+
+```python
+m0chan@kali:/scripts/> python GetNPUsers.py m0chanAD/ -usersfile TargetUsers.txt -format hashcat -outputfile hashes.asreproast
+```
+
+
+
+## [](#header-3)Mitigation / Defending against AS-REP Roasting
+
+
+
+The first step towards mitigating this vulnerability is to ensure that all your accounts within your environment have Kerberos Pre-Authentication enabled (Enabled by Default), Truthfully I do not see any reason for this to be disabled. Perhaps a reader can tell me why you would disable it. 
+
+However I would advise if you do need to disable this for some reason that the password set on the user account is 32+ and composed of extreme complexity.
+
+
+
+## [](#header-2)Kerberos User Enumeration and Brute Force
+
+
+
+As Kerberos is an authentication protocol it is possible to perform brute-force attacks against it (providing we are careful). Kerberos brute-force has a lot of advantages for brute-forcing vs other protocols.
+
+
+
+- Kerberos indicates if you are using a **CORRECT USERNAME** but **INCORRECT PASSWORD** there we can Enumerate Users by sending a user list with bogus passwords. This will tell us if the usernames are correct or not. Great for User Enumeration.
+- A Domain Joined Account is not required, only access to the KDC
+- User Log-on Failures are not logged as the traditional Logon Failure you get with RDP Brute Force etc **(Event ID: 4625)** instead it is a Kerberos Pre-Auth Failure (**4771**) not ideal but certainly better than **4625**
+
+
+
+Ps: Be careful when Brute forcing/Enumerating as accounts can still be locked out, I recommend you treat this as a password spray more than an aggressive brute force.
+
+
+
+## [](#header-3)From Windows
+
+
+
+Here we find ourselves again... Truthfully I only know of one way to brute-force Kerberos on Windows using.... drum-roll please. `Rubeus` surprise surprise... That being said the `brute` module is not part of the core `Rubeus ` repo and is instead a fork by `Zer1to`
+
+*https://github.com/Zer1t0/Rubeus*
+
+## [](#header-5)Rebeus 
+
+
+
+> Rubeus is effectively a Kerberos attack tool which we will cover a lot in this article that is developed in C#/.NET meaning it is a lot harder for defenders to detect it it's reflectively loaded using something like Cobalt's `execute-assembly` or `SILENTTRINITY` You can also reflectively load it from PowerShell but I will be covering `.NET` in greater detail in a future article. 
+>
+> https://github.com/GhostPack/Rubeus
+
+
+
+As we have discussed Rebeus loads in this article already under `Kerberoasting` and `AS REP` I will jump straight to the chase. 
+
+
+
+We can carry out the brute force with the below syntax (Has to be Zer1to's Fork)
+
+```powershell
+PS C:\Users\m0chan> .\Rubeus.exe brute /users:usernames.txt /passwords:pass.txt /domain:m0chanAd.local /outfile:brutepasswords.txt
+
+   ______        _
+  (_____ \      | |
+   _____) )_   _| |__  _____ _   _  ___
+  |  __  /| | | |  _ \| ___ | | | |/___)
+  | |  \ \| |_| | |_) ) ____| |_| |___ |
+  |_|   |_|____/|____/|_____)____/(___/
+
+  v1.4.1
+
+[+] Valid user => m0chan
+[+] Valid user => jamie
+[+] Valid user => jack
+[+] M0CHAN => jack:jack123
+[*] Saved TGT into jack.kirbi
+```
+
+
+
+The `brute` force module is really clever as if you crack a `Username` and `Password` combo it will automatically request a and save a `TGT` which you can inject into your current session to impersonate that user. But I will cover this later on when I discuss `Pass-The-Ticket` and `Kerberos Ticket Injection`
+
+
+
+## [](#header-3)From Linux
+
+
+
+Okay so surprisingly in my time and for the first time in this article I have actually had a easier experience enumerate Kerberos users from Linux and Brute forcing in comparison to Windows. 
+
+
+
+Let's first talk about **nMap**
+
+
+
+## [](#header-5)nMap 
+
+
+
+I am sure we have all heard of nMap, it's probably the most used InfoSec tool used. Period. 
+
+
+
+Now nMap has a really nice script that allows us to enumerate users with `krb5-enum-users` This is super useful as we do not to have access to the domain only access to the `KDC`
+
+
+
+The syntax for `krb5-enum-users` is as follows
+
+```
+nmap -verbose 4 -p 88 --script krb5-enum-users --script-args krb5-enum-users-realm='kerbrealm',userdb=user.txt <dc ip>
+```
+
+
+
+## [](#header-5)kerbrute.py 
+
+
+
+There is a great script developed by `TarlogicSecurity` entitled `kerbrute.py` that uses Impacket Libaries to to brute force and enumerate `Kerberos` users.
+
+*https://github.com/TarlogicSecurity/kerbrute*
+
+
+
+```python
+m0chan@kali:/scripts/> python kerbrute.py -domain m0chanAD.local -users usernames.txt -passwords pass.txt -outputfile foundusers.txt
+
+Impacket v0.9.20 - Copyright 2018 SecureAuth Corporation
+[*] Valid user => m0chan
+[*] Valid user => jack
+[+] M0CHAN => jack:jack123
+[*] Saved TGT in jack.ccache
+[*] Saved discovered passwords in foundusers.txt
+```
+
+
+
+Similar to Rubeus it will also request a `TGT` and save it in `.ccache` format which is Linux's Kerberos ticket format which you can later inject to gain access to network resources etc. 
+
+
+
+## [](#header-2)Silver Ticket	
+
+
+
+if you are interested in InfoSec it's almost inevitable that you have heard of Silver Tickets and Golden Tickets at some points, most think that Silver Tickets are nothing compared to Golden Tickets but they are mistaken, silver tickets are just as dangerous and even more stealthier. 
+
+*This is because giving the nature of the attack there is no communication with the DC hence the stealth.*
+
+
+
+Silver tickets are essential forged `TGS` tickets which grant you access to a particular service aka **service-tickets**
+
+
+
+In order to generate a Silver-Ticket you require the `NTLM` hash of a `Service Account`, typically services run under tradional user accounts with a SPN value for ex. `mssql` & `iis` user etc.
+
+Silver Tickets not only apply too `User Accounts` they also apply to `Computer Accounts` as sometimes AD Services can run under the `Computer Account` in this case the NTLM hash of the Computer would be used to generate the ticket. 
+
+
+
+For example: If I was an attacker and I gained access to a computer running a service and I elevated to admin/system I could dump the `NTLM` hash of respective account (Computer or User) and generate a silver ticket impersonating said user. 
+
+
+
+With said generated ticket we could employ a `Pass-The-Ticket` attack and/or Inject the ticket into our current session to access other available resources.
+
+
+
+Before I proceed with the Windows / Linux practical sections I would just like to provide a brief overview of practical examples and when to use Silver Tickets. 
+
+
+
+## [](#header-5)Examples
 
