@@ -1235,32 +1235,45 @@ Dump all Current Ticket Data (If Elevated List all Users)
 PS C:\Users\m0chan> .\Rubeus.exe dump
 ```
 
+*Realistically when you are dumping tickets if you are limited to `TGS` then you are limited so the true aim here is to get a `TGT` ticket of a user*
+
+*Inside Rebeus, `TGT` are the `KRBTGT` user ones and `TGS's` are the ones with specific service names beside them, for ex. cifs/http/ldap etc*
+
 
 
 I want to take this time to talk about what exactly leaves Kerberos tickets (TGS/TGT's) in `LSSAS` on Windows Machines as this had me confused for a while, due to the wide range of logon-types available.
-
-
 
 When you authenticate to a Kerberos service with your `TGT` you are granted a `TGS` which is stored in `LSSAS` for future use as per it's expire time etc, your `TGT` won't even end up on the remote host. 
 
 
 
-However there are ways for your `TGT` to be left on a remote host and that is if you create a interactive logon-session to a remote host your `TGT` will be left present on the remote-host.
+However there are ways for your `TGT` to be left on a remote host and that is if you create a interactive logon-session to a remote host your `TGT` will be left present on the remote-host as well as a RemoteInteractive Logon.
+
+This is a great resource on the types of Logon Types:
+
+ https://docs.microsoft.com/en-us/windows-server/identity/securing-privileged-access/securing-privileged-access-reference-material
 
 
 
 Types of Interactive Logon-Sessions
 
-```
+```powershell
 Local Login: Physically Logging in at Your Workstation
+
 runas: Perhaps you are a Low Level Helpdesk who uses /runas to spawn a CMD with DA Account, this will result in a TGT for the DA account be cached in LSSAS
+
+runas /netonly: TGT will appear after running a network command (\\IP\SYSVOL) or something
+
+PsExec \\server -u user -p pwd cmd - PSExec leaves a TGT providing explicit credentials were defined
 ```
 
 
 
+Types of Remote-Interactive Logon Sessions
 
-
-Picture this:
+```
+Remote Desktop (RDP)
+```
 
 
 
@@ -1286,6 +1299,9 @@ PS C:\Users\m0chan> .\Rubeus.exe /ticket:m0chan.kirbi
 
 
 
-Now if we `PTT` of a `TGT` into our current session we will therefore be able to access any services that this respective user has access too as we can request `TGS` however if we only passed a `TGS` we will be limited to the respective service. 
+Now if we `PTT` of a `TGT` into our current session we will therefore be able to access any services that this respective user has access too as we can request `TGS` however if we only passed a `TGS` we will be limited to the respective service. .  
 
-Realistically when you are dumping tickets if you are limited to `TGS` then you are limited so the true aim here is to get a `TGT` ticket of a user.  
+
+
+### [](#header-3)From Linux
+
