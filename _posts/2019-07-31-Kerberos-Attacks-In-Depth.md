@@ -16,6 +16,8 @@ Below is a list of the outlined attacks.
 - Silver Ticket
 - Golden Ticket
 - PTT (Pass-The-Ticket) / Ticket Injection
+- Unconstrained Delegation Attacks
+- Constrained Delegation Attack
 
 
 
@@ -928,6 +930,22 @@ Truthfully that's all I have for Linux, I am more than happy for someone to subm
 
 
 ## [](#header-3)Mitigation / Defending Silver Tickets
+
+
+
+Silver Tickets are really difficult to detect as there is no communication with the DC to request a `TGT` as you are merely requesting a `TGS` directly from the respective service. Of course there are logs generated on the respective machine hosting the service but these logs are local and sometimes not centrally stored/monitored. 
+
+
+
+Set `Account is Sensitive and Cannot be Delegated` as this will prevent an attacker from lateral movement using said account/kerberos ticket. 
+
+
+
+## [](#header-2) Golden Ticket
+
+
+
+Wow - Not going to lie I did not expect the `Silver Ticket` section to go on for that long, I even learnt some stuff myself while writing that... I am going to try keep this section relatively smaller as it is in theory the same practice just slightly different as we are not targeting `Computer Hash's` or `User Hash's` but instead the hash of the `krbtgt` account which can typically only be retrieved from pwning the Domain Controller and dumping the `NTDS.dit` file and/or Dumping `LSAAS` on the DC and putting it through `Mimikatz`
 
 
 
