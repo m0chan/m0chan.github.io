@@ -64,7 +64,7 @@ There are numerous ways to enumerate service accounts and find Kerberoast target
 
 
 
-##### [](#header-5)Powerview
+#### [](#header-4)Powerview
 
 The First will be PowerView.ps1 - If you have not heard of PowerView.ps1 by now and you are researching Kerberos attacks then you need to go back a little... 
 
@@ -129,7 +129,7 @@ Of course this is as simple cracking attack as it's just against a simple wordli
 
 
 
-##### [](#header-5)Rubeus
+#### [](#header-4)Rubeus
 
 
 
@@ -216,7 +216,7 @@ There is also the ability to Roast users in a foreign trust domain providing the
 
 
 
-##### [](#header-5)Invoke-Kerberoast.ps1
+#### [](#header-4)Invoke-Kerberoast.ps1
 
 
 
@@ -305,7 +305,7 @@ Just like Kerberoasting AS-REP Roasting can be done from both Windows & Linux bu
 
 
 
-##### [](#header-5)Powerview
+#### [](#header-4)Powerview
 
 
 
@@ -373,7 +373,7 @@ hashcat64.exe -a 0 -m 7500 asrep.hash /wordlists/rockyou.txt
 
 
 
-##### [](#header-5)Rebeus 
+#### [](#header-4)Rebeus 
 
 
 
@@ -507,7 +507,7 @@ Here we find ourselves again... Truthfully I only know of one way to brute-force
 
 *https://github.com/Zer1t0/Rubeus*
 
-##### [](#header-5)Rebeus 
+#### [](#header-4)Rebeus 
 
 
 
@@ -560,7 +560,7 @@ Let's first talk about **nMap**
 
 
 
-##### [](#header-5)nMap 
+#### [](#header-4)nMap 
 
 
 
@@ -580,7 +580,7 @@ nmap -verbose 4 -p 88 --script krb5-enum-users --script-args krb5-enum-users-rea
 
 
 
-##### [](#header-5)kerbrute.py 
+#### [](#header-4)kerbrute.py 
 
 
 
@@ -639,7 +639,7 @@ Before I proceed with the Windows / Linux practical sections I would just like t
 
 
 
-##### [](#header-5)Examples
+#### [](#header-4)Examples
 
 
 
@@ -760,7 +760,7 @@ Let's go.
 
 
 
-##### [](#header-5)Creating Ticket with Mimikatz
+#### [](#header-4)Creating Ticket with Mimikatz
 
 ```
   .#####.   mimikatz 2.0 alpha (x86) release "Kiwi en C" (Apr  6 2014 22:02:03)
@@ -827,7 +827,7 @@ We can then use this `kirbi` ticket for a certain level of persistence and/or in
 
 
 
-##### [](#header-5)Injecting Ticket with Rubeus
+#### [](#header-4)Injecting Ticket with Rubeus
 
 
 
@@ -899,7 +899,7 @@ I am going to try my best here to show how you can use Silver Tickets/Inject the
 
 
 
-##### [](#header-5)ticketer.py
+#### [](#header-4)ticketer.py
 
 Here we find ourselves again on a Linux machine wanting to do Windows things so where do we look? You have one guess. Yep you're right. **Impacket** has a script called `ticketer.py`
 
@@ -993,7 +993,7 @@ Let's go.
 
 
 
-##### [](#header-5)Creating Ticket with Mimikatz
+#### [](#header-4)Creating Ticket with Mimikatz
 
 ```
   .#####.   mimikatz 2.0 alpha (x86) release "Kiwi en C" (Apr  6 2014 22:02:03)
@@ -1041,7 +1041,7 @@ kerberos::ptt persistance4life.kirbi
 
 
 
-##### [](#header-5)Injecting Ticket with Rubeus
+#### [](#header-4)Injecting Ticket with Rubeus
 
 
 
@@ -1119,7 +1119,7 @@ I am going to try my best here to show how you can use Golden Tickets/Inject the
 
 
 
-##### [](#header-5)ticketer.py
+#### [](#header-4)ticketer.py
 
 Here we find ourselves again on a Linux machine wanting to do Windows things so where do we look? You have one guess. Yep you're right. **Impacket** has a script called `ticketer.py`
 
