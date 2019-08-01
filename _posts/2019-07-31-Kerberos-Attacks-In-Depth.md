@@ -59,14 +59,14 @@ To provide a brief overview I want to summarize the common Kerberos terminologie
 **Ticket Terminologies:**
 
 - **Ticket Granting Ticket (TGT)** - This is a ticket assigned on a per-user basic that each user uses to authenticate to the **KDC** with and request a `TGS` ticket
-- **Ticket Granting Server (TGS)** - A authentication subset of the **KDC** that issues **Service Tickets** after verifying an end user **TGT** and if they have access to the requested resource.
+- **Ticket Granting Server (TGS)** - A authentication subset of the **KDC** that issues **Service Tickets** after verifying an end user's **TGT** and if they have access to the requested resource.
 - **Service Ticket (ST)** - This is a ticket granted to you by the **TGS **for authentication purposes against services. 
 
 Slight Disclaimer: Throughout this writeup I commonly refer to **Service Tickets (ST)** as **TGS Tickets**... Just bare with me okay. You know what I mean right?
 
 
 
-Now I could ramble on now about the complete process of Requesting a **TGT**, the encryption etc etc, but I want to keep this at medium-high level and if you want that true in depth information check out the **TLDR** link here
+Now I could ramble on now about the complete process of Requesting a **TGT**, **TGS Ticket, ST**, the encryption etc etc, but I want to keep this at medium-high level and if you want that true in depth information check out the **TLDR** link here
 
 **https://www.roguelynn.com/words/explain-like-im-5-kerberos/**
 
