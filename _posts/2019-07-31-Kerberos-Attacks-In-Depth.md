@@ -1,5 +1,5 @@
 ---
-title: Kerberos Attacks in Depth
+title: How To Attack Kerberos 101
 categories: [Windows,Kerberos,Active Directory,AS REP,Kerberoast,PowerView,Rubeus]
 published: false
 ---
@@ -619,9 +619,9 @@ Silver tickets are essential forged `TGS` tickets which grant you access to a pa
 
 
 
-In order to generate a Silver-Ticket you require the `NTLM` hash of a `Service Account`, typically services run under tradional user accounts with a SPN value for ex. `mssql` & `iis` user etc.
+In order to generate a Silver-Ticket you require the `NTLM` hash of a `Service Account`, typically services run under traditional user accounts with a SPN value for ex. `mssql` & `iis` user etc.
 
-Silver Tickets not only apply too `User Accounts` they also apply to `Computer Accounts` as sometimes AD Services can run under the `Computer Account` in this case the NTLM hash of the Computer would be used to generate the ticket. 
+Silver Tickets not only apply too `User Accounts` they also apply to `Computer Accounts` as sometimes System Services run under the `Computer Account` in this case the NTLM hash of the Computer would be used to generate the ticket. 
 
 
 
@@ -639,3 +639,175 @@ Before I proceed with the Windows / Linux practical sections I would just like t
 
 ## [](#header-5)Examples
 
+
+
+List of Possible Host SPN's (Services) that can be targetted with Computer Hash
+
+```
+alerter
+appmgmt
+cisvc
+clipsrv
+browser
+dhcp
+dnscache
+replicator
+eventlog
+eventsystem
+policyagent
+oakley
+dmserver
+dns
+mcsvc
+fax
+msiserver
+ias
+messenger
+netlogon
+netman
+netdde
+netddedsm
+nmagent
+plugplay
+protectedstorage
+rasman
+rpclocator
+rpc
+rpcss
+remoteaccess
+rsvp
+samss
+scardsvr
+scesrv
+seclogon
+scm
+dcom
+cifs
+spooler
+snmp
+schedule
+tapisrv
+trksvr
+trkwks
+ups
+time
+wins
+www
+http
+w3svc
+iisadmin
+msdtc
+```
+
+
+
+**CIFS** - **System Service - Computer NTLM Hash**
+
+The first example I am going to cover is if you have compromised the `NTLM` hash of a Computer Account 
+
+
+
+1. Dump NTLM Hash of `Computer Account`
+2. Create Silver Ticket Targeting CIFS Service on Computer
+3. Forged TGS (Ticket Granting Service) is created allow you to access target service.
+4. Access \\\computername\C$ (Providing User has Access to Said Computer)
+5. Copy payload.exe C:\Temp\payload.exe
+6. Create Another Silver Ticket Targeting HOST Service
+7. Create Scheduled Task
+8. Boom - Payload.exe is spawned on the target machine. 
+
+
+
+**MSSQL- User Service - User NTLM Hash**
+
+
+
+Let's skip the exploiting part and presume we have the `NTLM` hash of a Service Account for `MSSQL` we can use this `NTLM` hash to impersonate this user account and access network resources they have access too. For example `MSSQL` servers etc. (Maybe if it's poorly configured we can access other stuff)
+
+
+
+1. Dump `NTLM` hash of `Service Account`
+2. Create Silver Ticket Targeting Service Account
+3. Dump .kirbi Ticket
+4. Inject `.kirbi` 
+5. Access MSSQL Resources 
+   1. Databases
+   2. Shares (Maybe)
+
+
+
+I hope this makes sense to people, now for the practical examples.
+
+
+
+## [](#header-3)From Windows
+
+
+
+Once again as we are attacking a protocol that is primarily used within Microsoft AD environments I do recommend you carry out the attacks from a Windows Box / **Domain-Joined Machine** but ofc it is possible from Linux but we will start with Windows. 
+
+I will only be discussing using Mimikatz for Ticket creation and then Rubeus for Ticket Injection. I do not believe you can create a Silver Ticket with Rubeus yet, but I may be wrong.
+
+Let's go.
+
+
+
+
+
+## [](#header-5)Creating Ticket with Mimikatz
+
+
+
+> ```
+>   .#####.   mimikatz 2.0 alpha (x86) release "Kiwi en C" (Apr  6 2014 22:02:03)
+>  .## ^ ##.
+>  ## / \ ##  /* * *
+>  ## \ / ##   Benjamin DELPY `gentilkiwi` ( benjamin@gentilkiwi.com )
+>  '## v ##'   http://blog.gentilkiwi.com/mimikatz             (oe.eo)
+>   '#####'                                    with  13 modules * * */
+> ```
+
+
+
+Good old Mimikatz, the true swiss-army knife for dumping credentials, kerberos tickets, SAM Hives & DPAPI manipulation. Shout out to Benjamin Delpy, the InfoSec community would be nothing without you.
+
+
+
+Mimikatz Silver Ticket Guide
+
+```
+/domain: The FDQN
+/sid: The SID (Security Identifier) of the Domain
+/user: Target Account/Computer to Impersonate
+/id: RID of the account you will be impersonating
+/ptt: Optional (Will Inject Ticket or you can do with Rubeus)
+/rc4: NTLM Hash of User Password/Computer Password
+```
+
+
+
+**AD Security** has a really nice example:
+
+*The following Mimikatz command creates a Silver Ticket for the CIFS service on the server adsmswin2k8r2.lab.adsecurity.org. In order for this Silver Ticket to be successfully created, the AD computer account password hash for adsmswin2k8r2.lab.adsecurity.org needs to be discovered, either from an AD domain dump or by running Mimikatz on the local system as shown above (Mimikatz “privilege::debug” “sekurlsa::logonpasswords” exit). The NTLM password hash is used with the /rc4 paramteer. The service SPN type also needs to be identified in the /service parameter. Finally, the target computer’s fully-qualified domain name needs to be provided in the /target parameter. Don’t forget the domain SID in the /sid parameter.*
+
+*mimikatz “kerberos::golden /admin:LukeSkywalker /id:1106 /domain:lab.adsecurity.org /sid:S-1-5-21-1473643419-774954089-2222329127 /target:adsmswin2k8r2.lab.adsecurity.org /rc4:d7e2b80507ea074ad59f152a1ba20458 /service:cifs /ptt” exit*
+
+
+
+
+
+## [](#header-5)Injecting Ticket with Rubeus
+
+
+
+> Rubeus is effectively a Kerberos attack tool which we will cover a lot in this article that is developed in C#/.NET meaning it is a lot harder for defenders to detect it it's reflectively loaded using something like Cobalt's `execute-assembly` or `SILENTTRINITY` You can also reflectively load it from PowerShell but I will be covering `.NET` in greater detail in a future article. 
+>
+> https://github.com/GhostPack/Rubeus
+
+
+
+As we have discussed Rubeus loads in this article already under `Kerberoasting` and `AS REP` I will jump straight to the chase. 
+
+```
+
+```
