@@ -949,3 +949,62 @@ Wow - Not going to lie I did not expect the `Silver Ticket` section to go on for
 
 
 
+Now you thought Silver Tickets were dangerous? Imagine if you could forge a Kerberos ticket that would grant you access to any resource on the network at any time perhaps forever.
+
+
+
+That's what Golden Tickets are except they are slightly different in the fact that Silver Tickets request `TGS` (Ticket Granting Service) tickets which grant you access to individual target service. Whereas with Golden Ticket you forge a `TGT` with the `krbtgt` hash which grants you access to every service and/or machine in the entire Domain. 
+
+
+
+**KRBTGT Account NTLM Hash**
+
+
+
+The `NTLM` hash of the `KRBTGT` account is the true keys-to the castle for an entire domain (sometimes an enitre forest;) ) You can get this `NTLM` hash from one of the options below
+
+
+
+- Mimikatz on Domain Controller (lsadump::dcsync and/or sekurlsa::logonpasswords all)
+- Dumping NTDS.dit
+- DCSync
+
+
+
+Sooo, What does the `KRBTGT` account actually do.. Well the `KRBTGT` account is used to encrypt and sign all Kerberos tickets across the entire domain for validation. If you are on a Windows Domain Environment right now this account is working away doing it's thing. The password also never changes unless explicity done by a SysAdmin etc and it's name is always `KRBTGT` so it's a common target for attackers.
+
+
+
+The true beauty of Golden Tickets are the fact that they are valid `TGTs` as it is encrypted/signed by the `KRBTGT` account so they appear like legitimate `TGTs`
+
+
+
+I believe I have explained now how we use Golden Tickets and hinted at how dangerous these really can be so I will not demonstrate some practical examples of course with Windows First followed by Linux. 
+
+
+
+## [](#header-3)From Windows
+
+*copy and paste ftw*
+
+Once again as we are attacking a protocol that is primarily used within Microsoft AD environments I do recommend you carry out the attacks from a Windows Box / **Domain-Joined Machine** but ofc it is possible from Linux but we will start with Windows. 
+
+I will only be discussing using Mimikatz for Ticket creation and then Rubeus for Ticket Injection. I do not believe you can create a Golden Ticket with Rubeus yet, but I may be wrong.
+
+Let's go.
+
+
+
+
+
+## [](#header-5)Creating Ticket with Mimikatz
+
+> ```
+>   .#####.   mimikatz 2.0 alpha (x86) release "Kiwi en C" (Apr  6 2014 22:02:03)
+>  .## ^ ##.
+>  ## / \ ##  /* * *
+>  ## \ / ##   Benjamin DELPY `gentilkiwi` ( benjamin@gentilkiwi.com )
+>  '## v ##'   http://blog.gentilkiwi.com/mimikatz             (oe.eo)
+>   '#####'                                    with  13 modules * * */
+> ```
+
