@@ -44,7 +44,12 @@ But First Let's talk about Kerberos and how it **really **works.
 
 
 
-## [](#header-2)Kerberoast
+
+
+
+
+
+# [](#header-1)Kerberoast
 
 
 
@@ -275,7 +280,12 @@ However as this is normal operation you will get ALOT ALOT of `Event 4769` & `Ev
 
 
 
-## [](#header-2)AS-REP Roasting
+
+
+
+
+
+# [](#header-1)AS-REP Roasting
 
 
 
@@ -481,7 +491,11 @@ However I would advise if you do need to disable this for some reason that the p
 
 
 
-## [](#header-2)Kerberos User Enumeration and Brute Force
+
+
+
+
+# [](#header-1)Kerberos User Enumeration and Brute Force
 
 
 
@@ -607,7 +621,10 @@ Similar to Rubeus it will also request a `TGT` and save it in `.ccache` format w
 
 
 
-## [](#header-2)Silver Ticket	
+
+
+
+# [](#header-1)Silver Ticket	
 
 
 
@@ -939,7 +956,10 @@ Set `Account is Sensitive and Cannot be Delegated` as this will prevent an attac
 
 
 
-## [](#header-2) Golden Ticket
+
+
+
+# [](#header-1) Golden Ticket
 
 
 
@@ -1161,7 +1181,7 @@ Golden Tickets are really hard to monitor for as effectively they are just legit
 
 
 
-## [](#header-2) Pass-The-Ticket / Ticket Dump
+# [](#header-1) Pass-The-Ticket / Ticket Dump
 
 
 
