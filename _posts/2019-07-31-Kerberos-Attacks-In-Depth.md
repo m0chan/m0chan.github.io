@@ -1,7 +1,7 @@
 ---
 title: How To Attack Kerberos 101
 categories: [Windows,Kerberos,Active Directory,AS REP,Kerberoast,PowerView,Rubeus]
-published: true
+published: false
 ---
 
 In this article I will discuss all the primary attacks on Kerberos, how to enumerate for them & finally how to exploit them using a wide range of toolsets. I will also try my best to outline how to carry out these attacks from both a domain joined Windows box & an external Linux VM i/e an attackers platform.
@@ -965,11 +965,11 @@ Set `Account is Sensitive and Cannot be Delegated` as this will prevent an attac
 
 Wow - Not going to lie I did not expect the `Silver Ticket` section to go on for that long, I even learnt some stuff myself while writing that... I am going to try keep this section relatively smaller as it is in theory the same practice just slightly different as we are not targeting `Computer Hash's` or `User Hash's` but instead the hash of the `krbtgt` account which can typically only be retrieved from pwning the Domain Controller and dumping the `NTDS.dit` file and/or Dumping `LSAAS` on the DC and putting it through `Mimikatz`
 
-</br>
+
 
 Now you thought Silver Tickets were dangerous? Imagine if you could forge a Kerberos ticket that would grant you access to any resource on the network at any time perhaps forever.
 
-</br>
+
 
 That's what Golden Tickets are except they are slightly different in the fact that Silver Tickets request `TGS` (Ticket Granting Service) tickets which grant you access to individual target service. Whereas with Golden Ticket you forge a `TGT` with the `krbtgt` hash which grants you access to every service and/or machine in the entire Domain. 
 
