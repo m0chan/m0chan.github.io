@@ -762,16 +762,14 @@ Let's go.
 
 ## [](#header-5)Creating Ticket with Mimikatz
 
-
-
-> ```
->   .#####.   mimikatz 2.0 alpha (x86) release "Kiwi en C" (Apr  6 2014 22:02:03)
->  .## ^ ##.
->  ## / \ ##  /* * *
->  ## \ / ##   Benjamin DELPY `gentilkiwi` ( benjamin@gentilkiwi.com )
->  '## v ##'   http://blog.gentilkiwi.com/mimikatz             (oe.eo)
->   '#####'                                    with  13 modules * * */
-> ```
+```
+  .#####.   mimikatz 2.0 alpha (x86) release "Kiwi en C" (Apr  6 2014 22:02:03)
+ .## ^ ##.
+ ## / \ ##  /* * *
+ ## \ / ##   Benjamin DELPY `gentilkiwi` ( benjamin@gentilkiwi.com )
+ '## v ##'   http://blog.gentilkiwi.com/mimikatz             (oe.eo)
+  '#####'                                    with  13 modules * * */
+```
 
 
 
@@ -995,18 +993,16 @@ Let's go.
 
 
 
-
-
 ## [](#header-5)Creating Ticket with Mimikatz
 
-> ```
->   .#####.   mimikatz 2.0 alpha (x86) release "Kiwi en C" (Apr  6 2014 22:02:03)
->  .## ^ ##.
->  ## / \ ##  /* * *
->  ## \ / ##   Benjamin DELPY `gentilkiwi` ( benjamin@gentilkiwi.com )
->  '## v ##'   http://blog.gentilkiwi.com/mimikatz             (oe.eo)
->   '#####'                                    with  13 modules * * */
-> ```
+```
+  .#####.   mimikatz 2.0 alpha (x86) release "Kiwi en C" (Apr  6 2014 22:02:03)
+ .## ^ ##.
+ ## / \ ##  /* * *
+ ## \ / ##   Benjamin DELPY `gentilkiwi` ( benjamin@gentilkiwi.com )
+ '## v ##'   http://blog.gentilkiwi.com/mimikatz             (oe.eo)
+  '#####'                                    with  13 modules * * */
+```
 
 
 
