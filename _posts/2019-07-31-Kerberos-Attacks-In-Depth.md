@@ -1,7 +1,7 @@
 ---
 title: Kerberos Attacks in Depth
 categories: [Windows,Kerberos,Active Directory,AS REP,Kerberoast,PowerView,Rubeus]
-published: true
+published: false
 ---
 
 In this article I will discuss all the primary attacks on Kerberos, how to enumerate for them & finally how to exploit them using a wide range of toolsets. I will also try my best to outline how to carry out these attacks from both a domain joined Windows box & an external Linux VM i/e an attackers platform.
@@ -245,3 +245,10 @@ m0chan@kali:/scripts/ > python GetUserSPNs.py m0chanAD/pwneduser:pwnedcreds -out
 
 
 This outputed file can now be sent to Hashcat to crack, there are alternative means to cracking on Linux but in all my time Hacking I have never once had a good time trying to crack on Linux. I find Hashcat on a Windows machine with NVIDIA cards is the best route (personally).
+
+
+
+## [](#header-2)AS-REP Roasting
+
+
+
