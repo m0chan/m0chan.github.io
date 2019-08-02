@@ -1389,7 +1389,7 @@ It is also advised to ensure that Kerberos tickets are set to expire within 10 h
 
 # [](#header-1)Unconstrained Delegation 
 
-*Unconstrained Delegation (aka) **TGT Forwarding***
+*Unconstrained Delegation (aka) **TGT Forwarding (TrustedForDelegation)***
 
 ### [](#header-3)Introduction
 
@@ -1529,9 +1529,27 @@ In this case I have enabled **Constrained Delegation** which limits said server 
 
 
 
-### [](#header-3)S4U2Self / S4U2Proxy &  Protocol Transition
+### [](#header-3)S4U2Self / S4U2Proxy & Protocol Transition
 
 ***S4U** = Service-For-User*
+
+
+
+**S4U2Proxy**
+
+The Server-for-User-to-Proxy is an extension that allows a service to use it's Kerberos service ticket for a specific user to obtain a `TGS` ticket from the `KDC` to access a back-end-service on behalf of a user. The **S4U2Proxy** s being used 9/10 times that **Constrained Delegation** is in use. 
+
+
+
+This extension works in the following order
+
+1. User Sends a TGS to Access **Service 1**
+2. Providing **Service 1** is permitted to delegate to another Service, for ex **Service 2**
+3. **Service 1** now issues a **S42UProxy Request** for a `TGS` Ticket for requesting User to **Service 2** with the *requesting users* `TGS` Ticket
+4. **Service 1** sends `TGS Ticket` to **Service 2**
+5. **Service 1** connects to **Service 2** authenticating as the *requesting user*.
+
+
 
 
 
@@ -1541,17 +1559,21 @@ The `SVU2Self` extension is only required if a user authenticates with something
 
 
 
-**S4U2Proxy**
-
-The Server-for-User-to-Proxy is an extension that allows a service to use it's Kerberos service ticket for a specific user to obtain a `TGS` ticket from the `KDC` to access a back-end-service on behalf of a user. 
+**PS:** You can only exploit **Constrained Delegation** if **Protocol Transition** is enabled, 9/10 times in the real world this will be configured.
 
 
+
+*Microsoft's Diagram for **S4U2Self** & **S4U2-Proxy*** 
+
+![S4U2self and S4U2proxy](https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-sfu/ms-sfu_files/image002.png)
+
+*https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-sfu/1fb9caca-449f-4183-8f7a-1a5fc7e7290a*
 
 ### [](#header-3)Enumeration
 
 
 
-Discovering Servers/Computers with **Unconstrained Delegation** enabled is fairly straight forward using the `ActiveDirectory` module and `Get-ADComputer` function.
+Discovering Servers/Computers with **Constrained Delegation** enabled is fairly straight forward using the `ActiveDirectory` module and `Get-ADComputer` function.
 
 Quick example
 
@@ -1572,8 +1594,17 @@ PS C:\Users\m0chan> Get-DomainComputer -Constrained
 
 
 
-Now exploiting **Constrained Delegation** is a little but different to **Unconstrained Delegation** as we can't just simply grab pwn the Server's/Users' trusted for Delegation and snatch the cached`TGT` tickets.
+Now exploiting **Constrained Delegation** is a little but different to **Unconstrained Delegation** as we can't just simply grab pwn the Server's/Users' trusted for Delegation and snatch the cached `TGT` tickets.
 
-We simply have to find high value targets that are delegating for high value resources, a good example would be a server trusted for `cifs` `Delegation` on a machine, this would allow us to read the files on the target system by snatching the cached `TGS` ticket. 
+We simply have to find high value targets that are set to delegate for high value resources, a good example would be a server trusted for `cifs` `Delegation` on a machine, this would allow us to read the files on the target system by snatching the cached `TGS` ticket. 
 
 Another great one is if a machine trusts the `DC` & `LDAP` for `Delegation` then we can DC Sync ;) 
+
+
+
+Also worth noting any users/computers that have delegation enabled - `msDS-AllowedToDelegateTo`, they can pretend to be any user in the domain to authenticate the specified `SPN` that they are allowed to delegate too.  
+
+Such as if `user1.m0chanAD.local` was allowed to delegate too `cifs/fileserver.m0chanAD.local` & you owned `user1.m0chanAD.local` then you would be able to authenticate as **any** user within the domain **only**  to `cifs/fileserver.m0chanAD.local`
+
+
+
