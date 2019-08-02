@@ -61,11 +61,11 @@ To provide a brief overview I want to summarize the common Kerberos terminologie
 
 **Ticket Terminologies:**
 
-- **Ticket Granting Ticket (TGT)** - This is a ticket assigned on a per-user basic that each user uses to authenticate to the **KDC** with and request a `TGS` ticket
+- **Ticket Granting Ticket (TGT)** - This is a ticket assigned on a per-user basic that each user uses to authenticate to the **KDC** with and issues requests for `TGS` ticket aka **Service Tickets**
 - **Ticket Granting Server (TGS)** - A authentication subset of the **KDC** that issues **Service Tickets** after verifying an end user's **TGT** and if they have access to the requested resource.
 - **Service Ticket (ST)** - This is a ticket granted to you by the **TGS **for authentication purposes against services. 
 
-Slight Disclaimer: Throughout this writeup I commonly refer to **Service Tickets (ST)** as **TGS Tickets**... Just bare with me okay. You know what I mean right?
+**Slight Disclaimer**: Throughout this writeup I commonly refer to **Service Tickets (ST)** as **TGS Tickets**... Just bare with me okay. You know what I mean right?
 
 
 
@@ -1545,11 +1545,17 @@ This extension works in the following order
 
 1. User Sends a TGS to Access **Service 1**
 2. Providing **Service 1** is permitted to delegate to another Service, for ex **Service 2**
-3. **Service 1** now issues a **S42UProxy Request** for a `TGS` Ticket for requesting User to **Service 2** with the *requesting users* `TGS` Ticket
+3. **Service 1** now issues a **S42UProxy Request** for a `TGS` Ticket for *requesting user* to **Service 2** with the *requesting users* `TGS` Ticket
 4. **Service 1** sends `TGS Ticket` to **Service 2**
 5. **Service 1** connects to **Service 2** authenticating as the *requesting user*.
 
 
+
+*Note: The `TGS` Ticket provided in the **S4U2Proxy request** must have the **FORWARDABLE** flag set. This flag is never set for accounts that have `Account is Sensitive and Cannot Be Delegated` set.*  
+
+
+
+![S4U2Proxy.png](https://shenaniganslabs.io/images/TrustedToAuthForDelegationWho/Diagrams/S4U2Proxy.png)
 
 
 
@@ -1569,7 +1575,11 @@ This is why if you pwn a server with constrained delegation enabled (any protoco
 
 
 
-*Microsoft's Diagram for **S4U2Self** & **S4U2-Proxy*** 
+![S4U2Self.png](https://shenaniganslabs.io/images/TrustedToAuthForDelegationWho/Diagrams/S4U2Self.png)
+
+
+
+*Microsoft's Diagram for **S4U2Self** & **S4U2-Proxy***
 
 ![S4U2self and S4U2proxy](https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-sfu/ms-sfu_files/image002.png)
 
@@ -1621,3 +1631,8 @@ Such as if `user1.m0chanAD.local` was allowed to delegate too `cifs/fileserver.m
 
 
 So if you've got this far you probably agree **Constrained Delegation** is confusing as fuck! It's probably been the biggest learning experience of this whole document. I figured instead of creating examples and just showcasing how to exploit it I had to spin up my `Active Directory`  lab which consists of a `DC` and 2 x `WIN10` Hosts 
+
+
+
+#### [](#header-4)Exploiting with Rubeus
+
