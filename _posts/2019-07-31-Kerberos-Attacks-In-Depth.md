@@ -1569,6 +1569,8 @@ The `SVU2Self` extension is only required if a user authenticates with something
 
 *https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-sfu/1fb9caca-449f-4183-8f7a-1a5fc7e7290a*
 
+
+
 ### [](#header-3)Enumeration
 
 
@@ -1608,3 +1610,8 @@ Such as if `user1.m0chanAD.local` was allowed to delegate too `cifs/fileserver.m
 
 
 
+### [](#header-3)From Windows
+
+
+
+So if you've got this far you probably agree **Constrained Delegation** is confusing as fuck! It's probably been the biggest learning experience of this whole document. I figured instead of creating examples and just showcasing how to exploit it I had to spin up my `Active Directory`  lab which consists of a `DC` and 2 x `WIN10` Hosts 
