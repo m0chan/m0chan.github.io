@@ -81,6 +81,10 @@ Now I could ramble on now about the complete process of Requesting a **TGT**, **
 
 
 
+### [](#header-3)Introduction
+
+
+
 Kerberoasting is an extremely common attack in active directory environments which targets Active Directory accounts with the SPN value set. Common accounts with the SPN **(Service Principal Name)** set are service accounts such as IIS User/MSSQL etc. 
 
 
@@ -317,6 +321,10 @@ However as this is normal operation you will get ALOT ALOT of `Event 4769` & `Ev
 
 
 
+### [](#header-3)Introduction
+
+
+
 `AS-REP` roasting is an attack that is often-overlooked in my opinion it is not extremely common as you have to explicitly set `Accounts Does not Require Pre-Authentication` aka `DONT_REQ_PREAUTH`
 
 `Pre-Authentication` is the first step in Kerberos Authentication and it's main role is to try prevent against brute-force password guessing attacks. 
@@ -527,6 +535,10 @@ However I would advise if you do need to disable this for some reason that the p
 
 
 
+### [](#header-3)Introduction
+
+
+
 As Kerberos is an authentication protocol it is possible to perform brute-force attacks against it (providing we are careful). Kerberos brute-force has a lot of advantages for brute-forcing vs other protocols.
 
 
@@ -651,10 +663,11 @@ Similar to Rubeus it will also request a `TGT` and save it in `.ccache` format w
 
 
 
-
 # [](#header-1)Silver Ticket	
 
 
+
+### [](#header-3)Introduction
 
 if you are interested in InfoSec it's almost inevitable that you have heard of Silver Tickets and Golden Tickets at some points, most think that Silver Tickets are nothing compared to Golden Tickets but they are mistaken, silver tickets are just as dangerous and even more stealthier. 
 
@@ -986,8 +999,11 @@ Set `Account is Sensitive and Cannot be Delegated` as this will prevent an attac
 
 
 
-
 # [](#header-1) Golden Ticket
+
+
+
+### [](#header-3)Introduction
 
 
 
@@ -1214,6 +1230,7 @@ Golden Tickets are really hard to monitor for as effectively they are just legit
 # [](#header-1) Pass-The-Ticket / Ticket Dump
 
 
+### [](#header-3)Introduction
 
 You may have already noticed me chatting about `Pass-The-Ticket` above or `PTT` but I figured it required it's own section as it can be extremely useful for not only importing Silver/Golden tickets into a current session but also dumping current Kerberos tickets
 
@@ -1371,7 +1388,7 @@ It is also advised to ensure that Kerberos tickets are set to expire within 10 h
 
 *Unconstrained Delegation (aka) **TGT Forwarding***
 
-
+### [](#header-3)Introduction
 
 Oh boy - Now it gets interesting.
 
@@ -1477,6 +1494,10 @@ And that's really it... **Unconstrained Delegation** is bad. I highly recommend 
 
 
 
+### [](#header-3)Introduction
+
+
+
 Here we are at the last section, big GG's if you are still with me through all this, It has taken me nearly 2 days to write this.  
 
 
@@ -1500,4 +1521,12 @@ Just like **Unconstrained Delegation**, you can configure **Constrained Delegati
 ![img](https://i.imgur.com/J5gkDLm.png)
 
 
+
+In this case I have enabled **Constrained Delegation** which limits said server to authenticate on behalf of a user to the following `SPN` `CIFS/SERVERNAME-2016RDS.m0chanAD.local`
+
+
+
+### [](#header-3)S4U2Self & S4U2Proxy
+
+***S4U** = Service-For-User*
 
