@@ -1423,6 +1423,10 @@ PS C:\Users\m0chan> Get-ADComputer -Filter {(TrustedForDelegation - eq $true) -A
 
 #Or Simply
 PS C:\Users\m0chan> Get-ADComputer -Filter {(TrustedForDelegation - eq $true)} 
+
+#PowerView
+
+PS C:\Users\m0chan> Get-DomainComputer -Unconstrained 
 ```
 
 
