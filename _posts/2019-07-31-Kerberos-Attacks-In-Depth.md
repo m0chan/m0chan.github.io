@@ -6,7 +6,7 @@ published: false
 
 
 
-The purpose of this article is to give me a reason to full explore Kerberos relatively in depth and to cement my existing knowledge into place and perhaps learn something new.
+*I want to start with article by saying I set out to learn Kerberos in greater detail and I figured that writing this would help cement my existing knowledge and give me reason to learn along the way, I am no Kerberos expert I am simply learning as I go along and getting my head around all the different terminologies so if you notice something amiss feel free to DM me and put me right. And if you do not understand something feel free to drop me a PM and I will do my best to help :)* 
 
 
 
@@ -1350,3 +1350,20 @@ m0chan@kali:/scripts/> python psexec.py m0chanAD.local/user@workstation.m0chanAD
 
 
  
+
+
+
+### [](#header-3)Mitigation / Defending against PTT
+
+
+
+It goes without saying that defending against PTT is very tricky as you are simply using normal functions of Kerberos in a malicious way - All you are really doing is using Kerberos tickets as they would be used, TGT to request service TGS Ticket, and accessing services with TGS.
+
+However as tickets are stored in **LSASS** I recommend you do not log into end-users stations with privileged accounts i/e do not log into a HR User with your Domain Account with a interactive session...  
+
+It is also advised to ensure that Kerberos tickets are set to expire within 10 hours. 
+
+
+
+# [](#header-1)Unconstrained Delegation 
+
