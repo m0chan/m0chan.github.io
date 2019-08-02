@@ -1557,6 +1557,12 @@ This extension works in the following order
 
 The `SVU2Self` extension is only required if a user authenticates with something other than `Kerberos` such as `NTLM`, but the delegation to the second service (second hop) will always be completed in Kerberos. This is called **Protocol Transition**
 
+The reason we need **S4U2Self** is because the **S4U2Proxy** extension requires a valid `TGS` ticket to be passed too it from the *requesting user* before it goes onto request a `TGS` for ***Service 2*** - Shenaniganslabs.io calls this "evidence" and I believe that's a really good way to put it. However as previously mentioned sometimes users may authenticate with something other than Kerberos, like `NTLM` therefore they do not pass a `TGS` ticket through. In such cases then **S4U2Self** can ask the service authentication service to product a `TGS` for a **arbitrary user** (any user) which can therefore be passed over to **S4U2Proxy** to request a ticket for another service i/e ***Service 2***
+
+
+
+This is why if you pwn a server with constrained delegation enabled (any protocol) you can theoretically impersonate any user in the domain against any respective **SPNs** (More on this below in Exploiting Section)
+
 
 
 **PS:** You can only exploit **Constrained Delegation** if **Protocol Transition** is enabled, 9/10 times in the real world this will be configured.
