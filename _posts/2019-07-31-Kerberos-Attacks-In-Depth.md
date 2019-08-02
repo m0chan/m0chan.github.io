@@ -1486,3 +1486,18 @@ Now in the last section we talked about **Unconstrained Delegation** which allow
 
 
 This is where **Constrained Delegation** comes into play. 
+
+
+
+Once Microsoft realized there Mistake with **Unconstrained Delegation** they came up with a couple of Kerberos extensions namely - `S4U2Self` & `S4U2Proxy` - Long story short basically `Constrained Delegation` limits what services a particular machine trusted for Delegation can actually access on behalf of an authenticated user
+
+
+
+Just like **Unconstrained Delegation**, you can configure **Constrained Delegation** from `Active Directory Users and Computers` as well as limit authentication to Kerberos and/or other protocol's but I will stick to Kerberos in this article. 
+
+
+
+![img](https://i.imgur.com/J5gkDLm.png)
+
+
+
