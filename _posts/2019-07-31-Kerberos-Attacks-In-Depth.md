@@ -53,6 +53,9 @@ To provide a brief overview I want to summarize the common Kerberos terminologie
 - **Client Machine** - Machine whom wants to access service that supports Kerberos authentication.
 - **Service Machine** - Server/Computer hosting "Service" that supports Kerberos authentication
 - **KDC (Key Distribution Centre**) - The KDC is a very very important part of a Active Directory infrastructure as it is responsible for authenticating and distributing tickets. In AC Environments the KDC is installed on the Domain Controller **(DC)**
+- **SPN (Service Principal Name)** - This is the name of the service, sometimes you may have a user account with the **SPN** attribute configured which defines it as a service account. An example of a **SPN** would be.
+  - `CIFS/SERVERNAME-2016RDS.m0chanAD.local`
+  - `MSSQL/MSSQLSERVER.m0chanAD.local`
 
 
 
@@ -772,7 +775,7 @@ The first example I am going to cover is if you have compromised the `NTLM` hash
 3. Forged TGS (Service Ticket) ticket is created allow you to access target service.
 4. Access \\\computername\C$ (Providing User has Access to Said Computer)
 5. Copy payload.exe C:\Temp\payload.exe
-6. Create Another Silver Ticket Targeting HOST Service
+6. Create Another Silver Ticket Targeting **HOST Service**
 7. Create Scheduled Task
 8. Boom - Payload.exe is spawned on the target machine. 
 
@@ -1526,6 +1529,51 @@ In this case I have enabled **Constrained Delegation** which limits said server 
 
 
 
-### [](#header-3)S4U2Self & S4U2Proxy
+### [](#header-3)S4U2Self / S4U2Proxy &  Protocol Transition
 
 ***S4U** = Service-For-User*
+
+
+
+**S4U2Self**
+
+The `SVU2Self` extension is only required if a user authenticates with something other than `Kerberos` such as `NTLM`, but the delegation to the second service (second hop) will always be completed in Kerberos. This is called **Protocol Transition**
+
+
+
+**S4U2Proxy**
+
+The Server-for-User-to-Proxy is an extension that allows a service to use it's Kerberos service ticket for a specific user to obtain a `TGS` ticket from the `KDC` to access a back-end-service on behalf of a user. 
+
+
+
+### [](#header-3)Enumeration
+
+
+
+Discovering Servers/Computers with **Unconstrained Delegation** enabled is fairly straight forward using the `ActiveDirectory` module and `Get-ADComputer` function.
+
+Quick example
+
+```powershell
+PS C:\Users\m0chan> Import-Module ActiveDirectory
+
+PS C:\Users\m0chan> Get-ADComputer -Filter {(msDS-AllowedToDelegateTo -ne "{}")} -Properties TrustedForDelegation,TrustedToAuthForDelegation,ServicePrincipalName,Description,msDS-AllowedToDelegateTo
+
+
+#PowerView
+
+PS C:\Users\m0chan> Get-DomainComputer -Constrained 
+```
+
+
+
+### [](#header-3)Exploiting
+
+
+
+Now exploiting **Constrained Delegation** is a little but different to **Unconstrained Delegation** as we can't just simply grab pwn the Server's/Users' trusted for Delegation and snatch the cached`TGT` tickets.
+
+We simply have to find high value targets that are delegating for high value resources, a good example would be a server trusted for `cifs` `Delegation` on a machine, this would allow us to read the files on the target system by snatching the cached `TGS` ticket. 
+
+Another great one is if a machine trusts the `DC` & `LDAP` for `Delegation` then we can DC Sync ;) 
