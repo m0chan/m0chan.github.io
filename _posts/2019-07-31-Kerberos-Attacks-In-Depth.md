@@ -1514,7 +1514,7 @@ Once Microsoft realized there Mistake with **Unconstrained Delegation** they cam
 
 
 
-Just like **Unconstrained Delegation**, you can configure **Constrained Delegation** from `Active Directory Users and Computers` as well as limit authentication to Kerberos and/or other protocol's but I will stick to Kerberos in this article. 
+Just like **Unconstrained Delegation**, you can configure **Constrained Delegation** from `Active Directory Users and Computers` as well as limit authentication to Kerberos and/or other protocol's.
 
 
 
@@ -1529,4 +1529,3 @@ In this case I have enabled **Constrained Delegation** which limits said server 
 ### [](#header-3)S4U2Self & S4U2Proxy
 
 ***S4U** = Service-For-User*
-
