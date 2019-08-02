@@ -1365,5 +1365,120 @@ It is also advised to ensure that Kerberos tickets are set to expire within 10 h
 
 
 
+
+
 # [](#header-1)Unconstrained Delegation 
 
+*Unconstrained Delegation (aka) **TGT Forwarding***
+
+
+
+Oh boy - Now it gets interesting.
+
+Just to provide a little bit of a background back in the older days of Servers & Authentication probably when I was still a kid and Server 2000 first introduced Active Directory, Microsoft had to find a way to allow Servers authenticate to other resources in the context of a user. This was called the **"Kerberos Double-Hop Issue"** - That's where **Unconstrained Delegation** comes into play.
+
+
+
+**Unconstrained Delegation** is a privilege that can be granted to **User Accounts** or **Computer Accounts** in a active directory environment that allows a resources to authenticate to another resource on **BEHALF** of a user. Confusing right?
+
+
+
+Let me provide an example -  
+
+`m0chan` -- Authenticates -- `CRM Server` -- authenticates on behalf of m0chan -- `DB Server` to fetch information.
+
+
+
+What is really happening here is you are sending your `TGS` ticket to access the service on `CRM Server` for example `http` but you were **ALSO** sending your `TGT` so that the `CRM Server` is able to further request a `TGS` on behalf of yourself to access the `DB Server` in your context. 
+
+
+
+From an attackers point of view there is a couple of things to bare in mind
+
+- When a User Authenticates to a Server with Unconstrained Delegation turned on, the Users `TGT` get's cached on the server
+  - If you pwn a Server with Unconstrained Delegation Turned on it could be littered with `TGT's` to perform a `PTT` attack
+  - The Reason this get's cached is for the obvious reason, so the Server can Impersonate the authenticated user to access resources said User has access to.
+    - This allows you to retain your privilege model and to not have over-privileged servers. 
+
+
+
+So how is **Unconstrained Delegation** configured? Simple. Enable `Trust this computer for Delegation to any Service (Kerberos Only)` within `Active Directory Users and Computers`
+
+![img](https://i.imgur.com/LbW79Hy.png)
+
+
+
+### [](#header-3)Enumeration
+
+
+
+Discovering Servers/Computers with **Unconstrained Delegation** enabled is fairly straight forward using the `ActiveDirectory` module and `Get-ADComputer` function.
+
+Quick example
+
+```powershell
+PS C:\Users\m0chan> Import-Module ActiveDirectory
+
+PS C:\Users\m0chan> Get-ADComputer -Filter {(TrustedForDelegation - eq $true) -AND (PrimaryGroupID -eq 515)} -Properties TrustedForDelegation,TrustedToAuthForDelegation,servicePrincipalName,Description
+
+#Or Simply
+PS C:\Users\m0chan> Get-ADComputer -Filter {(TrustedForDelegation - eq $true)} 
+```
+
+
+
+### [](#header-3)Exploiting
+
+
+
+Now truthfully I do not see the point in writing a **From Windows** & **From Linux** section for **Unconstrained Delegation** as it's fairly simple and basically just a **PTT** attack. 
+
+An example to exploiting **Unconstrained Delegation** would be 
+
+
+
+1. Compromise a Server trusted for **Unconstrained Delegation** via a admin or service account. 
+2. Dump tickets with `PS C:\Users\m0chan> Rubeus.exe dump` 
+   1. If a Domain Admin has authenticated through this Server then RIP
+   2. Social Engineer a Domain Admin to Authenticate to this Server
+3. Perform a `PTT` attack with recovered `TGT` 
+
+
+
+
+
+### [](#header-3)Mitigation / Defending Unconstrained Delegation 
+
+
+
+And that's really it... **Unconstrained Delegation** is bad. I highly recommend the following to mitigate this vulnerability. 
+
+
+
+- Enforce **Constrained Delegation** but of course that has it's weaknesses which I will be covering in the next section. 
+- Also if a user is part of the **Protected-Users Group** he/she will will not be allowed for delegation
+- Configure all Privileged or Sensitive Accounts with `Account is Sensitive and Cannot be Delegated.
+
+
+
+
+
+
+
+
+
+# [](#header-1)Constrained Delegation 
+
+*Constrained Delegation (aka) **S4U2Proxy***
+
+
+
+Here we are at the last section, big GG's if you are still with me through all this, It has taken me nearly 2 days to write this.  
+
+
+
+Now in the last section we talked about **Unconstrained Delegation** which allows Severs to authenticate to resources on your behalf by taking your `TGT` alongside the `TGS` ticket.  Now **Unconstrained Delegation** has no limits in terms of what Kerberos services a Server can authenticate to on your behalf. i/e Once you have handed over your `TGT` if the server is trusted for **Unconstrained Delegation** then it can theoretically request a `TGS` ticket for any other Kerberos Service within the `Realm` which isn't exactly ideal. 
+
+
+
+This is where **Constrained Delegation** comes into play. 
