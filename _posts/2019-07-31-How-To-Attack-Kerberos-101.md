@@ -4,7 +4,7 @@ tags: [Windows,Kerberos,Active Directory,AS REP,Kerberoast,PowerView,Rubeus]
 published: true
 ---
 
-*I want to start with article by saying I set out to learn Kerberos in greater detail and I figured that writing this would help cement my existing knowledge and give me reason to learn along the way, I am no Kerberos expert I am simply learning as I go along and getting my head around all the different terminologies so if you notice something amiss feel free to DM me and put me right. And if you do not understand something feel free to drop me a PM and I will do my best to help :)* 
+*I want to start with article by saying I set out to learn Kerberos in greater detail and I figured that writing this would help cement my existing knowledge and give me reason to learn along the way, I am no Kerberos expert I am simply learning as I go along and getting my head around all the different terminologies so if you notice something amiss feel free to DM me and put me right. And if you do not understand something feel free to drop me a DM and I will do my best to help :)* 
 
 ![Image result for kerberos image](https://search-guard.com/wp-content/uploads/2018/12/elasticsearch_kibana_kerberos.gif)
 
@@ -78,7 +78,7 @@ Now I could ramble on now about the complete process of Requesting a **TGT**, **
 
 **https://www.roguelynn.com/words/explain-like-im-5-kerberos/**
 
-**I was planning on explaining here the Kerberos Process from requesting a TGT & TGS Ticket at a high level and then I found this pic, so I will let it do the talking.**
+**I was planning on explaining here the Kerberos Process from requesting a TGT & TGS Ticket at a low level and then I found this pic, so I will let it do the talking.**
 
 
 
