@@ -15,7 +15,8 @@ layout: default
 	<div class="post-date"><i class="icon-calendar"></i>{{ page.date | date: date_format }}</div>
 </div>
 <div class="post">
-	{{ content }}
+	{{ content  }}
+  {% include toc.html html=content %}
 </div>
 {%- if site.plainwhite.disqus_shortname -%}
 <div id="disqus_thread" style="margin-top:25px"></div>
