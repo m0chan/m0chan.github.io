@@ -1,4 +1,4 @@
-title: m0chan Blog
+title: m0chan Blog - Info Sec, CTF & Hacking
 author: m0chan
 email: root@m0chan.co.uk
 description: > # this means to ignore newlines until "show_exerpts:"
@@ -20,7 +20,7 @@ plainwhite:
     twitter: m0chan98
     github:  m0chan
     linkedIn: in/aidan-preston-862479127
-    rss: rss
+    rss: /feed.xml
     # dribbble: jekyll
     # facebook: jekyll
     # flickr:   jekyll
