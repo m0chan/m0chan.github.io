@@ -24,9 +24,8 @@ Below is a list of the outlined attacks & topics.
 - Unconstrained Delegation 
 - Constrained Delegation 
 - Resourced Based Delegation **(Coming Soon)**
-- Test
 
-{% include toc.html html=content %}
+
 
 But First Let's talk about Kerberos and how it *really* works.
 
