@@ -1,6 +1,6 @@
 ---
 title: Windows Notes / Cheatsheet
-categories: [Windows Cheatsheet,Active Directory,Exploitation,Priv Esc,Post Exploit,File Transfer,Lateral Movement]
+tags: [Windows Cheatsheet,Active Directory,Exploitation,Priv Esc,Post Exploit,File Transfer,Lateral Movement]
 published: true
 ---
 
