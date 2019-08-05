@@ -2,6 +2,7 @@
 title: Windows Notes / Cheatsheet
 tags: [Windows Cheatsheet,Active Directory,Exploitation,Priv Esc,Post Exploit,File Transfer,Lateral Movement]
 published: true
+toc: true
 ---
 
 
