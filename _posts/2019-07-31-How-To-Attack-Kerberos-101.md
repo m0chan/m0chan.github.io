@@ -1,6 +1,6 @@
 ---
 title: How To Attack Kerberos 101
-tags: [Windows,Kerberos,Active Directory,AS REP,Kerberoast,PowerView,Rubeus]
+tags: [Windows,Kerberos,Active Directory,AS REP,Kerberoast,Delegation,PowerView,Rubeus]
 published: true
 ---
 
