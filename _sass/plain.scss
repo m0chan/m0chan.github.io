@@ -163,7 +163,6 @@ main {
 	font-weight: 300;
 	color: #222;
 	line-height: 1.9em;
-	width: 50%;
 	a {
 		color: $linkColor;
 		text-decoration: none;
@@ -173,7 +172,17 @@ main {
 		}
 	}
 }
+.column {
+  float: left;
+  width: 50%;
+}
 
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
 #posts-label {
 	border-bottom: 1px solid #eee;
 	font-size: 15px;

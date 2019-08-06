@@ -32,6 +32,15 @@ layout: default
 			{%- if site.show_excerpts -%}
 			{{ post.excerpt }}
 			<img src="{{ post.thumbnail }}"></img>
+			<div class="row">
+			
+  			<div class="column">
+  				{{ post.excerpt }}
+  			</div>
+  			<div class="column">
+  				<img src="{{ post.thumbnail }}"></img>
+  			</div>
+			</div>
 			{%- endif -%}
 		</div>
 	</li>
