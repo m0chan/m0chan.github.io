@@ -34,23 +34,13 @@ layout: default
 			<div class="row">
 			<div class="section group">
 			<div class="col span_1_of_2">
-			This is column 1
+			{{ post.excerpt }}
 			</div>
 			<div class="col span_1_of_2">
-			This is column 2
+			<a class="image_container"><img src="{{ post.thumbnail }}"></img></a>
 			</div>
 			</div>
 			</div>
-			<!-- </br>
-			<div class="row">
-
-  			<div class="column">
-  				{{ post.excerpt }}
-  			</div>
-  			<div class="column">
-  				<a class="image_container"><img src="{{ post.thumbnail }}"></img></a>
-  			</div>
-			</div> -->
 			{%- endif -%}
 		</div>
 	</li>
