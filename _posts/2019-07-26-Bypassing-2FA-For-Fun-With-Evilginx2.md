@@ -2,6 +2,7 @@
 title: Bypassing 2fa For Fun With Evilginx2
 tags: [2FA Bypass,Phishing,Evilginx2]
 Description: Test Descritpion
+thumbnail: https://1.bp.blogspot.com/-mQLYyPCi_hs/W7CjcrOXK-I/AAAAAAAANgI/A_cCDjTE1RIDNywRJZd30x77_cWWQoiuwCLcBGAs/s1600/Evilginx%2B2%2Blogo%2Bmin.png
 published: true
 ---
 
