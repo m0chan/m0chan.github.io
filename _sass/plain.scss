@@ -183,13 +183,6 @@ main {
   display: table;
   clear: both;
 }
-a.image_container img {
-    width: auto; // to maintain aspect ratio. You can use 100% if you don't care about that
-    height: 100%;
-    max-height: 250px;
-    max-width: 250px;
-}
-
 #posts-label {
 	border-bottom: 1px solid #eee;
 	font-size: 15px;
@@ -227,6 +220,13 @@ a.image_container img {
 }
 .span_1_of_2 {
 	width: 49.2%;
+}
+.img {
+
+	width: auto; // to maintain aspect ratio. You can use 100% if you don't care about that
+    height: 100%;
+    max-height: 250px;
+    max-width: 250px;
 }
 
 /*  GO FULL WIDTH AT LESS THAN 480 PIXELS */
