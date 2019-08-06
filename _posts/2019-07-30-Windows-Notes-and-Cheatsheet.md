@@ -3,7 +3,7 @@ title: Windows Notes / Cheatsheet
 tags: [Windows Cheatsheet,Active Directory,Exploitation,Priv Esc,Post Exploit,File Transfer,Lateral Movement]
 published: true
 toc: true
-thumbnail: https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Windows_logo_-_2002%E2%80%932012_%28Multicolored%29.svg/1165px-Windows_logo_-_2002%E2%80%932012_%28Multicolored%29.svg.png
+thumbnail: http://109.74.206.50/WinLogo.png
 ---
 
 
