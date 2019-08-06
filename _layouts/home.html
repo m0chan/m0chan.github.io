@@ -30,7 +30,8 @@ layout: default
 		</div>
 		<div class="post">
 			{%- if site.show_excerpts -%}
-			</br>
+			{{ post.excerpt }}
+			<!-- </br>
 			<div class="row">
 
   			<div class="column">
@@ -39,7 +40,7 @@ layout: default
   			<div class="column">
   				<a class="image_container"><img src="{{ post.thumbnail }}"></img></a>
   			</div>
-			</div>
+			</div> -->
 			{%- endif -%}
 		</div>
 	</li>
