@@ -673,6 +673,8 @@ go
 ```powershell
 #https://github.com/infosecn1nja/MaliciousMacroMSBuild
 
+#https://lolbas-project.github.io/lolbas/Binaries/Msbuild/ - MSBuild Explained
+
 Creation of a Shellcode MSBuild VBA Macro
 python m3-gen.py -p shellcode -i /path/beacon.bin -o output.vba
 
