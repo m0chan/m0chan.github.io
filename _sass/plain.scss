@@ -183,6 +183,10 @@ main {
   display: table;
   clear: both;
 }
+a.image_container img {
+    width: auto; // to maintain aspect ratio. You can use 100% if you don't care about that
+    height: 100%;
+}
 #posts-label {
 	border-bottom: 1px solid #eee;
 	font-size: 15px;
