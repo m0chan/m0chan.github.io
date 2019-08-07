@@ -416,7 +416,7 @@ Import-Module .\ASREPRoast.ps1
 And now we can simply run
 
 ```powershell
-Get-ASRepHash -Domain rastalabs.local -UserName ngodfrey
+Get-ASRepHash -Domain m0chanAD.local -UserName m0chan
 ```
 
 
