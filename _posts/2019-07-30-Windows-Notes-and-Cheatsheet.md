@@ -1928,7 +1928,7 @@ C:\Windows\SysWOW64\Tasks\Microsoft\Windows\PLA\System
 #### [](#header-4) Downgrade Attack
 
 ```powershell
-Downgrading to PS Version 2 circumvates AppLocker
+Downgrading to PS Version 2 circumvates Constrained Mode
 
 powershell.exe -version 2
 
