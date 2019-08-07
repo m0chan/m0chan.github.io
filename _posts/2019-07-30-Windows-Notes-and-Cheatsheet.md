@@ -17,7 +17,7 @@ A place for me to store my notes/tricks for Windows Based Systems.
 
 
 
-## [](#header-4) Basic's
+## [](#header-4) Basics
 
 ```powershell
 net users
