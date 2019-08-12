@@ -1303,6 +1303,21 @@ mimikatz dpapi::chrome /in:"C:\Users\m0chan\AppData\Local\Google\Chrome\UserData
 
 
 
+#### [](#header-4) Dump Process Memory w/ Mimikittenz
+
+```powershell
+#https://github.com/putterpanda/mimikittenz
+
+mimikittenz is a post-exploitation powershell tool that utilizes the Windows function ReadProcessMemory() in order to extract plain-text passwords from various target processes.
+
+The aim of mimikittenz is to provide user-level (non-admin privileged) sensitive data extraction in order to maximise post exploitation efforts and increase value of information gathered per target.
+
+Invoke-Mimikittenz
+```
+
+
+
+
 #### [](#header-4) Dump KeePass
 
 ```powershell
