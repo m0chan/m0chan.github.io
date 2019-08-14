@@ -75,7 +75,7 @@ Now as you can see that memory starts from the top down and is organized from hi
 
 ![image](https://www.corelan.be/wp-content/uploads/2010/08/image_thumb3.png)
 
-Now as you can see in the photo above you have a **Unused Memory** area, now when the Stack "grows" it will *increase* downwards and likewise when the heap "grows" it will *increase* upwards.  
+Now as you can see in the photo above you have a **Unused Memory** area, now when the Stack "grows" it will *increase* downwards and likewise when the heap "grows" it will *increase* upwards.  So it's worth noting that the stack grows from high memory locations 0xfff -> downwards to -> 0x000
 
 
 
