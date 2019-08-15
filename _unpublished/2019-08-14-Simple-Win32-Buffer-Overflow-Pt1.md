@@ -85,7 +85,7 @@ Now as you can see in the photo above you have a **Unused Memory** area, now whe
 
 
 
-Now what's the difference between **Stack** & **Heap**? - Basically the stack overs a LIFO (**Last-In-First-Out**) process in which when a new function is called a block is reserved (pushed) onto the top of the stack for local variables and general program data (buffers etc), return addresses etc **(EIP)**. Whereas the **Heap** is set aside for Dynamic allocation, unlike the stack there is no enforced pattern for the allocation or deallocation of memory blocks, you can allocate any block and deallocate any block at any any position, any time.
+Now what's the difference between **Stack** & **Heap**? - Basically the stack overs a LIFO (**Last-In-First-Out**) process in which when a new function is called a **stack frame** is reserved (pushed) onto the top of the stack for local variables and general program data (buffers etc), return addresses etc **(EIP)**. Whereas the **Heap** is set aside for Dynamic allocation, unlike the stack there is no enforced pattern for the allocation or deallocation of memory blocks, you can allocate any block and deallocate any block at any any position, any time.
 
 
 
