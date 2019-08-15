@@ -95,6 +95,8 @@ So now we understand how memory is laid out we should probably talk about how th
 
 
 
+So what are registers? A register is nothing more than a high-speed memory area that's built onto the CPU chip, it's super fast. 
+
 
 
 **Types of Registers for 32bit**
@@ -113,6 +115,8 @@ So now we understand how memory is laid out we should probably talk about how th
 
 
 
+
+
 Now imagine in this case we have allocated a buffer with 256 bytes with `char[256]` our objective to gain control over the execution flow of the program would be too overwrite the buffer space with `256` characters, going over the `EBP` and after the `256` bytes we would control the `EIP` aka the `Return Address` 
 
 If we can overwrite this return address we can perhaps say something like `buffer = A * 256 + memorylocation` where `memorylocation` = a place in memory which we can control and input shellcode. 
@@ -120,6 +124,17 @@ If we can overwrite this return address we can perhaps say something like `buffe
 Really for a simple `EIP` overwrite all we need to concern ourselves with is `EIP` `ESP` and `EBP`
 
 
+
+
+
+
+### [](#header-3) Basic Assembly Instruction Examples
+
+
+
+- **PUSH EBP** - Pushes value of EBP onto top of Stack (Bottom right in immunity)
+- **MOV EBP,ESP** - Moves the value of **ESP** into **EBP**
+  - ​	Remember destination always comes before source with Assembly.
 
 
 
