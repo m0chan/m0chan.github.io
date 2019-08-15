@@ -120,6 +120,8 @@ Now when a function is called within our program let's say `substract()` - a **s
 push %ebp
 mov ebp,ebp
 sub esp, %n
+
+where %n is the space in bytes allocated for local variables
 ```
 
 *Remember destination comes before source, so in this case we would move the value of the ESP register into EBP - Really the current `ESP` register, aka the top of the stack would now represent the bottom (`EBP`) of our stack frame.*
@@ -186,10 +188,11 @@ Really for a simple `EIP` overwrite all we need to concern ourselves with is `EI
 
 
 
-
 ### [](#header-3) Basic Assembly Instruction Examples
 
 
+
+https://en.wikibooks.org/wiki/X86_Disassembly/Functions_and_Stack_Frames
 
 - **PUSH EBP** - Pushes value of EBP onto top of Stack (Bottom right in immunity)
 - **MOV EBP,ESP** - Moves the value of **ESP** into **EBP**
