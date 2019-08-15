@@ -33,6 +33,8 @@ I want to begin by talking about memory layout, what the stack is & finally how 
 
 
 
+https://windowsexploit.com/blog/2017/1/29/learning-strategies-effective-techniques-to-learn-windows-exploitation
+
 ### [](#header-3) VM Setup
 
 I won't go into much detail here but basically I have a Windows 7 x64 VM Setup within VMWare Workstation Pro with the below installed/disabled
