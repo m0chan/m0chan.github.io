@@ -53,6 +53,8 @@ I won't go into much detail here but basically I have a Windows 7 x64 VM Setup w
 
 ### [](#header-3) Memory Layout
 
+
+
 Now memory layout is slightly different across 32bit and 64bit but for the time being I will just touch on 32bit, the memory is laid out in the following order
 
 
@@ -92,6 +94,63 @@ So now we understand how memory is laid out we should probably talk about how th
 
 
 ![img](https://i.imgur.com/A84R4lE.png)
+
+
+
+### [](#header-3) What is the Stack?
+
+
+
+[https://manybutfinite.com/post/journey-to-the-stack/#targetText=The%20second%20register%20tracking%20the,function%20call%20begins%20or%20ends.](https://manybutfinite.com/post/journey-to-the-stack/#targetText=The second register tracking the,function call begins or ends.)
+
+So basically the **Stack** is used for storing local variables, misc data and keeping track of *functions* running within a program. Now when a function is created/ran it will create a **stack frame** within the program and said *frame* will store all the local variables for the relevant *function*. Typically the data/variables being pushed onto the stack aren't highly important and are disposed off once the functions has returned and any data that would have to survive a *function returning* would typically be allocated in dynamically accessible memory such as the **Heap**
+
+
+
+
+### [](#header-4) Stack Frames
+
+
+
+Now when a function is called within our program let's say `substract()` - a **stack frame** will be created and **pushed** onto the *top* of the **stack** typically with the below assembly instructions
+
+
+
+```assembly
+push %ebp
+mov ebp,ebp
+sub esp, %n
+```
+
+*Remember destination comes before source, so in this case we would move the value of the ESP register into EBP - Really the current `ESP` register, aka the top of the stack would now represent the bottom (`EBP`) of our stack frame.*
+
+
+
+Now when a *function* is **called** and a **stack frame** is created we will also push the **local variables** & any **arguments** passed to the program by it's caller onto the stack. This **stack frame** will also contain other information such as **return address** which will allow you to return from the *function* to the caller safely.  
+
+
+
+This is a really nice image from [https://manybutfinite.com](ManyButFinite)
+
+
+
+![img](https://manybutfinite.com/img/stack/stackIntro.png)
+
+
+
+Now here we can see 3 types of **Registers**
+
+- ESP - Extended Stack Pointer
+  - *Always* points to the top of the stack and represents the most recent item **PUSHED**/**POPPED** onto the stack
+- EBP - Extended Base Pointer
+  - aka *base pointer* or *frame pointer* - It points to a fixed location within the *stack frame* of the function *currently running* - i/e, EBP represents the bottom of the *active* **stack frame**. So this really means that the **EBP** register will only change when a new function is *called* or *returned* - This is why you commonly see each items in the stack addresses with an offset from the **EBP** register
+    - For ex. `MOV EAX,DWORD PRT SS:[EBP+8]`
+    - EBP - 4
+- EAX - Accumulator 
+
+
+
+### [](#header-3) Registers
 
 
 
