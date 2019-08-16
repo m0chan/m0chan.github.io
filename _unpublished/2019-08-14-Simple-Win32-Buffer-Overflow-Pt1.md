@@ -52,6 +52,22 @@ I won't go into much detail here but basically I have a Windows 7 x64 VM Setup w
 - EMET GUI - Used to Disable ASLR
 
 
+### [](#header-3) Basic Assembly Instructions & Examples
+
+https://en.wikibooks.org/wiki/X86_Disassembly/Functions_and_Stack_Frames
+
+
+
+- **PUSH EBP** - Pushes value of EBP onto top of Stack (Bottom right in immunity)
+- **MOV EBP,ESP** - Moves the value of **ESP** into **EBP**
+  - ​	Remember destination always comes before source with Assembly.
+
+
+
+Worth mentioning with **Intel Syntax (Win32)** destination comes before source, so in this case we would move the value of the ESP register into EBP - Really the current `ESP` register, aka the top of the stack would now represent the bottom (`EBP`) of our stack frame. 
+
+Whereas with **AT&T Syntax** it is the opposite! So confusing I know but it is what it is... - Now what uses **AT&T Syntax** well *Unix Assemblers* do and that includes the *GNU Assembler*
+
 
 ### [](#header-3) Memory Layout
 
@@ -127,14 +143,14 @@ Now when a function is called within our program let's say `substract()` - a **s
 
 
 ```assembly
-push %ebp
-mov ebp,ebp
+push ebp
+mov ebp,esp
 sub esp, %n
 
 where %n is the space in bytes allocated for local variables
 ```
 
-*Remember destination comes before source, so in this case we would move the value of the ESP register into EBP - Really the current `ESP` register, aka the top of the stack would now represent the bottom (`EBP`) of our stack frame.*
+
 
 
 
@@ -166,6 +182,23 @@ Now here we can see 3 types of **Registers**
 
 
 
+
+The below example is ripped from manybutfinite but was one of the first examples that made me actually think to myself *I'm finally understanding this shit* - This is a linux example of a **stack frame** being created on a *live stack* 
+
+![img](https://manybutfinite.com/img/stack/mainProlog.png)
+
+
+
+The above is what we call the **function prologue** which is normally the same for all architectures what normally looks the same always - As you can see when the function is *called* the **return-address** is pushed to the stack during the `CALL` instruction
+
+
+
+I don't want to put the whole call sequence as the link above really does explain it the best, and you can find the full call sequence here.
+
+https://manybutfinite.com/img/stack/callSequence.png
+
+
+
 ### [](#header-3) Registers
 
 
@@ -194,27 +227,8 @@ So what are registers? A register is nothing more than a high-speed memory area 
 
 
 
+***
 
-
-Now imagine in this case we have allocated a buffer with 256 bytes with `char[256]` our objective to gain control over the execution flow of the program would be too overwrite the buffer space with `256` characters, going over the `EBP` and after the `256` bytes we would control the `EIP` aka the `Return Address` 
-
-If we can overwrite this return address we can perhaps say something like `buffer = A * 256 + memorylocation` where `memorylocation` = a place in memory which we can control and input shellcode. 
-
-Really for a simple `EIP` overwrite all we need to concern ourselves with is `EIP` `ESP` and `EBP`
-
-
-
-
-
-### [](#header-3) Basic Assembly Instruction Examples
-
-https://en.wikibooks.org/wiki/X86_Disassembly/Functions_and_Stack_Frames
-
-
-
-- **PUSH EBP** - Pushes value of EBP onto top of Stack (Bottom right in immunity)
-- **MOV EBP,ESP** - Moves the value of **ESP** into **EBP**
-  - ​	Remember destination always comes before source with Assembly.
 
 
 
