@@ -57,6 +57,12 @@ I won't go into much detail here but basically I have a Windows 7 x64 VM Setup w
 
 
 
+Memory management and layout is at the core of all operating systems, while layout may be different across operating systems and different architectures, however as previously mentioned throughout this post I will only be covering **32-bit x86**, I will also be sticking to **Windows** but may lean into Linux at some points depending on screenshots & resources.
+
+Now anytime a process is created/spawned within Windows it will run within it's own *memory sandbox*, which is commonly known as a **virtual address space** & as we are sticking to **Win32** this *address space* will always be a *4GB Block*. These address spaces are managed and controlled by the kernel.
+
+
+
 Now memory layout is slightly different across 32bit and 64bit but for the time being I will just touch on 32bit, the memory is laid out in the following order
 
 
@@ -78,6 +84,8 @@ Now as you can see that memory starts from the top down and is organized from hi
 *Credit: https://itandsecuritystuffs.wordpress.com/2014/03/18/understanding-buffer-overflows-attacks-part-1/*
 
 ![image](https://www.corelan.be/wp-content/uploads/2010/08/image_thumb3.png)
+
+
 
 Now as you can see in the photo above you have a **Unused Memory** area, now when the Stack "grows" it will *increase* downwards and likewise when the heap "grows" it will *increase* upwards.  So it's worth noting that the stack grows from high memory locations 0xfff -> downwards to -> 0x000.
 
@@ -130,7 +138,11 @@ where %n is the space in bytes allocated for local variables
 
 
 
-Now when a *function* is **called** and a **stack frame** is created we will also push the **local variables** & any **arguments** passed to the program by it's caller onto the stack. This **stack frame** will also contain other information such as **return address** which will allow you to return from the *function* to the caller safely.  
+Now when a *function* is **called** and a **stack frame** is created we will also push the **local variables** & any **arguments** passed to the program by it's caller onto the stack. This **stack frame** will also contain other information such as **return address** which will allow you to return from the *function* to the caller safely.
+
+
+
+Once our *function* has finished running & doing it's thing and we issue a `RETN` *aka* *return* the  **stack frame** will be destroyed.  
 
 
 
@@ -167,10 +179,14 @@ So what are registers? A register is nothing more than a high-speed memory area 
 
 
 1. **EIP** – Extended Instruction Pointer – Address of the Next Instruction
-2. **ESP** – Extended Stack Pointer is the top of the stack
-3. **EBP** – Extended Base Pointer  is the bottom of the stack
+2. **ESP** - Extended Stack Pointer
+   - *Always* points to the top of the stack and represents the most recent item **PUSHED**/**POPPED** onto the stack
+3. **EBP** - Extended Base Pointer
+   - aka *base pointer* or *frame pointer* - It points to a fixed location within the *stack frame* of the function *currently running* - i/e, EBP represents the bottom of the *active* **stack frame**. So this really means that the **EBP** register will only change when a new function is *called* or *returned* - This is why you commonly see each items in the stack addresses with an offset from the **EBP** register
+     - For ex. `MOV EAX,DWORD PRT SS:[EBP+8]`
+     - EBP - 4
+4. **EAX** - Accumulator 
 
-- **EAX** – “accumulator” normally used for arithmetic operations.
 - **EBX** – Base Register.
 - **ECX** – “counter” normally used to hold a loop index.
 - **EDX** – Data Register.
