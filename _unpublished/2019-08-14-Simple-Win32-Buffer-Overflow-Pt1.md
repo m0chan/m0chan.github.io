@@ -222,7 +222,7 @@ So what are registers? A register is nothing more than a high-speed memory area 
    - aka *base pointer* or *frame pointer* - It points to a fixed location within the *stack frame* of the function *currently running* - i/e, EBP represents the bottom of the *active* **stack frame**. So this really means that the **EBP** register will only change when a new function is *called* or *returned* - This is why you commonly see each items in the stack addresses with an offset from the **EBP** register
      - For ex. `MOV EAX,DWORD PRT SS:[EBP+8]`
      - EBP - 4
-4. **EAX** - Accumulator 
+4. **EAX** - Accumulator - Used for performing calculations and stores return values from function calls, also assists with basic operations such as add,subtract and compare. 
 
 - **EBX** – Base Register.
 - **ECX** – “counter” normally used to hold a loop index.
