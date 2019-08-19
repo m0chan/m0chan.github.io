@@ -35,6 +35,10 @@ I want to begin by talking about memory layout, what the stack is & finally how 
 
 https://windowsexploit.com/blog/2017/1/29/learning-strategies-effective-techniques-to-learn-windows-exploitation
 
+
+
+https://www.corelan.be/index.php/2009/07/19/exploit-writing-tutorial-part-1-stack-based-overflows/
+
 ### [](#header-3) VM Setup
 
 I won't go into much detail here but basically I have a Windows 7 x64 VM Setup within VMWare Workstation Pro with the below installed/disabled
@@ -218,7 +222,7 @@ So what are registers? A register is nothing more than a high-speed memory area 
    - aka *base pointer* or *frame pointer* - It points to a fixed location within the *stack frame* of the function *currently running* - i/e, EBP represents the bottom of the *active* **stack frame**. So this really means that the **EBP** register will only change when a new function is *called* or *returned* - This is why you commonly see each items in the stack addresses with an offset from the **EBP** register
      - For ex. `MOV EAX,DWORD PRT SS:[EBP+8]`
      - EBP - 4
-4. **EAX** - Accumulator 
+4. **EAX** - Accumulator - Used for performing calculations and stores return values from function calls, also assists with basic operations such as add,subtract and compare. 
 
 - **EBX** – Base Register.
 - **ECX** – “counter” normally used to hold a loop index.
