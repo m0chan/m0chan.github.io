@@ -10,7 +10,7 @@ published: true
 
 
 
-# [](#header-1)Simple Win32 Buffer Overflow
+# [](#header-1)Introduction
 
 
 
@@ -32,10 +32,6 @@ This is my planned path at current
 
 
 In this article I will talk about 
-
-## [](#header-2) Introduction
-
-I want to begin by talking about memory layout, what the stack is & finally how my Win7 x64 VM is setup for practicing BOF on Win32 applications. 
 
 
 
@@ -201,6 +197,12 @@ Now here we can see 3 types of **Registers**
 The below example is ripped from manybutfinite but was one of the first examples that made me actually think to myself *I'm finally understanding this shit* - This is a linux example of a **stack frame** being created on a *live stack* however the principles remain the same. 
 
 ![img](https://manybutfinite.com/img/stack/mainProlog.png)
+
+
+
+
+
+*Source: https://manybutfinite.com*
 
 
 
