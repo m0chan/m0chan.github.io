@@ -12,6 +12,8 @@ published: true
 
 # [](#header-1)Simple Win32 Buffer Overflow
 
+
+
 I have recently embarked on the task of understanding Buffer Overflows beyond simple Stack Overflows and I figured the best way to go about it was to go back to the start, recover Stack/Assembly principles. Quickly recover simple Stack Overflows and then begin writing a blog post for each relevant area that I want to learn in greater detail.  
 
 Exploit Development/BOF truthfully does not interest me a lot but I wanna learn it because why not :) - My plan is to focus on Win32 overflows for the time being and then get my head around 64bit side of things when working on tougher exercises etc. 
