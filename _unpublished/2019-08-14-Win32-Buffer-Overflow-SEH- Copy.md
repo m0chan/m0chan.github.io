@@ -40,7 +40,7 @@ Before we jump into looking at this from a exploitation perspective let's first 
 
 
 
-**What is an Exception?**
+#### [](#header-4) What is an Exception?
 
 
 
@@ -48,7 +48,7 @@ Before we jump into looking at this from a exploitation perspective let's first 
 
 
 
-**Different Types of Handlers**
+#### [](#header-4) Different Types of Handlers
 
 
 
