@@ -2,6 +2,7 @@
 title: Linux Notes / Cheatsheet
 tags: [Linux Cheatsheet,Exploitation,Priv Esc,Post Exploit,File Transfer,Lateral Movement]
 published: true
+description: A place for me to store my notes/tricks for Linux Based Systems
 thumbnail: https://code.osu.edu/uploads/-/system/group/avatar/313/tux-large-bw.png
 ---
 
