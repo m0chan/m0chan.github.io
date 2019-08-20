@@ -202,9 +202,10 @@ Now here we can see 3 types of **Registers**
 
 The below example is ripped from manybutfinite but was one of the first examples that made me actually think to myself *I'm finally understanding this shit* - This is a linux example of a **stack frame** being created on a *live stack* however the principles remain the same. 
 
-![img](https://manybutfinite.com/img/stack/mainProlog.png)
 
-
+<p align="center">
+<img src="https://manybutfinite.com/img/stack/mainProlog.png">
+</p>
 
 
 
