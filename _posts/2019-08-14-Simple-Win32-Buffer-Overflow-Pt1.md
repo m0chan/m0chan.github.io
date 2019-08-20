@@ -1,12 +1,12 @@
 ---
-title: Simple Win32 Buffer Overflow - Part 1
+title: Simple Win32 Buffer Overflow - EIP Overwrite
 tags:[Buffer Overflow,Exploit Development,Windows,]
 Thumbnail: https://avatarfiles.alphacoders.com/787/78798.jpg
 published: true
 ---
 
 
-# [](#header-1)Simple Win32 Buffer Overflow - Part 1
+# [](#header-1)Simple Win32 Buffer Overflow
 
 I have recently embarked on the task of understanding Buffer Overflows beyond simple Stack Overflows and I figured the best way to go about it was to go back to the start, recover Stack/Assembly principles. Quickly recover simple Stack Overflows and then begin writing a blog post for each relevant area that I want to learn in greater detail.  
 
