@@ -104,13 +104,17 @@ Now memory layout is slightly different across 32bit and 64bit but for the time 
 
 Now as you can see that memory starts from the top down and is organized from higher address to lower address, I was going to create a image representing this but there are numerous out there which will save me the time and I will credit the article below :) 
 
- 
 
-![image](https://itandsecuritystuffs.files.wordpress.com/2014/03/image_thumb.png?w=415&h=480)
+<p align="center">
+<img src="https://itandsecuritystuffs.files.wordpress.com/2014/03/image_thumb.png">
+</p>
+
 
 *Credit: https://itandsecuritystuffs.wordpress.com/2014/03/18/understanding-buffer-overflows-attacks-part-1/*
 
-![image](https://www.corelan.be/wp-content/uploads/2010/08/image_thumb3.png)
+<p align="center">
+<img src="https://www.corelan.be/wp-content/uploads/2010/08/image_thumb3.png">
+</p>
 
 
 
@@ -177,7 +181,9 @@ This is a really nice image from [https://manybutfinite.com](ManyButFinite)
 
 
 
-![img](https://manybutfinite.com/img/stack/stackIntro.png)
+<p align="center">
+<img src="https://manybutfinite.com/img/stack/stackIntro.png">
+</p>
 
 
 
