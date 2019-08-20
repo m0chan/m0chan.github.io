@@ -1,7 +1,7 @@
 ---
 title: Simple Win32 Buffer Overflow - EIP Overwrite
 tags:[Buffer Overflow,Exploit Development,Windows,]
-Thumbnail: https://avatarfiles.alphacoders.com/787/78798.jpg
+thumbnail: https://avatarfiles.alphacoders.com/787/78798.jpg
 published: true
 ---
 
