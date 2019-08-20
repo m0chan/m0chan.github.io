@@ -1,11 +1,9 @@
 ---
 title: Simple Win32 Buffer Overflow - EIP Overwrite
 tags: [Buffer Overfow,Exploit Development,Windows]
-thumbnail: https://avatarfiles.alphacoders.com/787/78798.jpg
+thumbnail: https://www.gravsoft.pl/images/products/big/Immunity-Debugger-222-GRAVSOFT-PL-1.png
 published: true
 ---
-
-Test
 
 
 # [](#header-1)Simple Win32 Buffer Overflow
