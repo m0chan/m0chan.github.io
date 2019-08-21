@@ -1,5 +1,5 @@
 ---
-title: Win32 Buffer Overflow - SEH & Egghunters
+title: Win32 Buffer Overflow 
 tags: [Buffer Overflow,Exploit Development,Windows,SEH,Egghunting]
 thumbnail: https://png.pngtree.com/element_our/sm/20180224/sm_5a90fde8c56d5.png
 published: true
