@@ -2,7 +2,6 @@
 title: Win32 Buffer Overflow - SEH & Egghunters
 tags: [Buffer Overfow,Exploit Development,Windows,SEH,Egghunting]
 description: I have recently embarked on the task of understanding Buffer Overflows beyond simple Stack Overflows and I figured the best way to go about it was to go back to the start, recover Stack/Assembly principles. Quickly recover simple Stack Overflows and then begin writing a blog post for each relevant area that I want to learn in greater detail.
-thumbnail: https://png.pngtree.com/element_our/sm/20180224/sm_5a90fde8c56d5.png
 published: true
 ---
 
