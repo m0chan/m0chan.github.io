@@ -181,6 +181,22 @@ Now in Part 1 [Here](https://m0chan.github.io/2019/08/20/Simple-Win32-Buffer-Ove
 
 
 
+Now I don't want to show off a crazy example here as I will cover it in the **Examples** section below, but the theory here is we do not overwrite EIP with user control input but instead overwrite the pointer to **next SEH record** aka **Exception Registration Record** aswell as the pointer to the **SE Handler** to an area in memory which we control and can place our shellcode on.
+
+
+
+<p align ="center">
+<img src="https://i.imgur.com/GQMPjbu.png">
+</p>
+
+
+
+As you can see here we have not overwritten the **EIP Register** with `41414141` similar to Part1 but instead overwritten the pointers to **SE Handler** and **SEH Record** 
+
+
+
+
+
 
 
 
