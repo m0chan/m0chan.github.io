@@ -1,6 +1,7 @@
 ---
-title: Win32 Buffer Overflow 
+title: Win32 Buffer Overflow - SEH & Egghunters
 tags: [Buffer Overflow,Exploit Development,Windows,SEH,Egghunting]
+description: SEH is a mechanism within Windows that makes use of a data structure/layout called a Linked List which contains a sequence of memory locations. When a exception is triggered the OS will retrieve the head of the SEH-Chain and traverse the list and the handler will evaluate the most relevant course of action to either close the program down graceful or perform a specified action to recover from the exception.
 thumbnail: https://png.pngtree.com/element_our/sm/20180224/sm_5a90fde8c56d5.png
 published: true
 ---
