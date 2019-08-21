@@ -191,7 +191,13 @@ Now I don't want to show off a crazy example here as I will cover it in the **Ex
 
 
 
-As you can see here we have not overwritten the **EIP Register** with `41414141` similar to Part1 but instead overwritten the pointers to **SE Handler** and **SEH Record** 
+As you can see here we have not overwritten the **EIP Register** with `41414141` similar to Part1 but instead overwritten the pointers to **SE Handler** and **SEH Record**. Now before we jump to talking about Egghunters and how they can be of use when doing **SEH Overflows** - I quickly want to show you how we can control the **EIP Register** compared to the pointers to **SE Handler** and **SEH Record**.
+
+
+
+I won't go into specifics but basically we just fuzz with a never-repeating string and calculate the offset. Let me show you. 
+
+
 
 
 
