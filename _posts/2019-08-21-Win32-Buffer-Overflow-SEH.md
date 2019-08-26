@@ -181,7 +181,7 @@ Now in Part 1 [Here](https://m0chan.github.io/2019/08/20/Simple-Win32-Buffer-Ove
 
 
 
-Now I don't want to show off a crazy example here as I will cover it in the **Examples** section below, but the theory here is we do not overwrite EIP with user control input but instead overwrite the pointer to **next SEH record** aka **Exception Registration Record** aswell as the pointer to the **SE Handler** to an area in memory which we control and can place our shellcode on.
+Now I don't want to show off a crazy example here as I will cover it in the **Examples** section below, but the theory here is we do not overwrite EIP with user control input but instead overwrite the pointer to **next SEH record** aka **Exception Registration Record** as well as the pointer to the **SE Handler** to an area in memory which we control and can place our shellcode on.
 
 
 
@@ -265,6 +265,59 @@ The value of **SE Handler** on the stack is pushed to the **EIP Register**  whic
 #### [](#header-4) A Mention on POP POP RET
 
 
+
+So as you can see in the above screenshots/examples we are effectively living in the land or area of the **SE Handler** which is not really good due to the limitations with space and how small of an area of memory we have to work with, of course we may be able to bring Egghunters into the mix but I will talk about that later in this article. I want to first talk about the `POP POP RET` technique which is commonly coupled with **SEH Overflows.**
+
+
+
+**What is POP POP RET?**
+
+
+
+Now really the `POP POP RET` is really how it sounds we replace the **SE Handler** value with the memory address of a `POP POP RET` instruction, this will technically run these assembly instructions which will lead us to the **nSEH.** 
+
+
+
+It's worthwhile mentioning that the registers to which the *popped* values go to are not important, we simply just need to move the value of **ESP** *higher twice* and then a return to be executed. Therefore either *POP EAX*, *POP EBC, POP ECX* etc will all be applicable providing there is a relevant `RET` instruction after the 2 *pops*
+
+
+
+##### [](#header-5) Why Do we POP POP RET?
+
+
+
+Now if you think back to [Part 1](https://m0chan.github.io/2019/08/20/Simple-Win32-Buffer-Overflow-EIP-Overwrite.html) - Once we had gained control over our **return address** and **EIP** we located a **JMP ESP** instruction to jump to the top of our stack frame where our shell code and NOPs were sliding and we gained code execution. Now if we try to add a memory location of a **JMP ESP** instruction to the **SE Handler**, windows will automatically zero-out all registers to prevent users from jumping to there shellcode but this is a really flawed protection mechanism. 
+
+
+
+You can actually see in the below screen that **ESI** & **EDI** have been zeroed out to help mitigate an attacker jumping straight to shellcode.
+
+
+
+<p align ="center">
+<img src ="https://i.imgur.com/2QC3RBq.png">
+</p>
+
+
+
+
+
+Now this is where `POP POP RET` comes into play, what we will do is 
+
+
+
+
+
+#### [](#header-4) Mitigations & Safeguards
+
+
+
+Now I am confident that you should have a good understanding of **SEH** and the overall layout/process of **Exception Handling** in *Win32* and I believe it would be wise to talk about mitigations to SEH and some of the attempts Microsoft have made to try minimize SEH Overflows.
+
+
+
+
+#### [](#header-5) SafeSEH
 
 
 
