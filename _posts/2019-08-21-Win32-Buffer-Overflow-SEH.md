@@ -3,7 +3,7 @@ title: Win32 Buffer Overflow - SEH & Egghunters
 tags: [Buffer Overflow,Exploit Development,Windows,SEH,Egghunting]
 description: SEH is a mechanism within Windows that makes use of a data structure/layout called a Linked List which contains a sequence of memory locations. When a exception is triggered the OS will retrieve the head of the SEH-Chain and traverse the list and the handler will evaluate the most relevant course of action to either close the program down graceful or perform a specified action to recover from the exception.
 thumbnail: https://png.pngtree.com/element_our/sm/20180224/sm_5a90fde8c56d5.png
-published: false
+published: true
 ---
 
 
@@ -302,24 +302,59 @@ You can actually see in the below screen that **ESI** & **EDI** have been zeroed
 
 
 
-Now this is where `POP POP RET` comes into play, what we will do is 
+Now this is where `POP POP RET` comes into play, Let's first just remember about the layout of the **SEH Record** & **Handler** on the stack
+
+
+
+<p align = " center">
+<img src = "https://i.imgur.com/twqbeGT.png">
+</p>
+
+Now let's think about what **POP POP RET** would do here, *POP (move up 4 bytes)*, *POP (move up 4 bytes)* & *RET (simple return, send address to EIP as next instruction to execute)* - Now we have full control ;) 
+
+
+
+
+<p align = "center">
+<img src = "https://i.imgur.com/d5nszIb.png">
+</p>
 
 
 
 
 
-#### [](#header-4) Mitigations & Safeguards
+
+
+##### [](#header-5) Finding POP POP RET Modules & Instructions
 
 
 
-Now I am confident that you should have a good understanding of **SEH** and the overall layout/process of **Exception Handling** in *Win32* and I believe it would be wise to talk about mitigations to SEH and some of the attempts Microsoft have made to try minimize SEH Overflows.
+Now I do not want to go into depth here with how we find applicable modules and instructions as I will cover it in the examples section but the long story short is **mona**
+
+
+
+Similar to [Part 1](https://m0chan.github.io/2019/08/20/Simple-Win32-Buffer-Overflow-EIP-Overwrite.html) where we used **mona** intensively it will also be of use when carrying out **SEH Overflows** - All we have to do is issue the below command
+
+
+
+```python
+!mona seh
+```
+
+
+
+This will automatically search all available modules for a `POP POP RET` sequence.
 
 
 
 
-#### [](#header-5) SafeSEH
+<p align = "center">
+<img src = "https://i.imgur.com/6TO0wiB.png">
+</p>
 
 
+
+Now just like exploit we have to ensure that we choose a module with 0 bad chars in the memory address as well as avoid and *SEH Safeguards* such as **SafeSEH**, which I will talk about a later.
 
 
 
