@@ -1,6 +1,6 @@
 ---
 title: Simple Win32 Buffer Overflow - EIP Overwrite
-tags: [Buffer Overfow,Exploit Development,Windows]
+tags: [Buffer Overfow,Exploit Development,Windows,OSCP]
 description: I have recently embarked on the task of understanding Buffer Overflows beyond simple Stack Overflows and I figured the best way to go about it was to go back to the start, recover Stack/Assembly principles. Quickly recover simple Stack Overflows and then begin writing a blog post for each relevant area that I want to learn in greater detail.
 thumbnail: https://www.gravsoft.pl/images/products/big/Immunity-Debugger-222-GRAVSOFT-PL-1.png
 published: true
