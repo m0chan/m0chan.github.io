@@ -70,13 +70,13 @@ In this article I will discuss all the primary attacks on Kerberos, how to enume
      * <a href="#exploiting">Exploiting</a>
      * <a href="#mitigation--defending-unconstrained-delegation">Mitigation / Defending Unconstrained Delegation</a>
  * <a href="#constrained-delegation">Constrained Delegation</a>
-       * <a href="#introduction-7">Introduction</a>
-       * <a href="#s4u2self--s4u2proxy--protocol-transition">S4U2Self / S4U2Proxy &amp; Protocol Transition</a>
-       * <a href="#enumeration-1">Enumeration</a>
-       * <a href="#exploiting-1">Exploiting</a>
-       * <a href="#from-windows-6">From Windows</a>
-          * <a href="#exploiting-with-rubeus">Exploiting with Rubeus</a>
-       * <a href="#mitigation--defending-constrained-delegation">Mitigation / Defending Constrained Delegation</a>
+     * <a href="#introduction-7">Introduction</a>
+     * <a href="#s4u2self--s4u2proxy--protocol-transition">S4U2Self / S4U2Proxy &amp; Protocol Transition</a>
+     * <a href="#enumeration-1">Enumeration</a>
+     * <a href="#exploiting-1">Exploiting</a>
+     * <a href="#from-windows-6">From Windows</a>
+        * <a href="#exploiting-with-rubeus">Exploiting with Rubeus</a>
+     * <a href="#mitigation--defending-constrained-delegation">Mitigation / Defending Constrained Delegation</a>
  * <a href="#-conclusion">Conclusion</a>
 
 
