@@ -50,7 +50,7 @@ In this article I will discuss all the primary attacks on Kerberos, how to enume
        * <a href="#from-linux-3">From Linux</a>
           * <a href="#ticketerpy">ticketer.py</a>
        * <a href="#mitigation--defending-silver-tickets">Mitigation / Defending Silver Tickets</a>
- * <a href="#-golden-ticket"> Golden Ticket</a>
+  * <a href="#-golden-ticket">Golden Ticket</a>
        * <a href="#introduction-4">Introduction</a>
        * <a href="#from-windows-4">From Windows</a>
           * <a href="#creating-ticket-with-mimikatz-1">Creating Ticket with Mimikatz</a>
