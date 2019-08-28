@@ -379,7 +379,7 @@ Now just like exploit we have to ensure that we choose a module with 0 bad chars
 
 
 
-*An Egghunter is a small piece of shellcode, typically 32 Bytes that can be used to redirect execution flow to our final stage shellcode when we have a small space of memory to work with*
+*An Egghunter is a small piece of shellcode, typically 32 Bytes that can be used to search all memory space for our final-stage shellcode*
 
 
 
@@ -393,7 +393,40 @@ https://www.exploit-db.com/docs/english/18482-egg-hunter---a-twist-in-buffer-ove
 
 
 
-https://nutcrackerssecurity.github.io/Windows4.html
+I would like to provide a high level overview of how Egghunters work here without going crazy in depth, as I have already said above 
+
+
+
+*An Egghunter is a small piece of shellcode, typically 32 Bytes that can be used to search all memory space for our final-stage shellcode*
+
+
+
+This sounds great but why not just jump to our shellcode with a simple **Short JMP** or **JMP ESP** - Well imagine you have very little space to work with, let's say for example **50 bytes**. This is nowhere near enough space to place some shell code but it is enough to place a **32 Byte Egghunter**
+
+
+
+Providing we can get our **32 Byte** hunter onto the stack/memory and we are able to redirect execution to the location of the hunter we can tell the hunter to search the whole memory space for a pre-defined tag such as `MOCH` and our shellcode would be placed directly after this tag aka the **egg**
+
+
+
+So execution flow would look something like this
+
+
+
+1. Gain Control over Execution
+2. Jump to Small Buffer Space containing **32 Byte Egghunter**
+3. Egghunter executes and searches all of memory for a ***pre-defined egg***
+4. Egghunter finds **egg** & executes shellcode placed *after* **egg**
+
+
+
+#### [](#header-4) A Word on NTDisplayString
+
+
+
+
+
+
 
 
 
@@ -1544,6 +1577,19 @@ print "[*] Finished Fuzzing GET Variable with %s bytes" %len(payload)
 
 
 
+Similar to **VulnServer** - I also created a nice little diagram in Visio to demonstrate the exploit and jumps from a high level.
+
+
+
+
+<p align = "center">
+<img src = "https://i.imgur.com/crUGyBR.png">
+</p>
+
+
+
+
+
 
 
 ## [](#header-2) References / Resources
@@ -1551,8 +1597,6 @@ print "[*] Finished Fuzzing GET Variable with %s bytes" %len(payload)
 
 
 Special Shoutout to all the People Below:
-
-
 
 [https://h0mbre.github.io](https://h0mbre.github.io/)
 
@@ -1563,3 +1607,5 @@ Special Shoutout to all the People Below:
 [https://www.fuzzysecurity.com](https://www.fuzzysecurity.com/)
 
 [https://securitychops.com](https://securitychops.com/)
+
+https://nutcrackerssecurity.github.io/Windows4.html
