@@ -1,5 +1,5 @@
 ---
-title: Bypassing 2fa For Fun With Evilginx2
+title: Bypassing 2FA For Fun With Evilginx2
 tags: [2FA Bypass,Phishing,Evilginx2]
 description: I recently decided to explore phishing techniques and 2FA Bypasses to further understand how attackers are compromising accounts/networks with 2FA enabled and to further demonstrate why organisation should not solely rely on 2FA to protect there sensitive assets. 
 thumbnail: https://1.bp.blogspot.com/-mQLYyPCi_hs/W7CjcrOXK-I/AAAAAAAANgI/A_cCDjTE1RIDNywRJZd30x77_cWWQoiuwCLcBGAs/s1600/Evilginx%2B2%2Blogo%2Bmin.png
