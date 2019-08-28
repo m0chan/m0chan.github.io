@@ -20,13 +20,13 @@ In this article I will discuss all the primary attacks on Kerberos, how to enume
 
    * <a href="#kerberos-fundamentals">Kerberos Fundamentals</a>
    * <a href="#kerberoast">Kerberoast</a>
-         * <a href="#introduction">Introduction</a>
-         * <a href="#from-windows">From Windows</a>
-            * <a href="#powerview">Powerview</a>
-            * <a href="#rubeus">Rubeus</a>
-            * <a href="#invoke-kerberoastps1">Invoke-Kerberoast.ps1</a>
-         * <a href="#from-linux">From Linux</a>
-         * <a href="#mitigation--defending-against-kerberoast">Mitigation / Defending against Kerberoast</a>
+       * <a href="#introduction">Introduction</a>
+       * <a href="#from-windows">From Windows</a>
+        * <a href="#powerview">Powerview</a>
+        * <a href="#rubeus">Rubeus</a>
+        * <a href="#invoke-kerberoastps1">Invoke-Kerberoast.ps1</a>
+       * <a href="#from-linux">From Linux</a>
+       * <a href="#mitigation--defending-against-kerberoast">Mitigation / Defending against Kerberoast</a>
    * <a href="#as-rep-roasting">AS-REP Roasting</a>
          * <a href="#introduction-1">Introduction</a>
          * <a href="#from-windows-1">From Windows</a>
