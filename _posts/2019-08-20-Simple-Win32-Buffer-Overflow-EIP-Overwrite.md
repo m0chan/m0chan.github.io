@@ -64,7 +64,7 @@ https://en.wikibooks.org/wiki/X86_Disassembly/Functions_and_Stack_Frames
 
 - **CALL** - Call's a function and pushes **return-address** onto the stack
 - **PUSH EBP** - Pushes value of EBP onto top of Stack (Bottom right in immunity)
-- **POP EBX** - POP's value of EBX off the top of the Stack
+- **POP EBX** - POP's value at top of the stack into **EBX Register**
 - **MOV EBP,ESP** - Moves the value of **ESP** into **EBP**
   - ​	Remember destination always comes before source with Assembly.
 - **TEST EAX,81010100** - Verifies the value of EAX
