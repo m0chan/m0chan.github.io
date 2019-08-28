@@ -36,9 +36,36 @@ Let's jump right into it.
 
 **Table of Contents:** 
 
-[TOC]
-
-
+   * [<a href="#header-1"></a> Introduction](#-introduction)
+      * [<a href="#header-2"></a> Exception Handlers 101](#-exception-handlers-101)
+            * [<a href="#header-4"></a> What is an Exception?](#-what-is-an-exception)
+            * [<a href="#header-4"></a> Different Types of Handlers](#-different-types-of-handlers)
+            * [<a href="#header-4"></a> So How Do Structured Exception Handlers Work?](#-so-how-do-structured-exception-handlers-work)
+            * [<a href="#header-4"></a> The Vulnerability](#-the-vulnerability)
+            * [<a href="#header-4"></a> A Mention on POP POP RET](#-a-mention-on-pop-pop-ret)
+               * [<a href="#header-5"></a> Why Do we POP POP RET?](#-why-do-we-pop-pop-ret)
+               * [<a href="#header-5"></a> Finding POP POP RET Modules &amp; Instructions](#-finding-pop-pop-ret-modules--instructions)
+      * [<a href="#Egghunters"></a> Egghunters 101](#-egghunters-101)
+            * [<a href="#header-4"></a> What is an Egghunter?](#-what-is-an-egghunter)
+            * [<a href="#header-4"></a> So How Do Egghunters Work?](#-so-how-do-egghunters-work)
+            * [<a href="#header-4"></a> A Word on NTDisplayString](#-a-word-on-ntdisplaystring)
+   * [<a href="#header-1"></a> Examples](#-examples)
+      * [<a href="#header-2"></a> VulnServer w/ Egghunter](#-vulnserver-w-egghunter)
+         * [<a href="#header-3"></a> Fuzzing &amp; Finding the Crash](#-fuzzing--finding-the-crash)
+         * [<a href="#header-3"></a> Finding the Offset](#-finding-the-offset)
+         * [<a href="#header-3"></a> Finding Bad Chars](#-finding-bad-chars)
+         * [<a href="#header-3"></a> Finding POP POP RET Instruction](#-finding-pop-pop-ret-instruction)
+         * [<a href="#header-3"></a> Generating Egghunter](#-generating-egghunter)
+         * [<a href="#header-3"></a> Jumping to Egghunter](#-jumping-to-egghunter)
+         * [<a href="#header-3"></a> Generating Shellcode &amp; Final Exploit](#-generating-shellcode--final-exploit)
+      * [<a href="#header-2"></a> Easy File Sharing Web Server 7.2 w/o Egghunter](#-easy-file-sharing-web-server-72-wo-egghunter)
+         * [<a href="#header-3"></a> Fuzzing &amp; Finding the Crash](#-fuzzing--finding-the-crash-1)
+         * [<a href="#header-3"></a> Finding the Offset](#-finding-the-offset-1)
+         * [<a href="#header-3"></a> Finding Bad Chars](#-finding-bad-chars-1)
+         * [<a href="#header-3"></a> Finding POP POP RET Instruction](#-finding-pop-pop-ret-instruction-1)
+         * [<a href="#header-3"></a> Generating Shellcode](#-generating-shellcode)
+         * [<a href="#header-3"></a> Final Exploit](#-final-exploit)
+      * [<a href="#header-2"></a> References / Resources](#-references--resources)
 
 
 
