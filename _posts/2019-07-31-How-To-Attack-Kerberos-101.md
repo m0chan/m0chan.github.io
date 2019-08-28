@@ -77,7 +77,7 @@ In this article I will discuss all the primary attacks on Kerberos, how to enume
        * <a href="#from-windows-6">From Windows</a>
           * <a href="#exploiting-with-rubeus">Exploiting with Rubeus</a>
        * <a href="#mitigation--defending-constrained-delegation">Mitigation / Defending Constrained Delegation</a>
- * <a href="#-conclusion"> Conclusion</a>
+ * <a href="#-conclusion">Conclusion</a>
 
 
 
