@@ -37,9 +37,37 @@ Let's jump right into it.
 
 **Table of Contents:** 
 
+   * <a href="#introduction"> Introduction</a>
+      * <a href="#exception-handlers-101">Exception Handlers 101</a>
+           * <a href="#what-is-an-exception">What is an Exception?</a>
+           * <a href="#different-types-of-handlers">Different Types of Handlers</a>
+           * <a href="#so-how-do-structured-exception-handlers-work">So How Do Structured Exception Handlers Work?</a>
+           * <a href="#the-vulnerability">The Vulnerability</a>
+           * <a href="#a-mention-on-pop-pop-ret">A Mention on POP POP RET</a>
+              * <a href="#why-do-we-pop-pop-ret">Why Do we POP POP RET?</a>
+              * <a href="#finding-pop-pop-ret-modules--instructions">Finding POP POP RET Modules &amp; Instructions</a>
+      * <a href="#egghunters-101">Egghunters 101</a>
+           * <a href="#what-is-an-egghunter">What is an Egghunter?</a>
+           * <a href="#so-how-do-egghunters-work">So How Do Egghunters Work?</a>
+           * <a href="#a-word-on-ntdisplaystring">A Word on NTDisplayString</a>
+   * <a href="#examples">Examples</a>
+      * <a href="#vulnserver-w-egghunter">VulnServer w/ Egghunter</a>
+         * <a href="#fuzzing--finding-the-crash">Fuzzing &amp; Finding the Crash</a>
+         * <a href="#finding-the-offset">Finding the Offset</a>
+         * <a href="#finding-bad-chars">Finding Bad Chars</a>
+         * <a href="#finding-pop-pop-ret-instruction">Finding POP POP RET Instruction</a>
+         * <a href="#generating-egghunter">Generating Egghunter</a>
+         * <a href="#jumping-to-egghunter">Jumping to Egghunter</a>
+         * <a href="#generating-shellcode--final-exploit">Generating Shellcode &amp; Final Exploit</a>
+      * <a href="(#easy-file-sharing-web-server-72-wo-egghunter">Easy File Sharing Web Server 7.2 w/o Egghunter</a>
+         * <a href="#fuzzing--finding-the-crash-1">Fuzzing &amp; Finding the Crash</a>
+         * <a href="#finding-the-offset-1">Finding the Offset</a>
+         * <a href="#finding-bad-chars-1">Finding Bad Chars</a>
+         * <a href="#finding-pop-pop-ret-instruction-1">Finding POP POP RET Instruction</a>
+         * <a href="#generating-shellcode">Generating Shellcode</a>
+         * <a href="#final-exploit">Final Exploit</a>
+   * <a href="#references--resources">References / Resources</a>
 
-
-   
 
 
 
@@ -1598,7 +1626,7 @@ Similar to **VulnServer** - I also created a nice little diagram in Visio to dem
 
 
 
-## References / Resources
+# References / Resources
 
 
 
