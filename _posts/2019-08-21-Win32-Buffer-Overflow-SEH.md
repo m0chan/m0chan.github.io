@@ -14,7 +14,8 @@ published: true
 </p>
 
 
-# [Introduction](#header-1) 
+
+# Introduction
 
 
 
@@ -38,41 +39,12 @@ Let's jump right into it.
 
 
 
-   * [<a href="#header-1">Introduction</a>(#-introduction)
-      * [<a href="#header-2"></a> Exception Handlers 101](#-exception-handlers-101)
-            * [<a href="#header-4"></a> What is an Exception?](#-what-is-an-exception)
-            * [<a href="#header-4"></a> Different Types of Handlers](#-different-types-of-handlers)
-            * [<a href="#header-4"></a> So How Do Structured Exception Handlers Work?](#-so-how-do-structured-exception-handlers-work)
-            * [<a href="#header-4"></a> The Vulnerability](#-the-vulnerability)
-            * [<a href="#header-4"></a> A Mention on POP POP RET](#-a-mention-on-pop-pop-ret)
-               * [<a href="#header-5"></a> Why Do we POP POP RET?](#-why-do-we-pop-pop-ret)
-               * [<a href="#header-5"></a> Finding POP POP RET Modules &amp; Instructions](#-finding-pop-pop-ret-modules--instructions)
-      * [<a href="#Egghunters"></a> Egghunters 101](#-egghunters-101)
-            * [<a href="#header-4"></a> What is an Egghunter?](#-what-is-an-egghunter)
-            * [<a href="#header-4"></a> So How Do Egghunters Work?](#-so-how-do-egghunters-work)
-            * [<a href="#header-4"></a> A Word on NTDisplayString](#-a-word-on-ntdisplaystring)
-   * <a href="#-examples"> Examples</a> (#-examples)
-      * [<a href="#header-2"></a> VulnServer w/ Egghunter](#-vulnserver-w-egghunter)
-         * [<a href="#header-3"></a> Fuzzing &amp; Finding the Crash](#-fuzzing--finding-the-crash)
-         * [<a href="#header-3"></a> Finding the Offset](#-finding-the-offset)
-         * [<a href="#header-3"></a> Finding Bad Chars](#-finding-bad-chars)
-         * [<a href="#header-3"></a> Finding POP POP RET Instruction](#-finding-pop-pop-ret-instruction)
-         * [<a href="#header-3"></a> Generating Egghunter](#-generating-egghunter)
-         * [<a href="#header-3"></a> Jumping to Egghunter](#-jumping-to-egghunter)
-         * [<a href=""></a> Generating Shellcode &amp; Final Exploit(#-generating-shellcode--final-exploit)
-      * [<a href="#header-2">Easy File Sharing Web Server 7.2 w/o Egghunter</a> ()
-         * [<a href="#header-3"></a> Fuzzing &amp; Finding the Crash](#-fuzzing--finding-the-crash-1)
-         * [<a href="#header-3"></a> Finding the Offset](#-finding-the-offset-1)
-         * [<a href="#header-3"></a> Finding Bad Chars](#-finding-bad-chars-1)
-         * [<a href="#header-3"></a> Finding POP POP RET Instruction](#-finding-pop-pop-ret-instruction-1)
-         * [<a href="#header-3"></a> Generating Shellcode](#-generating-shellcode)
-         * [<a href="#header-3"></a> Final Exploit](#-final-exploit)
-      * [<a href="#header-2"></a> References / Resources](#-references--resources)
+   
 
 
 
 
-## [](#header-2) Exception Handlers 101
+##  Exception Handlers 101
 
 
 
@@ -80,7 +52,7 @@ Before we jump into looking at this from a exploitation perspective let's first 
 
 
 
-#### [](#header-4) What is an Exception?
+####  What is an Exception?
 
 
 
@@ -88,7 +60,7 @@ Before we jump into looking at this from a exploitation perspective let's first 
 
 
 
-#### [](#header-4) Different Types of Handlers
+####  Different Types of Handlers
 
 
 
@@ -139,7 +111,7 @@ It is also worth mentioning that no matter where the **Exception Handler** is de
 
 
 
-#### [](#header-4) So How Do Structured Exception Handlers Work?
+####  So How Do Structured Exception Handlers Work?
 
 
 
@@ -207,7 +179,7 @@ In this case we actually have 2 Handlers specified by **SEH Records** - The firs
 
 
 
-#### [](#header-4) The Vulnerability
+#### The Vulnerability
 
 
 
@@ -300,7 +272,7 @@ The value of **SE Handler** on the stack is pushed to the **EIP Register**  whic
 
 
 
-#### [](#header-4) A Mention on POP POP RET
+####  A Mention on POP POP RET
 
 
 
@@ -320,7 +292,7 @@ It's worthwhile mentioning that the registers to which the *popped* values go to
 
 
 
-##### [](#header-5) Why Do we POP POP RET?
+#####  Why Do we POP POP RET?
 
 
 
@@ -363,7 +335,7 @@ Now let's think about what **POP POP RET** would do here, *POP (move up 4 bytes)
 
 
 
-##### [](#header-5) Finding POP POP RET Modules & Instructions
+#####  Finding POP POP RET Modules & Instructions
 
 
 
@@ -403,13 +375,13 @@ Now just like exploit we have to ensure that we choose a module with 0 bad chars
 
 
 
-## [](#Egghunters) Egghunters 101
+## Egghunters 101
 
 
 
 
 
-#### [](#header-4) What is an Egghunter?
+#### What is an Egghunter?
 
 
 
@@ -419,7 +391,7 @@ Now just like exploit we have to ensure that we choose a module with 0 bad chars
 
 
 
-#### [](#header-4) So How Do Egghunters Work?
+#### So How Do Egghunters Work?
 
 
 
@@ -454,7 +426,7 @@ So execution flow would look something like this
 
 
 
-#### [](#header-4) A Word on NTDisplayString
+#### A Word on NTDisplayString
 
 
 
@@ -472,13 +444,13 @@ So execution flow would look something like this
 
 
 
-# [](#header-1) Examples
+# Examples
 
 
 
 
 
-## [](#header-2) VulnServer w/ Egghunter
+## VulnServer w/ Egghunter
 
 
 
@@ -486,7 +458,7 @@ In this example I am going to go over **VulnServer** which is an intentionally v
 
 
 
-### [](#header-3) Fuzzing & Finding the Crash
+### Fuzzing & Finding the Crash
 
 
 
@@ -557,7 +529,7 @@ Perfect, we are now able to override the pointer to **nSEH** & **SEH** with user
 
 
 
-### [](#header-3) Finding the Offset
+### Finding the Offset
 
 
 
@@ -635,7 +607,7 @@ As you can see it took us **3515** **bytes** to overrun the value of **nSEH** an
 
 
 
-### [](#header-3) Finding Bad Chars
+### Finding Bad Chars
 
 
 
@@ -719,7 +691,7 @@ Checking the memory dump we can see that we actually have zero bad chars besides
 
 
 
-### [](#header-3) Finding POP POP RET Instruction
+### Finding POP POP RET Instruction
 
 
 
@@ -877,7 +849,7 @@ As you can see **EIP** points too `024FFFC4` which relates to the instruction at
 
 
 
-### [](#header-3) Generating Egghunter
+### Generating Egghunter
 
 
 
@@ -958,7 +930,7 @@ Let's now generate some shell code, make some last adjustments to the overall ex
 
 
 
-### [](#header-3) Jumping to Egghunter
+### Jumping to Egghunter
 
 
 
@@ -1131,7 +1103,7 @@ I decided to create this little diagram to represent the exploit from a high lev
 
 
 
-## [](#header-2) Easy File Sharing Web Server 7.2 w/o Egghunter
+## Easy File Sharing Web Server 7.2 w/o Egghunter
 
 
 
@@ -1141,7 +1113,7 @@ Easy File Sharing Web Server is a legacy piece of software from Win XP / Win 7 e
 
 
 
-### [](#header-3) Fuzzing & Finding the Crash
+### Fuzzing & Finding the Crash
 
 
 
@@ -1226,7 +1198,7 @@ As you can see we have overrun the address of **nSEH** and **SEH** both with use
 
 
 
-### [](#header-3) Finding the Offset
+### Finding the Offset
 
 
 
@@ -1297,7 +1269,7 @@ Running either of the above commands will report that the offset to over run the
 
 
 
-### [](#header-3) Finding Bad Chars
+### Finding Bad Chars
 
 
 
@@ -1369,7 +1341,7 @@ Providing we rinse-repeat this and find all the dead characters in memory dump w
 
 
 
-### [](#header-3) Finding POP POP RET Instruction
+### Finding POP POP RET Instruction
 
 
 
@@ -1491,7 +1463,7 @@ In this case ***053A6FAC*** is the address of **nSEH** on the stack, so whatever
 
 
 
-### [](#header-3) Generating Shellcode
+### Generating Shellcode
 
 
 
@@ -1519,7 +1491,7 @@ You may noticed I have went for a staged payload this time in comparison to a st
 
 
 
-### [](#header-3) Final Exploit
+### Final Exploit
 
 
 
@@ -1626,7 +1598,7 @@ Similar to **VulnServer** - I also created a nice little diagram in Visio to dem
 
 
 
-## [](#header-2) References / Resources
+## References / Resources
 
 
 
