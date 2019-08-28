@@ -8,8 +8,6 @@ published: true
 
 
 
-# [](#header-1)Win32 Buffer Overflow Pt2 - SEH & Egghunters
-
 
 <p align = "center">
 <img src = "https://png.pngtree.com/element_our/sm/20180224/sm_5a90fde8c56d5.png">
