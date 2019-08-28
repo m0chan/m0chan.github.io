@@ -58,7 +58,7 @@ In this article I will discuss all the primary attacks on Kerberos, how to enume
        * <a href="#from-linux-4">From Linux</a>
           * <a href="#ticketerpy-1">ticketer.py</a>
        * <a href="#mitigation--defending-golden-tickets">Mitigation / Defending Golden Tickets</a>
- * <a href="#-pass-the-ticket--ticket-dump"> Pass-The-Ticket / Ticket Dump</a>
+ * <a href="#-pass-the-ticket--ticket-dump">Pass-The-Ticket / Ticket Dump</a>
        * <a href="#introduction-5">Introduction</a>
        * <a href="#from-windows-5">From Windows</a>
           * <a href="#dumping-ticket-with-rubeus--ptt">Dumping Ticket with Rubeus &amp; PTT</a>
