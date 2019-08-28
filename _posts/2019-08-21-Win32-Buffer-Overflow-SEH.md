@@ -14,7 +14,7 @@ published: true
 </p>
 
 
-# [](#header-1) Introduction
+# [Introduction](#header-1) 
 
 
 
@@ -36,7 +36,9 @@ Let's jump right into it.
 
 **Table of Contents:** 
 
-   * [<a href="#header-1"></a> Introduction](#-introduction)
+
+
+   * [<a href="#header-1">Introduction</a>(#-introduction)
       * [<a href="#header-2"></a> Exception Handlers 101](#-exception-handlers-101)
             * [<a href="#header-4"></a> What is an Exception?](#-what-is-an-exception)
             * [<a href="#header-4"></a> Different Types of Handlers](#-different-types-of-handlers)
@@ -49,7 +51,7 @@ Let's jump right into it.
             * [<a href="#header-4"></a> What is an Egghunter?](#-what-is-an-egghunter)
             * [<a href="#header-4"></a> So How Do Egghunters Work?](#-so-how-do-egghunters-work)
             * [<a href="#header-4"></a> A Word on NTDisplayString](#-a-word-on-ntdisplaystring)
-   * [<a href="#header-1"></a> Examples](#-examples)
+   * <a href="#-examples"> Examples</a> (#-examples)
       * [<a href="#header-2"></a> VulnServer w/ Egghunter](#-vulnserver-w-egghunter)
          * [<a href="#header-3"></a> Fuzzing &amp; Finding the Crash](#-fuzzing--finding-the-crash)
          * [<a href="#header-3"></a> Finding the Offset](#-finding-the-offset)
@@ -57,8 +59,8 @@ Let's jump right into it.
          * [<a href="#header-3"></a> Finding POP POP RET Instruction](#-finding-pop-pop-ret-instruction)
          * [<a href="#header-3"></a> Generating Egghunter](#-generating-egghunter)
          * [<a href="#header-3"></a> Jumping to Egghunter](#-jumping-to-egghunter)
-         * [<a href="#header-3"></a> Generating Shellcode &amp; Final Exploit](#-generating-shellcode--final-exploit)
-      * [<a href="#header-2"></a> Easy File Sharing Web Server 7.2 w/o Egghunter](#-easy-file-sharing-web-server-72-wo-egghunter)
+         * [<a href=""></a> Generating Shellcode &amp; Final Exploit(#-generating-shellcode--final-exploit)
+      * [<a href="#header-2">Easy File Sharing Web Server 7.2 w/o Egghunter</a> ()
          * [<a href="#header-3"></a> Fuzzing &amp; Finding the Crash](#-fuzzing--finding-the-crash-1)
          * [<a href="#header-3"></a> Finding the Offset](#-finding-the-offset-1)
          * [<a href="#header-3"></a> Finding Bad Chars](#-finding-bad-chars-1)
