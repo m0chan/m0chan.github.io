@@ -944,7 +944,7 @@ Now just to reiterate what are aiming to do here is over run **SEH**, perform a 
 
 
 
-### [](#header-3) Generating Shellcode & Final Exploit
+### Generating Shellcode & Final Exploit
 
 
 
