@@ -75,7 +75,7 @@ I feel it's necessary to talk about **Page Tables** & **Memory Management w/ Vir
 
 
 
-#### Virtual Address Space
+### Virtual Address Space & Page Files
 
 
 
@@ -118,7 +118,7 @@ Within Windows the **VAS** & **Page File** settings are managed automatically th
 
 
 
-#### What is Swapping?
+### What is Swapping?
 
 
 
@@ -165,22 +165,64 @@ Now we have covered **Virtual Address Space** & how the utilize **Page Files** -
 
 
 
-#### Page Table Entries
+### Pages, & Page Tables
+
+
+
+Currently basically all implementations of **Virtual Address Space** divide a specified *address space* into **Pages** - These pages are blocks of continuous **Virtual Memory Addresses**.
+
+
+
+These "blocks" or **Virtual Memory Addresses** then form what we called a **Page Table** - These tables are then used too effectively translate the **Virtual Memory Addresses** into **Physical Addresses** & provide a mapping between **Virtual Addresses (VA)** and **Physical Addresses.** 
+
+Within each **Page Table** there will be an attribute which specifies if the **Page Table** corresponds to real memory or virtual memory.
 
 
 
 
 
+Soooo... Why are we even talking about **Pages & Page Tables** when we're focusing on **DEP & ROP** - Well without going into too much detail here as I have talked about it under the `How Does DEP Really Work` section, there are numerous entries/bits (**Page Table Entries**) within the **Page Table** which dictate the security mechanisms for the relevant **Page**
 
 
 
+Here is an example **Page Table Entry** that would be stored in a **Page Table**.
+
+
+<p align = "center">
+<img src = "https://i.imgur.com/tZgGOsp.png">
+</p>
+
+Each Square / Color here represents a `bit` or a status bit which can contain a small value with information about the **Page Table Entry**
 
 
 
+- **Frame Number**
 
+  - Provides the number aka **Frame Number** for the relevant Page
 
-#### Page Table Directories
+- **Present / Absent**
 
+  - This `bit` says whether the page you are looking for is present or not, If it is not present this would initiate a **Page Fault** 
+
+- **Protection Bit**
+
+  - This is the part that interests us in this article, this is the `bit` which references the relevant protection associated with the Page, I believe by default this will contain the `NX` bit.
+
+- **Reference**
+
+  - Will state if the **Page** has been referred to in the last clock cycle or not
+
+    
+
+    
+
+    
+
+    
+
+    
+
+     
 
 
 
@@ -249,10 +291,6 @@ Truthfully there is not much need to know the inners and outs of PAE Mode due to
 
 
 
-
-
-
-
 It's worth noting that if an application must run code from a memory page it has to be explicitly set with & marked with **PAGE_EXECUTE, PAGE_EXECUTE_READ, PAGE_EXECUTE_READWRITE, or PAGE_EXECUTE_WRITECOPY **when it is allocating the relevant memory. 
 
 
@@ -267,5 +305,5 @@ It's worth noting that if an application must run code from a memory page it has
 
 
 
-## What is ROP (Return-Orientated Programming)? 
+## What is ROP (Return-Orientated Programming) ? 
 

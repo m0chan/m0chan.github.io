@@ -14,6 +14,141 @@ A place for me to store my notes/tricks for Windows Based Systems.
 
 **Note: These notes are heavily based off other articles, cheat sheets and guides etc. I just wanted a central place to store the best ones.**
 
+
+
+**Table of Contents:** 
+
+
+
+   * <a href="#enumeration">Enumeration</a>
+        * <a href="#-basics">Basics</a>
+      * <a href="#-users-with-spn">Users with SPN</a>
+      * <a href="#-kerberos-enumeration">Kerberos Enumeration</a>
+      * <a href="#-active-directory">Active Directory</a>
+      * <a href="#-sharpview-enumeration">SharpView Enumeration</a>
+      * <a href="#-smb-enumeration">SMB Enumeration</a>
+      * <a href="#-snmp-enumeration">SNMP Enumeration</a>
+      * <a href="#-mysql-enumeration">MySQL Enumeration</a>
+      * <a href="#-dns-zone-transfer">DNS Zone Transfer</a>
+      * <a href="#-ldap">LDAP</a>
+      * <a href="#-rpc-enumeration">RPC Enumeration</a>
+      * <a href="#-remote-desktop">Remote Desktop</a>
+   * <a href="#file-transfer">File Transfer</a>
+      * <a href="#-tftp">TFTP</a>
+      * <a href="#-ftp">FTP</a>
+      * <a href="#-vbs-script">VBS Script</a>
+      * <a href="#-powershell">Powershell</a>
+      * <a href="#-powershell-base64">Powershell Base64</a>
+      * <a href="#-secure-copy--pscpexe">Secure Copy / pscp.exe</a>
+      * <a href="#-bitsadminexe">BitsAdmin.exe</a>
+      * <a href="#remote-desktop">Remote Desktop</a>
+      * <a href="#-winhttp-com-object">WinHTTP Com Object</a>
+      * <a href="#-certutil">CertUtil</a>
+      * <a href="#curl-windows-1803">Curl (Windows 1803 )</a>
+      * <a href="#-smb">SMB</a>
+   * <a href="#exploit">Exploit</a>
+      * <a href="#-llmnr--nbt-ns-spoofing">LLMNR / NBT-NS Spoofing</a>
+      * <a href="#-responder-wpad-attack">Responder WPAD Attack</a>
+      * <a href="#-mitm6">mitm6</a>
+      * <a href="#-scf-file-attack">SCF File Attack</a>
+      * <a href="#-ntlm-relay">NTLM-Relay</a>
+      * <a href="#-priv-exchange">Priv Exchange</a>
+      * <a href="#-crackmapexec">CrackMapExec</a>
+      * <a href="#-mail-sniper">Mail Sniper</a>
+      * <a href="#-kerberos-stuff">Kerberos Stuff</a>
+      * <a href="#-mssql-exploiting-powerupsql">MSSQL Exploiting (PowerUpSQL)</a>
+      * <a href="#-malicious-macro-with-msbuild">Malicious Macro with MSBuild</a>
+   * <a href="#privilege-escalation">Privilege Escalation</a>
+      * <a href="#-basics-1">Basics</a>
+      * <a href="#-powerupps1-sometimes-a-quick-win">PowerUp.ps1 (Sometimes a Quick Win)</a>
+      * <a href="#-sharpup">SharpUp</a>
+      * <a href="#-if-its-ad-get-bloodhound-imported">If It's AD Get Bloodhound Imported...</a>
+      * <a href="#-bloodhound-python">Bloodhound-Python</a>
+      * <a href="#-cleartext-passwords">Cleartext Passwords</a>
+      * <a href="#-view-installed-software">View Installed Software</a>
+      * <a href="#-weak-folder-permissions">Weak Folder Permissions</a>
+      * <a href="#-scheduled-tasks">Scheduled Tasks</a>
+      * <a href="#-powershell-history">Powershell History</a>
+      * <a href="#-view-connected-drives">View Connected Drives</a>
+      * <a href="#-view-privs">View Privs</a>
+      * <a href="#-is-anyone-else-logged-in">Is Anyone Else Logged In?</a>
+      * <a href="#-view-registry-auto-login">View Registry Auto-Login</a>
+      * <a href="#-view-stored-creds-in-credential-manager">View Stored Creds in Credential Manager</a>
+      * <a href="#-view-unquoted-service-paths">View Unquoted Service Paths</a>
+      * <a href="#-view-startup-items">View Startup Items</a>
+      * <a href="#-check-for-alwaysinstalledelevated-reg-key">Check for AlwaysInstalledElevated Reg Key</a>
+      * <a href="#-any-passwords-in-registry">Any Passwords in Registry?</a>
+      * <a href="#-any-sysrep-or-unattend-files-left-over">Any Sysrep or Unattend Files Left Over</a>
+      * <a href="#-gpp-group-policy-preferences-passwords">GPP (Group Policy Preferences) Passwords</a>
+      * <a href="#-dump-chrome-passwords-also-post-exploit">Dump Chrome Passwords (Also Post Exploit)</a>
+      * <a href="#-dump-keepass">Dump KeePass</a>
+      * <a href="#token-impersonation">Token Impersonation</a>
+      * <a href="#-juicy-potato">Juicy Potato</a>
+      * <a href="#-kerberoasting">Kerberoasting</a>
+      * <a href="#-kerberoast-with-python">Kerberoast with Python</a>
+      * <a href="#-as-rep-roasting">AS Rep Roasting</a>
+      * <a href="#-dcsync-also-post-exploit">DCSync (Also Post Exploit)</a>
+   * <a href="#post-exploitation">Post Exploitation</a>
+      * <a href="#-useful-commands">Useful Commands</a>
+      * <a href="#-check-if-powershell-logging-is-enabled">Check if Powershell Logging is Enabled</a>
+      * <a href="#-run-seatbelt-absolutely-must">Run Seatbelt (ABSOLUTELY MUST)</a>
+      * <a href="#-dump-creds">Dump Creds</a>
+      * <a href="#-dump-creds-2">Dump Creds #2</a>
+      * <a href="#-dump-chrome-passwords-also-post-exploit-1">Dump Chrome Passwords (Also Post Exploit)</a>
+      * <a href="#-dump-process-memory-w-mimikittenz">Dump Process Memory w/ Mimikittenz</a>
+      * <a href="#-dump-keepass-1">Dump KeePass</a>
+      * <a href="#-pypykatz">pypykatz</a>
+      * <a href="#-safetykatz">SafetyKatz</a>
+      * <a href="#-sharpdpapi">SharpDPAPI</a>
+      * <a href="#-check-for-missing-kbs">Check for Missing KB's</a>
+      * <a href="#-decrypt-efs-files-with-mimikatz-if-adminsystem">Decrypt EFS Files with Mimikatz if Admin/System</a>
+      * <a href="#-uac-bypass">UAC Bypass</a>
+      * <a href="#-golden-ticket-attack">Golden Ticket Attack</a>
+      * <a href="#-child-domain-to-forest-compromise">Child Domain to Forest Compromise</a>
+      * <a href="#-dump-ntdsdit">Dump NTDS.dit</a>
+      * <a href="#-sebackupprivlege---dump-ntdsdit">SeBackupPrivlege - Dump NTDS.dit</a>
+   * <a href="#persistance">Persistance</a>
+      * <a href="#-ssh-shuttle">SSH Shuttle</a>
+      * <a href="#-autorun-registry">AutoRun Registry</a>
+      * <a href="#-run--run-once">Run &amp; Run Once</a>
+      * <a href="#-scheduled-tasks-1">Scheduled Tasks</a>
+      * <a href="#-windows-startup-folder">Windows Startup Folder</a>
+      * <a href="#-exedll-hijacking">EXE/DLL Hijacking</a>
+      * <a href="#-add-user-account">Add User Account</a>
+      * <a href="#-persistence-with-kerberos">Persistence with Kerberos</a>
+   * <a href="#lateral-movement">Lateral Movement</a>
+      * <a href="#-plink">Plink</a>
+      * <a href="#-powershell-port-forward">Powershell Port Forward</a>
+      * <a href="#-socat-for-windows">Socat for Windows</a>
+      * <a href="#-secure-sockets-funneling">Secure Sockets Funneling</a>
+      * <a href="#-chisel-fast-tcp-tunnel-over-http-secured-by-ssh">Chisel (Fast TCP Tunnel over HTTP secured by SSH)</a>
+      * <a href="#-crackmapexec-1">CrackMapExec</a>
+      * <a href="#-wmic-spawn-process">WMIC Spawn Process</a>
+      * <a href="#-invoke-wmiexecps1">Invoke-WMIExec.ps1</a>
+      * <a href="#-powershell-invoke-command-requires-port-5985">Powershell Invoke-Command (Requires Port 5985)</a>
+      * <a href="#-psexec">PSExec</a>
+      * <a href="#-powershell-remoting">Powershell Remoting</a>
+      * <a href="#-configure-remote-service-over-smb-requires-local-admin-on-target-machine">Configure Remote Service over SMB (Requires Local Admin on Target Machine)</a>
+      * <a href="#-pass-the-hash">Pass-The-Hash</a>
+      * <a href="#-pass-the-ticket">Pass-The-Ticket</a>
+   * <a href="#obfuscation--evasion-techniques">Obfuscation / Evasion Techniques</a>
+      * <a href="#-invoke-obfusaction">Invoke-Obfusaction</a>
+      * <a href="#-invoke-cradlecraft">Invoke-CradleCraft</a>
+      * <a href="#-invoke-dosfuscation">Invoke-DOSfuscation</a>
+      * <a href="#-unicorn">Unicorn</a>
+        * <a href="#applocker--constrained-mode-bypasses">AppLocker / Constrained Mode Bypasses</a>
+      * <a href="#-verify-is-you-are-in-constrained-mode">Verify is you are in constrained mode</a>
+      * <a href="#-powershellveryless-bypass">PowershellVeryLess Bypass</a>
+      * <a href="#-world-writable-folders-by-default-on-windows-10-1803">World Writable Folders (By Default on Windows 10 1803)</a>
+      * <a href="#-downgrade-attack">Downgrade Attack</a>
+      * <a href="#-applocker-cor-profile-bypass">AppLocker COR Profile Bypass</a>
+      * <a href="#msbuild-powershellcmd-bypass">MSBuild Powershell/CMD Bypass</a>
+      * <a href="#-psattack">PSAttack</a>
+      * <a href="#-nopowershell">NoPowerShell</a>
+      * <a href="#-rundll32--bypass">runDLL32  Bypass</a>
+
+
+
 ## [](#header-2)Enumeration
 
 
