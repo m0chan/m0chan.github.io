@@ -65,7 +65,7 @@ Of course just like **SafeSEH** and all the other great security mechanisms impl
 
 
 
-### Page Tables Explained
+## Page Tables Explained
 
 
 
@@ -79,7 +79,7 @@ I feel it's necessary to talk about **Page Tables** & **Memory Management w/ Vir
 
 
 
-**Virtual Address Space** is the allocated virtual memory addresses allocated to a process by the CPU upon runtime, this virtual space remains private and mitigates processes leaking into other processes address space unless explicitly shared.  
+**Virtual Address Space (VAS)** is the allocated virtual memory addresses allocated to a process by the CPU upon runtime, this virtual space remains private and mitigates processes leaking into other processes address space unless explicitly shared.  
 
 
 
@@ -91,15 +91,75 @@ Each process on a 32-bit Windows has it's own **Virtual Address Space** allocate
 
 
 
+Well **VAS** is actually a very important component of all operating systems as it allows us to run more applications on the system than we have *physical memory* available for. But how? Well **Virtual Memory** is *simulated memory* that is written to a file on the hard drive and this file is commonly called a **Page File** or **Swap File**
+
+
+
+This technology once upon a time did not exist and users had no choice that when they had numerous programs open at once and they ran out of **RAM** they would not be able to open any other applications and would have to prioritize *open applications.*
+
+
+
+Now we are still *using* our physical memory aka **RAM** but the **OS** is also mapping **RAM Addresses** to the **HDD** inside a reserved portion which can either by a file or partition itself - Within **Windows** this file is called the `pagefile.sys` aka the **Page File** - I believe in Linux based distros that a separate partition is always created to facilitate this need but truthfully Linux internals is black-magic too me.  
+
+
+
+Within Windows the **VAS** & **Page File** settings are managed automatically the OS but you can actually alter the maximum size etc within the *Advanced* options in Control Panel.  
 
 
 
 
 
 
+<p align = "center">
+<img src = "https://i.imgur.com/5supMDc.png">
+</p>
 
 
 
+
+
+#### What is Swapping?
+
+
+
+You may have noticed in the **Virtual Address Space** section above I mentioned the **Page File** is sometimes called the **Swap File** - This is due to the the process that occurs related to **VAS** is called **Swapping**
+
+
+
+**Swapping** is the process of moving data from **RAM** to **Disk** **(Page File)** and back from **Disk** to **RAM** - This is all centrally managed by the **Virtual Memory Manager (VMM)**. As I am sure you know the Disk is typically a lot slower than **RAM** - And that is where this efficient process comes into play. 
+
+
+
+Let me give an example of the **Swapping** process taking place; Let's imagine we open 2 x applications (**Application 1** & *Application 2*) and we only have enough space in the physical memory to facilitate one application, let's say **Application 1** & let's say we are *using* **Application 1** & *Application 2* is simply backgrounded/minimized.
+
+
+
+The **VMM** will now place all of **Application 1's** into RAM due to the fact that it's being actively used and it will place all of *Application 2's* into the **Page File / Virtual Memory** stored locally on the **Disk**
+
+
+
+Now let's say we decide to start use *Application 2* & minimize **Application 1**, the **VMM** will now spring into action and swap **Application 1** straight from **RAM** into the **Page File** stored locally on the **Disk** & vise versa in which it will move *Application 2* from the **Page File** into **RAM** 
+
+
+
+These actions of **RAM** -> **Disk** or **Disk** -> **RAM** are actually *subprocesses* of Paging and each have a name respective of direction, for example:
+
+- **RAM** -> **Disk** 
+
+  - Paging Out
+
+- **Disk** -> **RAM**
+  
+  - Paging In
+  
+  
+
+
+The happens to ensure that the application which is being used is being prioritized in terms of performance and is always running in **RAM**
+
+
+
+Now we have covered **Virtual Address Space** & how the utilize **Page Files** - We should now go into specifics about the Page Table to further understand.
 
 
 
@@ -107,13 +167,25 @@ Each process on a 32-bit Windows has it's own **Virtual Address Space** allocate
 
 #### Page Table Entries
 
+
+
+
+
+
+
+
+
+
+
+
+
 #### Page Table Directories
 
 
 
 
 
-### Different Types Modes of DEP
+## Different Types & Modes of DEP
 
 
 
