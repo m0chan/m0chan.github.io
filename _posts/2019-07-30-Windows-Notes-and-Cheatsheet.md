@@ -136,7 +136,7 @@ A place for me to store my notes/tricks for Windows Based Systems.
       * <a href="#-invoke-cradlecraft">Invoke-CradleCraft</a>
       * <a href="#-invoke-dosfuscation">Invoke-DOSfuscation</a>
       * <a href="#-unicorn">Unicorn</a>
-        * <a href="#applocker--constrained-mode-bypasses">AppLocker / Constrained Mode Bypasses</a>
+   * <a href="#applocker--constrained-mode-bypasses">AppLocker / Constrained Mode Bypasses</a>
       * <a href="#-verify-is-you-are-in-constrained-mode">Verify is you are in constrained mode</a>
       * <a href="#-powershellveryless-bypass">PowershellVeryLess Bypass</a>
       * <a href="#-world-writable-folders-by-default-on-windows-10-1803">World Writable Folders (By Default on Windows 10 1803)</a>
