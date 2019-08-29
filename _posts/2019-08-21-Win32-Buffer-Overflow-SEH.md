@@ -59,7 +59,7 @@ Let's jump right into it.
          * <a href="#generating-egghunter">Generating Egghunter</a>
          * <a href="#jumping-to-egghunter">Jumping to Egghunter</a>
          * <a href="#generating-shellcode--final-exploit">Generating Shellcode &amp; Final Exploit</a>
-      * <a href="(#easy-file-sharing-web-server-72-wo-egghunter">Easy File Sharing Web Server 7.2 w/o Egghunter</a>
+      * <a href="#easy-file-sharing-web-server-72-wo-egghunter">Easy File Sharing Web Server 7.2 w/o Egghunter</a>
          * <a href="#fuzzing--finding-the-crash-1">Fuzzing &amp; Finding the Crash</a>
          * <a href="#finding-the-offset-1">Finding the Offset</a>
          * <a href="#finding-bad-chars-1">Finding Bad Chars</a>
@@ -458,13 +458,45 @@ So execution flow would look something like this
 
 
 
+In this article we will be using the **32 Byte** Egghunter which makes use of the `NTDisplayString` system call which is displayed as
 
 
 
+```c++
+NTSYSAPI 
+NTSTATUS
+NTAPI
+
+NtDisplayString(
+
+  IN PUNICODE_STRING      String );
+```
+
+[Reference][https://undocumented.ntinternals.net/index.html?page=UserMode%2FUndocumented%20Functions%2FError%2FNtDisplayString.html]
 
 
 
+`NTDisplayString` is actually the same system-call used too display blue-screens within Windows, So how does this come into play with our **Egghunter?**
 
+
+
+Well we abuse the fact that this system call is used to validate an address range & the pointer is read from and not written too. 
+
+
+
+There is a small downside to this method, the system call number for `NTDisplayString ` can't change and across the years system call numbers have changed across versions of Windows as well as architecture. 
+
+
+
+When I was writing this article I actually ran into some issues with my Egghunter showing `Access Violation reading: FFFFFF` when executing `INT 2E` aka a system call. The reason?
+
+
+
+Because I was trying to run the Egghunter on a 64bit arch of Windows, kind of stupid of me but I did not give it much thought due to the application being compiled as a 32bit application and not having much issues in the past.
+
+
+
+Corelan did a great job explaining what each assembly instruction of an Egghunter does so please check out there article [Here](https://www.corelan.be/index.php/2010/01/09/exploit-writing-tutorial-part-8-win32-egg-hunting/)
 
 
 
