@@ -328,11 +328,28 @@ I will first talk about the old-school **return-2-libc** method and later talk a
 
 
 
+http://www.phearless.org/istorija/razno/win-ret-into-libc.txt
+
+
+
+The return-2-libc technique is something that confused me for a very long time despite a lot of reading but if you actually just read it out loud `Return-2-libc` and realize that all we are doing is `returning` to a library instead of something like a **JMP ESP** function we will see are effectively just returning to a function contained inside a a externally imported **DLL**  or library on Linux. 
+
+
+
+For example we would overrun our **return-address** with the location or some system function or Win32 API call in Windows from a **DLL** - A common function used in this case on Win32 is the `WinExec()` function which would allow us to spawn & execute the `cmd.exe` process. 
 
 
 
 
 
+Add this to table alognside other article on work computer showing API calls
+
+- **VirtualAlloc(MEM_COMMIT + PAGE_READWRITE_EXECUTE)** + copy memory.  This will allow you to create a new executable memory region, copy your shellcode to it, and execute it. This technique may require you to chain 2 API’s into each other.
+- **HeapCreate**(HEAP_CREATE_ENABLE_EXECUTE) + HeapAlloc() + copy memory. In essence, this function will provide a very similar technique as VirtualAlloc(), but may require 3 API’s to be chained together))
+- **SetProcessDEPPolicy()**. This allows you to change the DEP policy for the current process (so you can execute the shellcode from the stack) (Vista SP1, XP SP3, Server 2008, and only when DEP Policy is set to OptIn or OptOut)
+- **NtSetInformationProcess()**.  This function will change the DEP policy for the current process so you can execute your shellcode from the stack.
+- **VirtualProtect(PAGE_READ_WRITE_EXECUTE)**. This function will change the access protection level of a given memory page, allowing you to mark the location where your shellcode resides as executable.
+- **WriteProcessMemory().** This will allow you to copy your shellcode to another (executable) location, so you can jump to it and execute the shellcode. The target location must be writable and executable.
 
 
 
