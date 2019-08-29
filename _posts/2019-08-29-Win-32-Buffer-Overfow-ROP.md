@@ -65,6 +65,31 @@ Of course just like **SafeSEH** and all the other great security mechanisms impl
 
 
 
+## Different Types & Modes of DEP
+
+
+
+If you have already looked at **EMET GUI** to turn on/off the **DEP** policy you might have noticed there are numerous options to select from, I have listed them below.
+
+
+
+- **OptIn**
+  - **DEP** is turned on for a limited amount of Applications & Services based on settings.
+- **OptOut**
+  - **DEP** is turned on for all Applications, Services - *Besides user defined Exceptions*
+- **AlwaysOn**
+  - **DEP** is turned on for all Applications, Services etc. **No Exceptions**
+- **AlwaysOff**
+  - **DEP** is turned off indefinitely for *everything*
+
+
+
+The *default setting* for the **DEP Policy** is different across every single OS, so I would advise you check out the default policy for your *VM OS* - I have enabled **AlwaysOn** on my *Windows 7 x86 Ultimate VM*.
+
+
+
+
+
 ## Page Tables Explained
 
 
@@ -79,7 +104,7 @@ I feel it's necessary to talk about **Page Tables** & **Memory Management w/ Vir
 
 
 
-**Virtual Address Space (VAS)** is the allocated virtual memory addresses allocated to a process by the CPU upon runtime, this virtual space remains private and mitigates processes leaking into other processes address space unless explicitly shared.  
+**Virtual Address Space (VAS)** is the allocated virtual memory addresses allocated to a process by the CPU upon process runtime, this virtual space remains private and mitigates processes leaking into other processes address space unless explicitly shared.  
 
 
 
@@ -159,7 +184,7 @@ The happens to ensure that the application which is being used is being prioriti
 
 
 
-Now we have covered **Virtual Address Space** & how the utilize **Page Files** - We should now go into specifics about the Page Table to further understand.
+Now we have covered **Virtual Address Space** & how the utilize **Page Files** - We should now go into specifics about the Page File & Table's to further understand.
 
 
 
@@ -181,7 +206,7 @@ Within each **Page Table** there will be an attribute which specifies if the **P
 
 
 
-Soooo... Why are we even talking about **Pages & Page Tables** when we're focusing on **DEP & ROP** - Well without going into too much detail here as I have talked about it under the `How Does DEP Really Work` section, there are numerous entries/bits (**Page Table Entries**) within the **Page Table** which dictate the security mechanisms for the relevant **Page**
+Soooo... Why are we even talking about **Pages & Page Tables** when we're focusing on **DEP & ROP** - Well without going into too much detail here as I have talked about it under the `How Does DEP Really Work` section, there are numerous entries/bits (**Page Table Entries**) within the **Page Table** which dictate the security mechanisms for the relevant **Page / Memory Page**
 
 
 
@@ -224,35 +249,7 @@ Each Square / Color here represents a `bit` or a status bit which can contain a 
 
      
 
-
-
-
-## Different Types & Modes of DEP
-
-
-
-If you have already looked at **EMET GUI** to turn on/off the **DEP** policy you might have noticed there are numerous options to select from, I have listed them below.
-
-
-
-- **OptIn**
-  - **DEP** is turned on for a limited amount of Applications & Services based on settings.
-- **OptOut**
-  - **DEP** is turned on for all Applications, Services - *Besides user defined Exceptions*
-- **AlwaysOn**
-  - **DEP** is turned on for all Applications, Services etc. **No Exceptions**
-- **AlwaysOff**
-  - **DEP** is turned off indefinitely for *everything*
-
-
-
-The *default setting* for the **DEP Policy** is different across every single OS, so I would advise you check out the default policy for your *VM OS* - I have enabled **AlwaysOn** on my *Windows 7 x86 Ultimate VM*.
-
-
-
-
-
-### How Does DEP Really Work?
+## How Does DEP Really Work?
 
 
 
@@ -283,11 +280,11 @@ When I was writing this, truthfully I struggled to understand ***PAE Mode*** but
 
 
 
-Truthfully there is not much need to know the inners and outs of PAE Mode due to the fact if **DEP** is enabled as on, Windows will also automatically enable ***PAE Mode*** itself due to it's dependency. 
+Honestly there is not much need to know the inners and outs of PAE Mode due to the fact if **DEP** is enabled as on, Windows will also automatically enable ***PAE Mode*** itself due to it's dependency. 
 
 
 
-**Hardware DEP** relies on processor hardware to explicitly mark memory with an attribute/bit that indicates should not be executed from that memory address/region  - As I have already said **DEP** functions on a per-virtual memory page basis and **DEP** will alter a bit in the **Page Table Entry (PTE)** to mark the memory page as *non-executable*.
+**Hardware DEP** relies on processor hardware to explicitly mark memory with an attribute/bit that indicates should not be executed from that memory address/region  - As I have already said **DEP** functions on a per-virtual memory page basis and **DEP** will alter a bit in the **Page Table Entry (PTE)** called the **Protection Bit** to mark the memory page as *non-executable*.
 
 
 
@@ -305,5 +302,40 @@ It's worth noting that if an application must run code from a memory page it has
 
 
 
-## What is ROP (Return-Orientated Programming) ? 
 
+
+
+
+
+
+# Bypass Methods
+
+
+
+Now we have a solid understanding of how **DEP** works and some of the internals of Windows & Memory Management I would like to discuss the various methods we can employ as an attacker to circumvent **Data Execution Protection (DEP)**.
+
+
+
+I will first talk about the old-school **return-2-libc** method and later talk about What is **Return-Orientated Programming** and how we can use it to bypass **DEP** 
+
+
+
+
+
+
+
+## Return-2-Libc Method
+
+
+
+
+
+
+
+
+
+
+
+
+
+##  What is ROP (Return-Orientated Programming) ? 
