@@ -25,6 +25,7 @@ A place for me to store my notes/tricks for Windows Based Systems.
       * <a href="#-users-with-spn">Users with SPN</a>
       * <a href="#-kerberos-enumeration">Kerberos Enumeration</a>
       * <a href="#-active-directory">Active Directory</a>
+      * <a href ="#-AD-Enumeration-from-Linux-Box---AD-Tool">AD Enumeration from Linux Box - AD Tool</a>
       * <a href="#-sharpview-enumeration">SharpView Enumeration</a>
       * <a href="#-smb-enumeration">SMB Enumeration</a>
       * <a href="#-snmp-enumeration">SNMP Enumeration</a>
@@ -272,6 +273,37 @@ set u
 
 ([adsisearcher]"(&(objectClass=group)(samaccountname=*))").FindAll().Properties | % { Write-Host $_.samaccountname : $_.description }
 ```
+
+
+
+
+
+#### AD Enumeration from Linux Box - AD Tool
+
+```powershell
+#https://github.com/jasonwbarnett/linux-adtool
+
+tar zxvf adtools-1.x.tar.gz
+cd adtools-1.x
+./configure
+make
+make install
+
+> adtool list ou=user,dc=example,dc=com
+CN=allusers,OU=user,DC=example,DC=com
+OU=finance,OU=user,DC=example,DC=com
+OU=administration,OU=user,DC=example,DC=com
+
+> adtool oucreate marketing ou=user,dc=example,dc=com
+> adtool useradd jsmith ou=marketing,ou=user,dc=example,dc=com
+> adtool setpass jsmith banana
+> adtool unlock jsmith
+> adtool groupadd allusers jsmith
+> adtool attributereplace jsmith telephonenumber 123
+> adtool attributereplace jsmith mail jsmith@example.com
+```
+
+
 
 
 
