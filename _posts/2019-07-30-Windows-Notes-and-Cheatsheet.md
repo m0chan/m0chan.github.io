@@ -1849,6 +1849,8 @@ netsh interface portproxy add v4tov4 listenport=fromport listenaddress=fromip co
 
 Permanent ^^
 
+Requires iphlpsvc service to be enabled
+
 fromport: the port number to listen on, e.g. 80
 fromip: the ip address to listen on, e.g. 192.168.1.1
 toport: the port number to forward to
