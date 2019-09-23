@@ -111,6 +111,7 @@ A place for me to store my notes/tricks for Windows Based Systems.
    * <a href="#persistance">Persistance</a>
       * <a href="#-ssh-shuttle">SSH Shuttle</a>
       * <a href="#-autorun-registry">AutoRun Registry</a>
+      * <a href="#-sharpersist">SharPersist</a>
       * <a href="#-run--run-once">Run &amp; Run Once</a>
       * <a href="#-scheduled-tasks-1">Scheduled Tasks</a>
       * <a href="#-windows-startup-folder">Windows Startup Folder</a>
@@ -1720,6 +1721,25 @@ reg.exe save hklm\system c:\m0chan\SYSTEM.bak
 ```
 ./run -r root@10.10.110.123 172.16.1.0/24 -e "ssh -i Root.key"
 ```
+
+
+
+#### [](#header-4) SharPersist
+
+```
+#https://github.com/fireeye/SharPersist
+
+C# Libary Designed by FireEye to aid with Persistance using various techniques such as 
+
+KeePass Backdoor
+Reg Key
+Sch Task Backdoor
+Startup Folder (Link File)
+Service Backdoor
+
+See there github linked above for full Syntax, very cool work
+```
+
 
 
 
