@@ -24,6 +24,7 @@ A place for me to store my notes/tricks for Windows Based Systems.
         * <a href="#-basics">Basics</a>
       * <a href="#-users-with-spn">Users with SPN</a>
       * <a href="#-kerberos-enumeration">Kerberos Enumeration</a>
+      * <a href="#-red-team-csharp-scripts">Red-Team CSharp Scripts</a>
       * <a href="#-active-directory">Active Directory</a>
       * <a href ="#ad-enumeration-from-linux-box---ad-tool">AD Enumeration from Linux Box - AD Tool</a>
       * <a href="#-sharpview-enumeration">SharpView Enumeration</a>
