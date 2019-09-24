@@ -204,6 +204,30 @@ nmap $TARGET -p 88 --script krb5-enum-users --script-args krb5-enum-users.realm=
 ```
 
 
+#### [](#header-4) Red-Team CSharp Scripts
+
+```powershell
+#https://github.com/Mr-Un1k0d3r/RedTeamCSharpScripts
+
+LDAPUtility.cs
+
+Usage: ldaputility.exe options domain [arguments]
+
+ldaputility.exe DumpAllUsers m0chan
+ldaputility.exe DumpUser m0chan mr.un1k0d3r
+ldaputility.exe DumpUsersEmail m0chan
+ldaputility.exe DumpAllComputers m0chan 
+ldaputility.exe DumpComputer m0chan DC01
+ldaputility.exe DumpAllGroups m0chan
+ldaputility.exe DumpGroup m0chan "Domain Admins"
+ldaputility.exe DumpPasswordPolicy m0chan
+
+Also WMIUtility.cs for WMI Calls & LDAPQuery.cs for Raw LDAP Queries.
+
+See github linked above for full details.
+
+```
+
 
 #### [](#header-4) Active Directory
 
