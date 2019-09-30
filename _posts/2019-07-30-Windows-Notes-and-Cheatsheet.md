@@ -114,6 +114,7 @@ A place for me to store my notes/tricks for Windows Based Systems.
       * <a href="#-sebackupprivlege---dump-ntdsdit">SeBackupPrivlege - Dump NTDS.dit</a>
    * <a href="#persistance">Persistance</a>
       * <a href="#-ssh-shuttle">SSH Shuttle</a>
+      * <a href="#-sharpdoor">SharpDoor - RDP Multi Session</a>
       * <a href="#-autorun-registry">AutoRun Registry</a>
       * <a href="#-sharpersist">SharPersist</a>
       * <a href="#-run--run-once">Run &amp; Run Once</a>
@@ -1824,6 +1825,18 @@ Startup Folder (Link File)
 Service Backdoor
 
 See there github linked above for full Syntax, very cool work
+```
+
+
+
+#### [](#header-4) SharpDoor
+
+```
+#https://github.com/infosecn1nja/SharpDoor.git
+
+SharpDoor is alternative RDPWrap written in C# to allowed multiple RDP (Remote Desktop) sessions by patching termsrv.dll file, for opsec considerations SharpDoor still using cmd.exe to run sc services to impersonating as trustedinstaller in the future will be avoiding cmd.exe usage, currently only support for Windows 10.
+
+execute-assembly /root/Toolkits/SharpBinaries/SharpDoor.exe
 ```
 
 
