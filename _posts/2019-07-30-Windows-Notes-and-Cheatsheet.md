@@ -97,6 +97,7 @@ A place for me to store my notes/tricks for Windows Based Systems.
    * <a href="#post-exploitation">Post Exploitation</a>
       * <a href="#-useful-commands">Useful Commands</a>
       * <a href="#-check-if-powershell-logging-is-enabled">Check if Powershell Logging is Enabled</a>
+      * <a href="#-esenutlexe-dump-locked-file">Esenutl.exe Dump Locked File</a>
       * <a href="#-run-seatbelt-absolutely-must">Run Seatbelt (ABSOLUTELY MUST)</a>
       * <a href="#-dump-creds">Dump Creds</a>
       * <a href="#-dump-creds-2">Dump Creds #2</a>
