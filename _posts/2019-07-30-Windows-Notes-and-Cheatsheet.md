@@ -63,6 +63,7 @@ A place for me to store my notes/tricks for Windows Based Systems.
       * <a href="#-kerberos-stuff">Kerberos Stuff</a>
       * <a href="#-mssql-exploiting-powerupsql">MSSQL Exploiting (PowerUpSQL)</a>
       * <a href="#-malicious-macro-with-msbuild">Malicious Macro with MSBuild</a>
+      * <a href="#-weirdhta---undetectable-hta">WeirdHTA - Undetectable HTA</a>
    * <a href="#privilege-escalation">Privilege Escalation</a>
       * <a href="#-basics-1">Basics</a>
       * <a href="#-powerupps1-sometimes-a-quick-win">PowerUp.ps1 (Sometimes a Quick Win)</a>
