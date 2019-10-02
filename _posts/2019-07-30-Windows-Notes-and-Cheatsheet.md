@@ -107,6 +107,7 @@ A place for me to store my notes/tricks for Windows Based Systems.
       * <a href="#-pypykatz">pypykatz</a>
       * <a href="#-safetykatz">SafetyKatz</a>
       * <a href="#-sharpdpapi">SharpDPAPI</a>
+      * <a href="#-sharpsniper">SharpSniper</a>
       * <a href="#-check-for-missing-kbs">Check for Missing KB's</a>
       * <a href="#-decrypt-efs-files-with-mimikatz-if-adminsystem">Decrypt EFS Files with Mimikatz if Admin/System</a>
       * <a href="#-uac-bypass">UAC Bypass</a>
@@ -1653,6 +1654,23 @@ First, the MiniDumpWriteDump Win32 API call is used to create a minidump of LSAS
 #https://github.com/GhostPack/SharpDPAPI
 
 Full C Sharp Implementation of Mimikatzs DPAPI features which allows access to DPAPI features.
+```
+
+
+
+#### [](#header-4) SharpSniper
+
+```powershell
+#https://github.com/HunnicCyber/SharpSniper
+
+Often a Red Team engagement is more than just achieving Domain Admin. Some clients will want to see if specific users in the domain can be compromised, for example the CEO.
+
+SharpSniper is a simple tool to find the IP address of these users so that you can target their box.
+
+C:\> SharpSniper.exe emusk DomainAdminUser DAPass123
+
+User: emusk - IP Address: 192.168.37.130
+
 ```
 
 
