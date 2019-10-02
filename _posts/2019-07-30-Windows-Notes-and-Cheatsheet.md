@@ -104,6 +104,7 @@ A place for me to store my notes/tricks for Windows Based Systems.
       * <a href="#-run-seatbelt-absolutely-must">Run Seatbelt (ABSOLUTELY MUST)</a>
       * <a href="#-dump-creds">Dump Creds</a>
       * <a href="#-dump-creds-2">Dump Creds #2</a>
+      * <a href="#-sessiongopher">SessionGohper</a>
       * <a href="#-dump-chrome-passwords-also-post-exploit-1">Dump Chrome Passwords (Also Post Exploit)</a>
       * <a href="#-dump-process-memory-w-mimikittenz">Dump Process Memory w/ Mimikittenz</a>
       * <a href="#-dump-keepass-1">Dump KeePass</a>
@@ -1628,6 +1629,23 @@ laZagne.exe browsers -firefox
 
 ```
 
+
+
+#### [](#header-4) SessionGopher
+
+```powershell
+#https://github.com/Arvanaghi/SessionGopher
+
+Quietly digging up saved session information for PuTTY, WinSCP, FileZilla, SuperPuTTY, and RDP
+
+SessionGopher is a PowerShell tool that finds and decrypts saved session information for remote access tools. It has WMI functionality built in so it can be run remotely. Its best use case is to identify systems that may connect to Unix systems, jump boxes, or point-of-sale terminals
+
+Invoke-SessionGopher -Thorough
+
+Import-Module path\to\SessionGopher.ps1;
+Invoke-SessionGopher -AllDomain -u domain.com\adm-arvanaghi -p s3cr3tP@ss
+
+```
 
 
 #### [](#header-4) Dump Chrome Passwords (Also Post Exploit)
