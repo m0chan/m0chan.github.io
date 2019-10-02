@@ -4,6 +4,7 @@ tags: [Windows Cheatsheet,Active Directory,Exploitation,Priv Esc,Post Exploit,Fi
 published: true
 description: A place for me to store my notes/tricks for Windows Based Systems. 
 toc: true
+image: http://109.74.206.50/WinLogo.png
 thumbnail: http://109.74.206.50/WinLogo.png
 ---
 
