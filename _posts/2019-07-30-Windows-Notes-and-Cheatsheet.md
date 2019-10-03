@@ -67,8 +67,8 @@ A place for me to store my notes/tricks for Windows Based Systems.
       * <a href="#-weirdhta---undetectable-hta">WeirdHTA - Undetectable HTA</a>
       * <a href="#-evilwinrm">EvilWinRM</a>
       * <a href="#-GetVulnerableGPO">GetVulnerableGPO</a>
-      * <a href="#-invoke--psimage">Invoke-PSImage</a>
-      * <a href="#-invoke--psimage">Meterpreter + Donut - Shellcode Injection .NET</a>
+      * <a href="#-invoke-psimage">Invoke-PSImage</a>
+      * <a href="#-meterpreter--donut---shellcode-injection-net">Meterpreter + Donut - Shellcode Injection .NET</a>
    * <a href="#privilege-escalation">Privilege Escalation</a>
       * <a href="#-basics-1">Basics</a>
       * <a href="#-powerupps1-sometimes-a-quick-win">PowerUp.ps1 (Sometimes a Quick Win)</a>
