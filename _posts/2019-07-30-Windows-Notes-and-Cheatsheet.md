@@ -69,6 +69,7 @@ A place for me to store my notes/tricks for Windows Based Systems.
       * <a href="#-GetVulnerableGPO">GetVulnerableGPO</a>
       * <a href="#-invoke-psimage">Invoke-PSImage</a>
       * <a href="#-meterpreter--donut---shellcode-injection-net">Meterpreter + Donut - Shellcode Injection .NET</a>
+      * <a href="#">DemiGuise - Encrypted HTA</a>
    * <a href="#privilege-escalation">Privilege Escalation</a>
       * <a href="#-basics-1">Basics</a>
       * <a href="#-powerupps1-sometimes-a-quick-win">PowerUp.ps1 (Sometimes a Quick Win)</a>
@@ -119,7 +120,7 @@ A place for me to store my notes/tricks for Windows Based Systems.
       * <a href="#-decrypt-efs-files-with-mimikatz-if-adminsystem">Decrypt EFS Files with Mimikatz if Admin/System</a>
       * <a href="#-uac-bypass">UAC Bypass</a>
       * <a href="#-golden-ticket-attack">Golden Ticket Attack</a>
-      * <a href="#-golden-ticket-attack">DCSync & Golden Ticket in One</a>
+      * <a href="#-dcsync--golden-ticket-in-one">DCSync & Golden Ticket in One</a>
       * <a href="#-child-domain-to-forest-compromise">Child Domain to Forest Compromise</a>
       * <a href="#-dump-ntdsdit">Dump NTDS.dit</a>
       * <a href="#-sebackupprivlege---dump-ntdsdit">SeBackupPrivlege - Dump NTDS.dit</a>
@@ -1055,6 +1056,18 @@ run
 
 ```
 
+
+
+#### [](#header-4) DemiGuise - Encrypted HTA
+
+```powershell
+#https://github.com/nccgroup/demiguise
+
+Run the demiguise.py file, giving it your encryption-key, payload-type, output file-name and command that you want the HTA run.
+
+Example: python demiguise.py -k hello -c "notepad.exe" -p Outlook.Application -o
+
+```
 
 
 
