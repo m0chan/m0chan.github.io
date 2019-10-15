@@ -259,6 +259,41 @@ find / -perm /u+w,g+w -d -user `whoami` 2>/dev/null
 
 
 
+Find World Writable Directories
+
+```
+find / \( -wholename '/home/homedir*' -prune \) -o \( -type d -perm -0002 \) -exec ls -ld '{}' ';'
+2>/dev/null | grep -v root
+
+find / -writable -type d 2>/dev/null
+```
+
+
+
+Find World Writable Directories for Root
+
+```
+find / \( -wholename ‘/home/homedir*’ -prune \) -o \( -type d -perm -0002 \) -exec ls -ld ‘{}’ ‘;’
+2>/dev/null | grep root
+```
+
+
+
+Find World Writable Files
+
+```
+find / \( -wholename ‘/home/homedir/*’ -prune -o -wholename ‘/proc/*’ -prune \) -o \( -type f -perm
+-0002 \) -exec ls -l ‘{}’ ‘;’ 2>/dev/null
+```
+
+
+
+Find World Writable files in /etc
+
+```
+find /etc -perm -2 -type f 2>/dev/null
+```
+
 Sniff Traffic
 
 ```
