@@ -107,6 +107,7 @@ A place for me to store my notes/tricks for Windows Based Systems.
       * <a href="#-run-seatbelt-absolutely-must">Run Seatbelt (ABSOLUTELY MUST)</a>
       * <a href="#-dump-creds">Dump Creds</a>
       * <a href="#-dump-creds-2">Dump Creds #2</a>
+      * <a href="#-running-mimikatz-with-gadgettojscript-or-vbs">Running MimiKatz with JScript or VBS</a>
       * <a href="#-sessiongopher">SessionGohper</a>
       * <a href="#-dump-chrome-passwords-also-post-exploit-1">Dump Chrome Passwords (Also Post Exploit)</a>
       * <a href="#-dump-process-memory-w-mimikittenz">Dump Process Memory w/ Mimikittenz</a>
