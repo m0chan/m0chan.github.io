@@ -16,10 +16,10 @@ This is a massive WIP and may seem a bit blank at the moment but I have a lot to
 
 Also before I continue these are my main references that have helped me build my own methodology.
 
-	* https://0xpatrik.com/subdomain-enumeration-2019/ - **Main One**
-	* https://pentester.land/conference-notes/2018/08/02/levelup-2018-the-bug-hunters-methodology-v3.html - **Main One**
-	* https://pentester.land/cheatsheets/2018/11/14/subdomains-enumeration-cheatsheet.html
-	* https://blog.usejournal.com/bug-hunting-methodology-part-1-91295b2d2066
+* https://0xpatrik.com/subdomain-enumeration-2019/ - **Main One**
+* https://pentester.land/conference-notes/2018/08/02/levelup-2018-the-bug-hunters-methodology-v3.html - **Main One**
+* https://pentester.land/cheatsheets/2018/11/14/subdomains-enumeration-cheatsheet.html
+* https://blog.usejournal.com/bug-hunting-methodology-part-1-91295b2d2066
 
 ## [](#header-2) Enumeration / Recon
 
