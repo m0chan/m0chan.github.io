@@ -10,10 +10,16 @@ thumbnail: https://i.pinimg.com/originals/7a/b0/b8/7ab0b884b7050bbae9cc976409cd5
 
 
 
-
-# [](#header-1)Bug Bounty Cheatsheet
-
 This is a massive WIP and may seem a bit blank at the moment but I have a lot to add here I just need to remember to do it and migrate my own-custom scripts onto here as a individual commands. 
+
+
+
+Also before I continue these are my main references that have helped me build my own methodology.
+
+	* https://0xpatrik.com/subdomain-enumeration-2019/ - **Main One**
+	* https://pentester.land/conference-notes/2018/08/02/levelup-2018-the-bug-hunters-methodology-v3.html - **Main One**
+	* https://pentester.land/cheatsheets/2018/11/14/subdomains-enumeration-cheatsheet.html
+	* https://blog.usejournal.com/bug-hunting-methodology-part-1-91295b2d2066
 
 ## [](#header-2) Enumeration / Recon
 
@@ -38,6 +44,18 @@ aptitude install jq pigz
 wget https://scans.io/data/rapid7/sonar.fdns_v2/20170417-fdns.json.gz
 cat 20170417-fdns.json.gz | pigz -dc | grep ".target.org" | jq`
 ```
+
+
+
+**Scan.io**
+
+```powershell
+Numerous repos & large dumps from various sources of Scans.
+
+https://scans.io/
+```
+
+
 
 
 
@@ -143,12 +161,6 @@ This will require basic auth key/secret which you can get for free from AWS
 ```bash
 wfuzz -c -f re -w /SecLists/Discovery/DNS/subdomains-top1mil-5000.txt -u "http://domain.htb" -H "Host: FUZZ.domain.htb" --hh 311\
 ```
-
-
-
-
-
-
 
 
 
