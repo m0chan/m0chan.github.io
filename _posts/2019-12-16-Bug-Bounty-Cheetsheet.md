@@ -89,6 +89,53 @@ altdns -i input_domains.txt -o ./output/path -w $Tools/altdns/words.txt
 
 
 
+**Find Resolvable Domains with MassDNS**
+
+```bash
+massdns -r $Tools/massdns/lists/resolvers.txt -t A -o S allsubdomains.txt -w livesubdomains.messy
+
+sed 's/A.*//' livesubdomains.messy | sed 's/CN.*//' | sed 's/\..$//' > domains.resolved
+```
+
+
+
+**Find HTTP/HTTPS Servers with HTTProbe**
+
+```powershell
+cat domains.resolved | httprobe -c 50 | tee http.servers
+```
+
+
+
+**Pass HTTProbe Results to EyeWitness**
+
+```powershell
+cp http.servers $Tools
+$Tools/EyeWitness/eyewitness.py --web -f http.servers
+```
+
+
+
+**Pass All Subdomains too S3 Scanner**
+
+```powershell
+Even if a subdomain does not follow normal bucket naming conventtion it may be resolving to an unsecured one. 
+
+Therefore run the following
+
+python $Tools/S3Scanner/s3scanner.py -l domains.resolved -o buckets.txt
+
+-d flag will dump all open buckets locally
+
+If you find open buckets you can run the useful bash look to enumerate content
+
+for i in $(cat buckets.txt); do aws s3 ls s3://$i; done;
+
+This will require basic auth key/secret which you can get for free from AWS
+```
+
+
+
 
 
 **Fuzzing Subdomains with WFuzz**
