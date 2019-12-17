@@ -1,7 +1,9 @@
 ---
 title: Bug Bounty Cheatsheet
 tags:[Bug Bounty,Subdomain Enumeration,Cheat Sheet]
-published: false
+published: true
+image: https://i.pinimg.com/originals/7a/b0/b8/7ab0b884b7050bbae9cc976409cd5567.png
+thumbnail: https://i.pinimg.com/originals/7a/b0/b8/7ab0b884b7050bbae9cc976409cd5567.png
 ---
 
 
