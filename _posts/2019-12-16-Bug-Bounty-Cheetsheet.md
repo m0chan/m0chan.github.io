@@ -1,10 +1,14 @@
 ---
 title: Bug Bounty Cheatsheet
-tags:[Bug Bounty,Subdomain Enumeration,Cheat Sheet]
+tags: [Windows Cheatsheet,Active Directory,Exploitation,Priv Esc,Post Exploit,File Transfer,Lateral Movement]
 published: true
+description: A place for me to store my notes/tricks for Bug Bounty Hunting - Big Work in Progress :). 
+toc: true
 image: https://i.pinimg.com/originals/7a/b0/b8/7ab0b884b7050bbae9cc976409cd5567.png
 thumbnail: https://i.pinimg.com/originals/7a/b0/b8/7ab0b884b7050bbae9cc976409cd5567.png
 ---
+
+
 
 
 # [](#header-1)Bug Bounty Cheatsheet
