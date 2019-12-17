@@ -164,6 +164,49 @@ wfuzz -c -f re -w /SecLists/Discovery/DNS/subdomains-top1mil-5000.txt -u "http:/
 
 
 
+### [](#header-3) ASN Enumeration
+
+I wasn't sure if I should add this under **Subdomain Enumeration** but doesn't really matter. Here are a few techniques to discover subdomains and ports via companies publicly available ASN numbers. 
+
+
+
+**Find Organistations ASN's**
+
+```bash
+amass intel -org paypal
+1449, PAYPAL-CORP - PayPal
+17012, PAYPAL - PayPal
+26444, PAYDIANT - PayPal
+59065, PAYPALCN PayPal Network Information Services (Shanghai) Co.
+206753, PAYPAL-
+```
+
+
+
+**Find IPv4 Address Space from ASN**
+
+```powershell
+I have yet to find a good tool to do this so I will be writing something in Go very shortly, but in the meantime you can simple visit 
+
+https://bgp.he.net/ASNNumberHere#_prefixes
+
+https://bgp.he.net/AS17012#_prefixes
+```
+
+<img src="http://i.imgur.com/ydjR8W9.png"></img>
+
+
+
+**Parse CIDR from ASN Lookup too AMass Enum**
+
+```bash
+amass enum -d paypal.com -cidr 64.4.240.0/21
+
+I have found to have really good results using `amass enum` here + large CIDR range however sometimes these can be false positives/dead hosts so remember to verifiy with MassDNS if they are live.
+```
+
+
+
 
 
 ### [](#header-3) Google Dorks
