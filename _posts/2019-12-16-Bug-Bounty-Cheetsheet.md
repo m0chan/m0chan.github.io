@@ -191,6 +191,10 @@ I have yet to find a good tool to do this so I will be writing something in Go v
 https://bgp.he.net/ASNNumberHere#_prefixes
 
 https://bgp.he.net/AS17012#_prefixes
+
+Correction: You can start scanning ASNs directly with the below command
+
+amass -d paypal.com -asn 17012
 ```
 
 <img src="http://i.imgur.com/ydjR8W9.png"></img>
