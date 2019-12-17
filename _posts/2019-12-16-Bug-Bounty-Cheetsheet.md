@@ -1,6 +1,6 @@
 ---
 title: Bug Bounty Cheatsheet
-tags: [Windows Cheatsheet,Active Directory,Exploitation,Priv Esc,Post Exploit,File Transfer,Lateral Movement]
+tags: [Bug Bounty,Web App,Subdomain Enumeration,Cheatsheet]
 published: true
 description: A place for me to store my notes/tricks for Bug Bounty Hunting - Big Work in Progress :). 
 toc: true
