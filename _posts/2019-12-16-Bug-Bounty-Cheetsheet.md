@@ -47,6 +47,21 @@ cat 20170417-fdns.json.gz | pigz -dc | grep ".target.org" | jq`
 
 
 
+**Assetfinder by Tomnomnom**
+
+```powershell
+https://github.com/tomnomnom/assetfinder
+
+Of course Tomnomnom was going to appear here (alot) he has a lot of resources for BugBounty and assetfinder is an awesome place to start for easy wins
+
+go get -u github.com/tomnomnom/assetfinder
+
+assetfinder domain.com
+
+```
+
+
+
 **Scan.io**
 
 ```powershell
