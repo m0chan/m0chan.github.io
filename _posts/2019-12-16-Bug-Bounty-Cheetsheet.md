@@ -73,6 +73,17 @@ Needs SPYSE_API_TOKEN environment variable set (the free version always gives th
 
 
 
+**WaybackURLs - Fetch all URL's that WayBackMachine Knows About a Domain**
+
+```powershell
+#https://github.com/tomnomnom/waybackurls
+
+
+cat subdomains | waybackurls > urls
+```
+
+
+
 **Scan.io**
 
 ```powershell
@@ -272,6 +283,36 @@ Of course if we have a large amount ot subs we can't just send over directory-li
 python3 dirsearch.py -L http.servers -e .* -w paths --simple-report=dirsearch.paypal -t 50 
 
 Be careful with the -t flag, I am using a pretty beefy VPS for this stage :) 
+```
+
+
+
+
+
+**Meg - Find Many Paths for Hosts (Similar to DirSearch)**
+
+```powershell
+#https://github.com/tomnomnom/meg
+
+meg --verbose paths http.servers
+
+This will create a /out folder with results from each web server (use this after httprobe) - Then we can simply start grepping for juicy stuff
+
+grep -r api
+grep -r phpinfo
+
+etc etc
+```
+
+
+
+**WaybackURLs - Fetch all URL's that WayBackMachine Knows About a Domain**
+
+```powershell
+#https://github.com/tomnomnom/waybackurls
+
+
+cat subdomains | waybackurls > urls
 ```
 
 
