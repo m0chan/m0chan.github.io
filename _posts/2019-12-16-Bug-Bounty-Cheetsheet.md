@@ -58,6 +58,17 @@ go get -u github.com/tomnomnom/assetfinder
 
 assetfinder domain.com
 
+You need to set a couple API/Tokens for this too work, similar too Subfinder
+
+facebook
+Needs FB_APP_ID and FB_APP_SECRET environment variables set (https://developers.facebook.com/)
+
+virustotal
+Needs VT_API_KEY environment variable set (https://developers.virustotal.com/reference)
+
+findsubdomains
+Needs SPYSE_API_TOKEN environment variable set (the free version always gives the first response page, and you also get "25 unlimited requests") — (https://spyse.com/apidocs)
+
 ```
 
 
