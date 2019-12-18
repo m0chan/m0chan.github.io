@@ -191,10 +191,6 @@ I have yet to find a good tool to do this so I will be writing something in Go v
 https://bgp.he.net/ASNNumberHere#_prefixes
 
 https://bgp.he.net/AS17012#_prefixes
-
-Correction: You can start scanning ASNs directly with the below command
-
-amass -d paypal.com -asn 17012
 ```
 
 <img src="http://i.imgur.com/ydjR8W9.png"></img>
@@ -207,6 +203,49 @@ amass -d paypal.com -asn 17012
 amass enum -d paypal.com -cidr 64.4.240.0/21
 
 I have found to have really good results using `amass enum` here + large CIDR range however sometimes these can be false positives/dead hosts so remember to verifiy with MassDNS if they are live.
+```
+
+
+
+
+
+### [](#header-3) Basic Content Finding
+
+Here I will discuss some basic tactics once you have a nice list of live subdomains
+
+
+
+**Find Easy Wins with DirSearch**
+
+```powershell
+Of course if we have a large amount ot subs we can't just send over directory-list-2.3medium so I typically use this small list against all the subdomains and (or) ip ranges from ASN lookups. 
+
+/phpinfo.php
+/info.php
+/admin.php
+/api/apidocs
+/apidocs
+/api
+/api/v2
+/api/v1
+/v2
+/package.json
+/security.txt
+/application.wadl
+/api/apidocs
+/swagger
+/swagger-ui
+/swagger-ui.html
+/swagger/swagger-ui.html
+/api/swagger-ui.html
+/v1.x/swagger-ui.html
+/swagger/index.html
+/graphql
+/graphiql
+
+python3 dirsearch.py -L http.servers -e .* -w paths --simple-report=dirsearch.paypal -t 50 
+
+Be careful with the -t flag, I am using a pretty beefy VPS for this stage :) 
 ```
 
 
