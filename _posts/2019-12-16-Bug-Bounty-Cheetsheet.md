@@ -303,5 +303,6 @@ inurl:redirect=https
 inurl:redirect=http
 inurl:link=http
 inurl:link=https
+inurl:redirectUrl=http site:paypal.com
 ```
 
