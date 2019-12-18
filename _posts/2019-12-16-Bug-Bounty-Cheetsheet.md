@@ -17,10 +17,16 @@ This is a massive WIP and may seem a bit blank at the moment but I have a lot to
 Also before I continue these are my main references that have helped me build my own methodology.
 
 * https://0xpatrik.com/subdomain-enumeration-2019/ - **Main One**
+
 * https://payhip.com/b/wAoh - **Main One (Awesome Book)**
+
 * https://pentester.land/conference-notes/2018/08/02/levelup-2018-the-bug-hunters-methodology-v3.html - **Main One**
+
 * https://pentester.land/cheatsheets/2018/11/14/subdomains-enumeration-cheatsheet.html
+
 * https://blog.usejournal.com/bug-hunting-methodology-part-1-91295b2d2066
+
+  
 
 ## [](#header-2) Enumeration / Recon
 
@@ -269,9 +275,11 @@ cat paypal.subdomains | grep azure
 **Subdomain Bruteforcing with all.txt**
 
 ```powershell
-https://gist.github.com/jhaddix/86a06c5dc309d08580a018c66354a056
+#https://gist.github.com/jhaddix/86a06c5dc309d08580a018c66354a056
 
 todo - As there is a few methods to talk about here but the best wordlists is Jason Haddix's all.txt
+
+dnsrecon -d paypal.com -D all.txt -t brt
 ```
 
 
@@ -288,6 +296,7 @@ numerous datasets on Google Big query that are constantly being updated with
 new information. These datasets are used by common speak to create a wordlist
 that contain current technologies and terminology.
 
+dnsrecon -d paypal.com -D commonspeak.txt -t brt
 ```
 
 
