@@ -191,6 +191,17 @@ This will require basic auth key/secret which you can get for free from AWS
 
 
 
+**Finding CNames for all Domains**
+
+```bash
+massdns -r massdns/lists/resolvers.txt -t CNAME -o S -w paypal.massdns.cnames paypal.subdomains
+
+cat paypal.subdomains | grep trafficmanager
+cat paypal.subdomains | grep azure
+```
+
+
+
 
 
 **Fuzzing Subdomains with WFuzz**
