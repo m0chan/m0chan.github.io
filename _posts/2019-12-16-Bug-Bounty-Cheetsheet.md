@@ -17,11 +17,49 @@ This is a massive WIP and may seem a bit blank at the moment but I have a lot to
 Also before I continue these are my main references that have helped me build my own methodology.
 
 * https://0xpatrik.com/subdomain-enumeration-2019/ - **Main One**
+* https://payhip.com/b/wAoh - **Main One (Awesome Book)**
 * https://pentester.land/conference-notes/2018/08/02/levelup-2018-the-bug-hunters-methodology-v3.html - **Main One**
 * https://pentester.land/cheatsheets/2018/11/14/subdomains-enumeration-cheatsheet.html
 * https://blog.usejournal.com/bug-hunting-methodology-part-1-91295b2d2066
 
 ## [](#header-2) Enumeration / Recon
+
+
+
+### [](#header-2) Initial Stuff
+
+
+
+Before we jump into Subdomain Enumeration which is typically the first step for any program that has a wildcard scope `*.domain` It's worth mentioning a few things and different locations we can get data from. 
+
+
+
+**Port Scanning IP Ranges**
+
+```powershell
+First tip is to use Basic Shodan, Google Dorks & ASN lookups to find target CIDR ranges - If you are attacking a very large program this be thousands of IP addresses but is usually worth it and definetely a background task to consider. 
+
+You can then import all the scans into something like this for a nice overview
+
+https://ivre.rocks/
+
+Small Tips:
+
+1) Run this on a VPS (Linode.com is my go-to)
+2) Run inside a screen session with Screen -SmL
+3) Pipe the output with | tee 
+
+Btw, some people will tell you to use massscan due to the speed but I find it misses a lot of ports so VPS+ nMap + Screen is the most reliable.  
+```
+
+
+
+
+
+*More to follow here....* 
+
+
+
 
 ### [](#header-3) Sub Domain Enumeration
 
@@ -292,6 +330,26 @@ Of course if we have a large amount ot subs we can't just send over directory-li
 /graphiql
 
 python3 dirsearch.py -L http.servers -e .* -w paths --simple-report=dirsearch.paypal -t 50 
+
+Be careful with the -t flag, I am using a pretty beefy VPS for this stage :) 
+```
+
+
+
+**Excessive DirSearching with RAFT**
+
+```powershell
+This may take a very long time to run and timeout depending on your scope but these lists are the goto when it comes to dirbusting
+
+Tip: Run this on a VPS
+
+https://github.com/danielmiessler/SecLists/blob/master/Discovery/Web-Content/raft-large-directories.txt
+
+https://github.com/danielmiessler/SecLists/blob/master/Discovery/Web-Content/raft-large-files.txt
+
+I have had some nice success with raft-large-files.php 
+
+python3 dirsearch.py -L http.servers -e .* -w wordlist --simple-report=dirsearch.paypal -t 50 
 
 Be careful with the -t flag, I am using a pretty beefy VPS for this stage :) 
 ```
