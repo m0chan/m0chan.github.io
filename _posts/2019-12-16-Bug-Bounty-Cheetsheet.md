@@ -145,6 +145,20 @@ https://scans.io/
 
 
 
+**Assets-From-SPF / Pull Domains from SPF Records**
+
+```powershell
+https://github.com/yamakira/assets-from-spf
+
+$ python assets_from_spf.py --help
+Usage: assets_from_spf.py [OPTIONS] DOMAIN
+
+Options:
+  --asn / --no-asn  Enable/Disable ASN enumeration
+  --help            Show this message and exit.
+```
+
+
 
 **Generate Basic Permutations**
 
