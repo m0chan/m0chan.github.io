@@ -317,6 +317,31 @@ cat subdomains | waybackurls > urls
 
 
 
+**Tomnomnom's Concurl**
+
+```powershell
+#https://github.com/tomnomnom/concurl
+
+
+▶ cat urls.txt
+https://example.com/path?one=1&two=2
+https://example.com/pathtwo?two=2&one=1
+https://example.net/a/path?two=2&one=1
+
+▶ cat urls.txt | concurl -c 3
+out/example.com/6ad33f150c6a17b4d51bb3a5425036160e18643c https://example.com/path?one=1&two=2
+out/example.net/33ce069e645b0cb190ef0205af9200ae53b57e53 https://example.net/a/path?two=2&one=1
+out/example.com/5657622dd56a6c64da72459132d576a8f89576e2 https://example.com/pathtwo?two=2&one=1
+
+▶ head -n 7 out/example.net/33ce069e645b0cb190ef0205af9200ae53b57e53
+cmd: curl --silent https://example.net/a/path?two=2&one=1
+
+
+
+Concurrent HTTP Requests because Go is fast as f
+```
+
+
 **Get All Subdomain HTTP Headers & Responses**
 
 ```bash
