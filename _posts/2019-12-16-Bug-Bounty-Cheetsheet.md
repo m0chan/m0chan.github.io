@@ -240,6 +240,30 @@ cat paypal.subdomains | grep azure
 
 
 
+**Subdomain Bruteforcing with all.txt**
+
+```powershell
+https://gist.github.com/jhaddix/86a06c5dc309d08580a018c66354a056
+
+todo - As there is a few methods to talk about here but the best wordlists is Jason Haddix's all.txt
+```
+
+
+
+**Subdomain Bruteforcing with Commonspeak Wordlists**
+
+```powershell
+#https://github.com/assetnote/commonspeak2
+#https://github.com/assetnote/commonspeak2-wordlists
+
+Common speak from Assetnote has a unique way of generating wordlists and
+one of my favorite wordlists to use for subdomain brute forcing. There are
+numerous datasets on Google Big query that are constantly being updated with
+new information. These datasets are used by common speak to create a wordlist
+that contain current technologies and terminology.
+
+```
+
 
 
 **Fuzzing Subdomains with WFuzz**
@@ -336,6 +360,26 @@ Be careful with the -t flag, I am using a pretty beefy VPS for this stage :)
 
 
 
+**dirSearching with RobotsDisallowed1000.txt**
+
+```powershell
+This is similar to the previous method but we are using a Wordlist supplied with SecLists that details the top 1000 entries inside Robots.txt
+
+https://github.com/danielmiessler/SecLists/blob/master/Discovery/Web-Content/RobotsDisallowed-Top1000.txt
+
+This usually dosent take too long but can be depending on the scope.
+
+Tip: Run this on a VPS
+
+I have had some nice success with raft-large-files.php 
+
+python3 dirsearch.py -L http.servers -e .* -w RobotsDisallowed-Top1000.txt --simple-report=dirsearch.paypal -t 50 
+
+Be careful with the -t flag, I am using a pretty beefy VPS for this stage :) 
+```
+
+
+
 **Excessive DirSearching with RAFT**
 
 ```powershell
@@ -353,7 +397,6 @@ python3 dirsearch.py -L http.servers -e .* -w wordlist --simple-report=dirsearch
 
 Be careful with the -t flag, I am using a pretty beefy VPS for this stage :) 
 ```
-
 
 
 
