@@ -183,7 +183,7 @@ done;
 ```powershell
 You could do with a amass passive scan and not resolve domains with MassDNS later but I usually just go with active :) 
 
-amass enum -d domain.com
+amass enum -d paypal.com,paypal.co.uk
 ```
 
 
@@ -280,6 +280,9 @@ cat paypal.subdomains | grep azure
 todo - As there is a few methods to talk about here but the best wordlists is Jason Haddix's all.txt
 
 dnsrecon -d paypal.com -D all.txt -t brt
+
+#Fastest is Probably SubBrute.py
+python $Tools/subbrute/subbrute.py paypal.com paypal.co.uk -t all.txt  
 ```
 
 
@@ -297,6 +300,10 @@ new information. These datasets are used by common speak to create a wordlist
 that contain current technologies and terminology.
 
 dnsrecon -d paypal.com -D commonspeak.txt -t brt
+
+
+#Fastest is Probably SubBrute.py
+python $Tools/subbrute/subbrute.py paypal.com paypal.co.uk -t commonspeak.txt 
 ```
 
 
