@@ -328,6 +328,8 @@ Great way to find legacy web servers or quickly check the reponses to find easy 
 
 Stored as GetAllHeadersandResponses.sh in my repo :)
 
+Todo: I will rewrite this to support Tomnomnoms concurl to carry out concurrent http requests when I have time :) 
+
 
 #!/bin/bash
 mkdir headers
