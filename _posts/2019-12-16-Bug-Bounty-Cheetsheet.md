@@ -317,6 +317,133 @@ cat subdomains | waybackurls > urls
 
 
 
+**Get All Subdomain HTTP Headers & Responses**
+
+```bash
+#Reference: https://medium.com/bugbountywriteup/fasten-your-recon-process-using-shell-scripting-359800905d2a
+
+Cool little bash loop to handle this, we will loop through all the found http/https servers from httprobe and grab the headers and responses. 
+
+Great way to find legacy web servers or quickly check the reponses to find easy wins. 
+
+Stored as GetAllHeadersandResponses.sh in my repo :)
+
+
+#!/bin/bash
+mkdir headers
+mkdir responsebody
+CURRENT_PATH=$(pwd)
+for x in $(cat $1)
+do
+        NAME=$(echo $x | awk -F/ '{print $3}')
+        curl -X GET -H "X-Forwarded-For: evil.com" $x -I > "$CURRENT_PATH/headers/$NAME"
+        curl -s -X GET -H "X-Forwarded-For: evil.com" -L $x > "$CURRENT_PATH/responsebody/$NAME"
+done
+
+
+In the next step I will show how we can use the collected data to grab all Javascript files from the endpoints :) There is also another way with JSearch which I will show further down. 
+```
+
+
+
+**Collecting JavaScript Files**
+
+```bash
+#Reference: https://medium.com/bugbountywriteup/fasten-your-recon-process-using-shell-scripting-359800905d2a
+
+This script will crawl all the responses from the previous script and store all javascripts files inside domain.com/scripts
+
+This is a good tactic as sometimes devs will hardcore API keys/tokens etc in Javascript files without realising. 
+
+Stored as GetJSFiles.sh in my repo :)
+
+#!/bin/bash
+mkdir scripts
+mkdir scriptsresponse
+RED='\033[0;31m'
+NC='\033[0m'
+CUR_PATH=$(pwd)
+for x in $(ls "$CUR_PATH/responsebody")
+do
+        printf "\n\n${RED}$x${NC}\n\n"
+        END_POINTS=$(cat "$CUR_PATH/responsebody/$x" | grep -Eoi "src=\"[^>]+></script>" | cut -d '"' -f 2)
+        for end_point in $END_POINTS
+        do
+                len=$(echo $end_point | grep "http" | wc -c)
+                mkdir "scriptsresponse/$x/"
+                URL=$end_point
+                if [ $len == 0 ]
+                then
+                        URL="https://$x$end_point"
+                fi
+                file=$(basename $end_point)
+                curl -X GET $URL -L > "scriptsresponse/$x/$file"
+                echo $URL >> "scripts/$x"
+        done
+done
+
+
+This method can be a little slow as there is no multithreading involved, but works perfect for smaller programs :)
+```
+
+
+
+
+
+**Finding Hidden Endpoints from Scraped JS Files**
+
+```bash
+#Reference: https://medium.com/bugbountywriteup/fasten-your-recon-process-using-shell-scripting-359800905d2a
+
+#Dependancy: https://github.com/jobertabma/relative-url-extractor
+
+Similar to the previous scripts this bash script will require the previous scripts to be run as it relys on the output. 
+
+What we do here is parse the relative paths present in the scraped JS Files, this way we can find some interesting endpoints and configurations which may have some vulnerable parameters. 
+
+Providing we have 'relative-url-extractor' installed we can use the following bash script to achieve what we need.
+
+Stored in my Repo as HiddenEndpointLoop.sh
+
+#!/bin/bash
+#looping through the scriptsresponse directory
+mkdir endpoints
+CUR_DIR=$(pwd)
+for domain in $(ls scriptsresponse)
+do
+        #looping through files in each domain
+        mkdir endpoints/$domain
+        for file in $(ls scriptsresponse/$domain)
+        do
+                ruby ~/relative-url-extractor/extract.rb scriptsresponse/$domain/$file >> endpoints/$domain/$file 
+        done
+done
+
+
+```
+
+
+
+
+
+**Port Scanning Subdomains**
+
+```powershell
+I won't get into this much as it's fairly straight forward, simply parse your subdomains.resolved too nmap with your preferred syntax and let it run away.
+
+Small Tips:
+
+1) Run this on a VPS (Linode.com is my go-to)
+2) Run inside a screen session with Screen -SmL
+3) Pipe the output with | tee 
+
+Btw, some people will tell you to use massscan due to the speed but I find it misses a lot of ports so VPS+ nMap + Screen is the most reliable.  
+```
+
+
+
+
+
 
 
 ### [](#header-3) Google Dorks
