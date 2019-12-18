@@ -34,6 +34,18 @@ Before we jump into Subdomain Enumeration which is typically the first step for 
 
 
 
+Also a small tip moving forward, if you are going to get into Bug Bounty I recommend that you rent yourself a VPS as it will help a lot when carrying out long & CPU intensive tasks. It will also help you offload heavy tasks and allow you to keep your main workstation for manual testing and recon etc. 
+
+
+
+My personal preference is Linode.com as I have used them for 4/5 years without a single issue and it is not a pay-as-you-go service like DigitalOcean.
+
+
+
+Referral Code: https://www.linode.com/?r=91c07fff7abd148b08880020c558d5cace801cc3
+
+
+
 **Port Scanning IP Ranges**
 
 ```powershell
