@@ -10,7 +10,7 @@ show_excerpts: true # set to true to show excerpts on the homepage
 sass:
   sass_dir: _sass
 plainwhite:
-  name: Aidan Preston
+  name: m0chan
   tagline: Penetration Tester
   date_format: "%b %-d, %Y"
   sitemap: true # set to true to generate sitemap.xml content
@@ -19,7 +19,7 @@ plainwhite:
   social_links:
     twitter: m0chan98
     github:  m0chan
-    linkedIn: in/aidan-preston-862479127
+    #linkedIn: jekyll
     rss: /feed.xml
     # dribbble: jekyll
     # facebook: jekyll
