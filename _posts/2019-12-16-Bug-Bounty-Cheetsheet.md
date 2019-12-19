@@ -956,3 +956,66 @@ There is a awesome list of dorks located here
 Its very common for devs to accidently push  
 ```
 
+
+
+
+
+
+
+## [](#header-2) Exploitation
+
+
+
+This is a hard section to type up as some techniques may fall under other headings :) 
+
+
+
+**Unauthenticated Elastic Search**
+
+```powershell
+“ES is a document-oriented database designed to store, retrieve, and manage document-oriented or semi-structured data"
+
+Elastic Search has a HTTP Server running on Port 9200 that can be used to query the database and sometimes it supports unauthenticated access.
+
+We can find these servers by scanning for Port 9200 or the Shodan Dork below.
+
+port:"9200" elastic
+```
+
+
+
+**Unauthenticated Docker API**
+
+```powershell
+Similar to Elastic Search, Docker has some servies that can be exposed that may be an easy win. Mainly when you install docker on system it will pose an API on your localhost on Port 2375. As its on localhost by default you cant interact however in certain instances this is changed and it is available.
+
+Shodan Dorks come in Handy here
+
+port:"2375" docker
+product:docker
+
+If you find a endpoint you can verifiy that its vulnerable by making a GET request too `/version`
+
+From here you can connect with the CLI version of Docker
+
+docker -H ip:port ps
+```
+
+
+
+**Unauthenticated Kubernetes API**
+
+```powershell
+Similar to Elastic Search, Docker has some servies that can be exposed that may be an easy win. Mainly when you install docker on system it will pose an API on your localhost on Port 2375. As its on localhost by default you cant interact however in certain instances this is changed and it is available.
+
+Shodan Dorks come in Handy here
+
+port:"2375" docker
+product:docker
+
+If you find a endpoint you can verifiy that its vulnerable by making a GET request too `/version`
+
+From here you can connect with the CLI version of Docker
+
+docker -H ip:port ps
+```
