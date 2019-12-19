@@ -10,7 +10,7 @@ thumbnail: https://i.pinimg.com/originals/7a/b0/b8/7ab0b884b7050bbae9cc976409cd5
 
 
 
-This is a massive WIP and may seem a bit blank at the moment but I have a lot to add here I just need to remember to do it and migrate my own-custom scripts onto here as a individual commands. 
+This is a massive WIP and truthfully I was planning on keeping this a private post as I am really just braindumping my techniques on here not really ordered or structured but I figured it may be useful to other people.
 
 
 
@@ -844,4 +844,75 @@ During our recon phase and the techniques we employed above we gathered a lot of
 
 
 Fingerprinting usually consists of using our discovered endpoints and analysing the headers,version numbers, open/closed ports etc. 
+
+
+
+First technique is typically finding the open ports which we could do with nMap but it will take a while especially if we are working on a big program perhaps with tens of thousands of IP's. If this is the case then it's probably best to look at Shodan. 
+
+
+
+Shodan Scans the entire internet on a daily basis and provides the data to it's users **(I highly recommend you get a pro account)**
+
+
+
+**Shodan Port Scan w/ CIDR**
+
+```bash
+shodan.io
+
+net:CIDR/24,CIDR/24
+
+Example
+
+net:109.70.100.50/24,89.67.54.0/22
+
+You could also search via Organistations Name with
+org:Paypal
+
+Of course these techniques will only return assets on your targets OWN external network but what about resources hosted with thirdparty cloud providers such as AWS or Azure. One Techn to find these is to search with SSL
+
+ssl:paypal
+```
+
+
+
+**MassScan**
+
+```powershell
+#https://github.com/robertdavidgraham/masscan
+
+MassScan is awesome but truthfully from my experiences it can be very hit or miss and sometimes misses ports, I have tried scanning my VPS with it and it dosent show half the ports. No idea why however its still worth mentioning due to the speed 
+
+sudo masscan -p<Port Here> <CIDR Range Here> --exclude <Exclude IP> --
+banners -oX <Out File Name>
+
+You can also use the massscan-web-ui from OffSec or grep the results.
+
+https://github.com/offensive-security/masscan-web-ui
+```
+
+
+
+**Wappalyzer**
+
+```powershell
+#https://github.com/vincd/wappylyzer
+
+
+One of the best tools for identifying the technologies in use on a site, I prefer the chrome plugin or firefox but the script above also works :) 
+```
+
+
+
+**WafW00f**
+
+```powershell
+#https://github.com/EnableSecurity/wafw00f
+
+Awesome script to detect if your target is protected behind an XSS before you started launching payloads. 
+
+There are also a few cool Burp plugins to faciliate this.
+
+The great thing about Wafw00f is it will try detect which WAF is in place, for ex. Akami. Once we know the WAF in play we can start lookin for bypasses and other bug submissions that have bypassed this and tailor our payloads to our needs. 
+```
 
