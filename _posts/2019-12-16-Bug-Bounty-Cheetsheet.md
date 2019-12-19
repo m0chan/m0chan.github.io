@@ -663,8 +663,36 @@ done
 This method can be a little slow as there is no multithreading involved, but works perfect for smaller programs :)
 ```
 
+**JavaScript Link Finder**
+
+```powershell
+#https://github.com/GerbenJavado/LinkFinder
+
+LinkFinder is one of the best tools for parsing endpoints from JavaScript files. The tool works by using JSBeautifier under the hood alongside a list of regexes to find URL patterns. 
+
+We can simple pass a .js file locally and it will parse all links contained within the JS files, great for finding endpoints. 
+
+Of course if we combine this with the technique above we can usually find quite a lot.
+
+python $Tools/LinkFinder -i m0chan.js -o cli
+```
 
 
+
+**JsSearch**
+```powershell
+#https://github.com/incogbyte/jsearch
+
+JsSearch is another handy JavaScript parser except this tool aims to find sensitive or interesting strings within JSFiles instead of endpoints. As we know sometimes developers can hardcore API keys etc in JS files and forget. 
+
+python3.7 $Tools/jsearch/jsearch.py -u https://starbucks.com -n Starbucks
+
+This tool is handy as it does not require the files to be stored locally and can simply take a domain as input and recursively crawl and analyse.
+
+Although I recommened you add your own regexes as the default colletion is quite minimal.
+
+
+```
 
 
 **Finding Hidden Endpoints from Scraped JS Files**
@@ -749,5 +777,71 @@ inurl:redirect=http
 inurl:link=http
 inurl:link=https
 inurl:redirectUrl=http site:paypal.com
+
+#Codepad - Online Interpreter/Compiler, Sometimes Hard Coded Creds
+site:codepad.co "Tesla"
+
+#Scribd - EBooks / Although Sometimes Internal Files
+site:scribd.com "Tesla"
+
+#NodeJS Source
+site:npmjs.com "Tesla"
+site:npm.runkit.com "Tesla"
+
+#Libararies IO
+site:libraries.io "Tesla"
+
+#Coggle - MindMapping Software
+site:coggle.it "Tesla"
+
+#Papaly
+site:papaly.com "Tesla"
+
+#Trello - Board Software
+site:trello.com "Tesla"
+
+#Prezi - Presentation Software
+site:prezi.com "Tesla"
+
+#JSDeliver - CDN for NPM & GitHub
+site:jsdelivr.net "Tesla"
+
+#Codepen - Online Coding Tool
+site:codepen.io "Tesla"
+
+#Pastebin - Online Txt Sharing
+site:pastebin.com "Tesla"
+
+#Repl - Online Compiler
+site:repl.it "Tesla"
+
+#Gitter - Open Source Messaging
+site:gitter.im "Tesla"
+
+#BitBucket - Similar to GitHub can Store Source Code
+site:bitbucket.org "Tesla"
+
+#Atlassian - Useful to find Confluence and Jira
+site:*.atlassian.net "Tesla"
+
+#Gitlab - Source Code
+inurl:gitlab "Tesla"
+
+
+We can also find specific content by appending the "ext:pdf or ext:conf" etc etc
 ```
+
+
+
+
+
+## [](#header-2) Fingerprinting
+
+
+
+During our recon phase and the techniques we employed above we gathered a lot of information about a target from subdomains, CIDR, ASN's, Endpoints etc but we didn't really gather HTTP Headers. I did show a few techniques but they probably fit in here more so I've just duplicated them for simplicity. 
+
+
+
+Fingerprinting usually consists of using our discovered endpoints and analysing the headers,version numbers, open/closed ports etc. 
 
