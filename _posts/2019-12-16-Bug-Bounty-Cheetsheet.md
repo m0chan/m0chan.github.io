@@ -78,10 +78,11 @@ Btw, some people will tell you to use massscan due to the speed but I find it mi
 
 
 
-
 ### [](#header-3) Sub Domain Enumeration
 
-**Basic Enumeration with Subfinder**
+ 
+
+#### Basic Enumeration with Subfinder
 
 ```powershell
 Make sure all API keys are populated, Shodan pro account is beneficial :) 
@@ -91,7 +92,7 @@ Subfinder -d domain.com -o Outfile.txt
 
 
 
-**Rapid7 FDNS**
+#### Rapid7 FDNS
 
 ```powershell
 https://opendata.rapid7.com/sonar.fdns_v2/
@@ -103,7 +104,7 @@ cat 20170417-fdns.json.gz | pigz -dc | grep ".target.org" | jq`
 
 
 
-**Rapid7 FDNS (Part 2)**
+#### Rapid7 FDNS (Part 2)
 
 ```powershell
 https://opendata.rapid7.com/sonar.fdns_v2/
@@ -122,7 +123,7 @@ https://opendata.rapid7.com/sonar.fdns_v2/
 
 
 
-**Assetfinder by Tomnomnom**
+#### Assetfinder by Tomnomnom
 
 ```powershell
 https://github.com/tomnomnom/assetfinder
@@ -148,7 +149,7 @@ Needs SPYSE_API_TOKEN environment variable set (the free version always gives th
 
 
 
-**WaybackURLs - Fetch all URL's that WayBackMachine Knows About a Domain**
+#### WaybackURLs - Fetch all URL's that WayBackMachine Knows About a Domain
 
 ```powershell
 #https://github.com/tomnomnom/waybackurls
@@ -159,7 +160,7 @@ cat subdomains | waybackurls > urls
 
 
 
-**Scan.io**
+#### Scan.io
 
 ```powershell
 Numerous repos & large dumps from various sources of Scans.
@@ -170,7 +171,7 @@ https://scans.io/
 
 
 
-**Assets-From-SPF / Pull Domains from SPF Records**
+#### Assets-From-SPF / Pull Domains from SPF Records
 
 ```powershell
 https://github.com/yamakira/assets-from-spf
@@ -185,7 +186,7 @@ Options:
 
 
 
-**GitHub SubDomain Scrap**
+#### GitHub SubDomain Scrap
 
 ```powershell
 https://github.com/gwen001/github-search/blob/master/github-subdomains.py           
@@ -200,7 +201,7 @@ python3 $Tools/github-subdomains.py -d paypal.com -t
 
 
 
-**Generate Basic Permutations**
+#### Generate Basic Permutations
 
 ```bash
 I have a small bash loop to handle this 
@@ -212,7 +213,7 @@ done;
 
 
 
-**AMass Basic Active Scan**
+#### AMass Basic Active Scan
 
 ```powershell
 You could do with a amass passive scan and not resolve domains with MassDNS later but I usually just go with active :) 
@@ -222,7 +223,7 @@ amass enum -d paypal.com,paypal.co.uk
 
 
 
-**Certificate Transparency Logs**
+#### Certificate Transparency Logs
 
 ```powershell
 python3 $BugBounty crt.sh domain.com
@@ -232,7 +233,7 @@ This script be found in my GitHub repo, it just takes a domain and passes it to 
 
 
 
-**Subdomain Brute Force (Subbrute & MassDNS)**
+#### Subdomain Brute Force (Subbrute & MassDNS)
 
 ```bash
 $Tools/subbrute.py $Tools/massdns/lists/names.txt domain.com | massdns -r $Tools/massdns/lists/resolvers.txt -t A -a -o -w massdns_output.txt -
@@ -240,7 +241,7 @@ $Tools/subbrute.py $Tools/massdns/lists/names.txt domain.com | massdns -r $Tools
 
 
 
-**Generate Permutations with AltDNS**
+#### Generate Permutations with AltDNS
 
 ```bash
 altdns -i input_domains.txt -o permutationoutput.txt -w $Tools/altdns/words.txt -r -s resolved_output.txt
@@ -250,7 +251,7 @@ This may take a while to run but should always be part of your recon process no 
 
 
 
-**Find Resolvable Domains with MassDNS**
+#### Find Resolvable Domains with MassDNS
 
 ```bash
 massdns -r $Tools/massdns/lists/resolvers.txt -t A -o S allsubdomains.txt -w livesubdomains.messy
@@ -260,7 +261,7 @@ sed 's/A.*//' livesubdomains.messy | sed 's/CN.*//' | sed 's/\..$//' > domains.r
 
 
 
-**Find HTTP/HTTPS Servers with HTTProbe**
+#### Find HTTP/HTTPS Servers with HTTProbe
 
 ```powershell
 cat domains.resolved | httprobe -c 50 | tee http.servers
@@ -268,7 +269,7 @@ cat domains.resolved | httprobe -c 50 | tee http.servers
 
 
 
-**Pass HTTProbe Results to EyeWitness**
+#### Pass HTTProbe Results to EyeWitness
 
 ```powershell
 cp http.servers $Tools
@@ -277,7 +278,7 @@ $Tools/EyeWitness/eyewitness.py --web -f http.servers
 
 
 
-**Pass All Subdomains too S3 Scanner**
+#### Pass All Subdomains too S3 Scanner
 
 ```powershell
 Even if a subdomain does not follow normal bucket naming conventtion it may be resolving to an unsecured one. 
@@ -297,7 +298,7 @@ This will require basic auth key/secret which you can get for free from AWS
 
 
 
-**Finding CNames for all Domains**
+#### Finding CNames for all Domains
 
 ```bash
 massdns -r massdns/lists/resolvers.txt -t CNAME -o S -w paypal.massdns.cnames paypal.subdomains
@@ -308,7 +309,7 @@ cat paypal.subdomains | grep azure
 
 
 
-**Subdomain Bruteforcing with all.txt**
+#### Subdomain Bruteforcing with all.txt
 
 ```powershell
 #https://gist.github.com/jhaddix/86a06c5dc309d08580a018c66354a056
@@ -327,7 +328,7 @@ gobuster dns -d paypal.com -w all.txt
 
 
 
-**Subdomain Bruteforcing with Commonspeak Wordlists**
+#### Subdomain Bruteforcing with Commonspeak Wordlists
 
 ```powershell
 #https://github.com/assetnote/commonspeak2
@@ -351,7 +352,7 @@ gobuster dns -d paypal.com -w commonspeak.txt
 
 
 
-**Fuzzing Subdomains with WFuzz**
+#### Fuzzing Subdomains with WFuzz
 
 ```bash
 wfuzz -c -f re -w /SecLists/Discovery/DNS/subdomains-top1mil-5000.txt -u "http://domain.htb" -H "Host: FUZZ.domain.htb" --hh 311\
@@ -365,7 +366,7 @@ I wasn't sure if I should add this under **Subdomain Enumeration** but doesn't r
 
 
 
-**Find Organistations ASN's**
+#### Find Organistations ASN's
 
 ```bash
 amass intel -org paypal
@@ -378,7 +379,7 @@ amass intel -org paypal
 
 
 
-**Find IPv4 Address Space from ASN**
+#### Find IPv4 Address Space from ASN
 
 ```powershell
 I have yet to find a good tool to do this so I will be writing something in Go very shortly, but in the meantime you can simple visit 
@@ -392,7 +393,7 @@ https://bgp.he.net/AS17012#_prefixes
 
 
 
-**Parse CIDR from ASN Lookup too AMass Enum**
+#### Parse CIDR from ASN Lookup too AMass Enum
 
 ```bash
 amass enum -d paypal.com -cidr 64.4.240.0/21
@@ -410,7 +411,7 @@ Here I will discuss some basic tactics once you have a nice list of live subdoma
 
 
 
-**Basic Crawling**
+#### Basic Crawling
 
 ```powershell
 Crawling a website is typically one of the first places to start once you have discovered the live endpoints. It basically involves recursively visiting and saving each link on a website
@@ -427,7 +428,7 @@ These crawling results can also be combined with the JSearch techniques listed b
 
 
 
-**Wayback Machine Crawling**
+#### Wayback Machine Crawling
 
 ```powershell
 #https://github.com/ghostlulzhacks/waybackMachine
@@ -447,7 +448,7 @@ python3 $Tools/waybackMachine/waybackmachine.py paypal.com
 
 
 
-**Common Crawl Data**
+#### Common Crawl Data
 
 ```powershell
 #https://github.com/ghostlulzhacks/commoncrawl
@@ -463,7 +464,7 @@ python3 $Tools/commoncrawl/cc.py -d paypal.com
 
 
 
-**Find Easy Wins with DirSearch**
+#### Find Easy Wins with DirSearch
 
 ```powershell
 Of course if we have a large amount ot subs we can't just send over directory-list-2.3medium so I typically use this small list against all the subdomains and (or) ip ranges from ASN lookups. 
@@ -498,7 +499,7 @@ Be careful with the -t flag, I am using a pretty beefy VPS for this stage :)
 
 
 
-**dirSearching with RobotsDisallowed1000.txt**
+#### dirSearching with RobotsDisallowed1000.txt
 
 ```powershell
 This is similar to the previous method but we are using a Wordlist supplied with SecLists that details the top 1000 entries inside Robots.txt
@@ -518,7 +519,7 @@ Be careful with the -t flag, I am using a pretty beefy VPS for this stage :)
 
 
 
-**Excessive DirSearching with RAFT**
+#### Excessive DirSearching with RAFT
 
 ```powershell
 This may take a very long time to run and timeout depending on your scope but these lists are the goto when it comes to dirbusting
@@ -539,7 +540,7 @@ Be careful with the -t flag, I am using a pretty beefy VPS for this stage :)
 
 
 
-**Meg - Find Many Paths for Hosts (Similar to DirSearch)**
+#### Meg - Find Many Paths for Hosts (Similar to DirSearch)
 
 ```powershell
 #https://github.com/tomnomnom/meg
@@ -556,7 +557,7 @@ etc etc
 
 
 
-**WaybackURLs - Fetch all URL's that WayBackMachine Knows About a Domain**
+#### WaybackURLs - Fetch all URL's that WayBackMachine Knows About a Domain
 
 ```powershell
 #https://github.com/tomnomnom/waybackurls
@@ -567,7 +568,7 @@ cat subdomains | waybackurls > urls
 
 
 
-**Tomnomnom's Concurl**
+#### Tomnomnom's Concurl
 
 ```powershell
 #https://github.com/tomnomnom/concurl
@@ -592,7 +593,7 @@ Concurrent HTTP Requests because Go is fast as f
 ```
 
 
-**Get All Subdomain HTTP Headers & Responses**
+#### Get All Subdomain HTTP Headers & Responses
 
 ```bash
 #Reference: https://medium.com/bugbountywriteup/fasten-your-recon-process-using-shell-scripting-359800905d2a
@@ -623,7 +624,7 @@ In the next step I will show how we can use the collected data to grab all Javas
 
 
 
-**Collecting JavaScript Files**
+#### Collecting JavaScript Files
 
 ```bash
 #Reference: https://medium.com/bugbountywriteup/fasten-your-recon-process-using-shell-scripting-359800905d2a
@@ -663,7 +664,7 @@ done
 This method can be a little slow as there is no multithreading involved, but works perfect for smaller programs :)
 ```
 
-**JavaScript Link Finder**
+#### JavaScript Link Finder
 
 ```powershell
 #https://github.com/GerbenJavado/LinkFinder
@@ -679,7 +680,7 @@ python $Tools/LinkFinder -i m0chan.js -o cli
 
 
 
-**JsSearch**
+#### JsSearch
 ```powershell
 #https://github.com/incogbyte/jsearch
 
@@ -695,7 +696,7 @@ Although I recommened you add your own regexes as the default colletion is quite
 ```
 
 
-**Finding Hidden Endpoints from Scraped JS Files**
+#### Finding Hidden Endpoints from Scraped JS Files
 
 ```bash
 #Reference: https://medium.com/bugbountywriteup/fasten-your-recon-process-using-shell-scripting-359800905d2a
@@ -730,8 +731,7 @@ done
 
 
 
-
-**Port Scanning Subdomains**
+#### Port Scanning Subdomains 
 
 ```powershell
 I won't get into this much as it's fairly straight forward, simply parse your subdomains.resolved too nmap with your preferred syntax and let it run away.
@@ -858,7 +858,7 @@ Shodan Scans the entire internet on a daily basis and provides the data to it's 
 
 
 
-**Shodan Port Scan w/ CIDR**
+#### Shodan Port Scan w/ CIDR
 
 ```bash
 shodan.io
@@ -879,7 +879,7 @@ ssl:paypal
 
 
 
-**MassScan**
+#### MassScan
 
 ```powershell
 #https://github.com/robertdavidgraham/masscan
@@ -896,7 +896,7 @@ https://github.com/offensive-security/masscan-web-ui
 
 
 
-**Wappalyzer**
+#### Wappalyzer
 
 ```powershell
 #https://github.com/vincd/wappylyzer
@@ -907,7 +907,7 @@ One of the best tools for identifying the technologies in use on a site, I prefe
 
 
 
-**WafW00f**
+#### WafW00f
 
 ```powershell
 #https://github.com/EnableSecurity/wafw00f
@@ -931,7 +931,7 @@ I wasn't sure if I should put this under Exploitation but guess it's own section
 
 
 
-**Github Dorking**
+#### Github Dorking
 
 ```powershell
 Similar to Shodan dorks etc we can pass dorks ot github to search repos alongside certain search terms such as filename etc
@@ -970,7 +970,7 @@ This is a hard section to type up as some techniques may fall under other headin
 
 
 
-**Unauthenticated Elastic Search**
+#### Unauthenticated Elastic Search
 
 ```powershell
 “ES is a document-oriented database designed to store, retrieve, and manage document-oriented or semi-structured data"
@@ -984,7 +984,7 @@ port:"9200" elastic
 
 
 
-**Unauthenticated Docker API**
+#### Unauthenticated Docker API
 
 ```powershell
 Similar to Elastic Search, Docker has some servies that can be exposed that may be an easy win. Mainly when you install docker on system it will pose an API on your localhost on Port 2375. As its on localhost by default you cant interact however in certain instances this is changed and it is available.
@@ -1003,19 +1003,24 @@ docker -H ip:port ps
 
 
 
-**Unauthenticated Kubernetes API**
+#### Unauthenticated Kubernetes API
 
 ```powershell
-Similar to Elastic Search, Docker has some servies that can be exposed that may be an easy win. Mainly when you install docker on system it will pose an API on your localhost on Port 2375. As its on localhost by default you cant interact however in certain instances this is changed and it is available.
+First let me say I am no Kubernetes expert but I know it exists and has similar vulns like DockerAPI & Elastic Search and thats all I need to know for hunting. 
 
-Shodan Dorks come in Handy here
+Kubernetes exposes an unauthenticated REST API on port 10250
 
-port:"2375" docker
-product:docker
+Once again we have 2 options, nMap for this port or shodan
 
-If you find a endpoint you can verifiy that its vulnerable by making a GET request too `/version`
+product:"kubernetes"
+port:"10250"
 
-From here you can connect with the CLI version of Docker
+Once a Kubernetes service is detected the first thing to do is to get a list of pods by sending a GET request to the /pods endpoint.
 
-docker -H ip:port ps
+
+apt-get install node-ws
+wscat -c “https://<DOMAIN>:<PORT>/<Location Header Value>” –no-check
+
+Its very easy to get RCE from this method :)  
 ```
+
