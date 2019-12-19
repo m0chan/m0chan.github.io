@@ -827,6 +827,9 @@ site:*.atlassian.net "Tesla"
 #Gitlab - Source Code
 inurl:gitlab "Tesla"
 
+#Find S3 Buckets
+site:.s3.amazonaws.com "Tesla"
+
 
 We can also find specific content by appending the "ext:pdf or ext:conf" etc etc
 ```
@@ -914,5 +917,42 @@ Awesome script to detect if your target is protected behind an XSS before you st
 There are also a few cool Burp plugins to faciliate this.
 
 The great thing about Wafw00f is it will try detect which WAF is in place, for ex. Akami. Once we know the WAF in play we can start lookin for bypasses and other bug submissions that have bypassed this and tailor our payloads to our needs. 
+```
+
+
+
+
+
+## [](#header-2) Finding Sensitive Loot
+
+
+
+I wasn't sure if I should put this under Exploitation but guess it's own section is fitting, a few techniques to find sensitive files that may have been pushed to github etc.
+
+
+
+**Github Dorking**
+
+```powershell
+Similar to Shodan dorks etc we can pass dorks ot github to search repos alongside certain search terms such as filename etc
+
+For example
+
+filename:.bash_history paypal.com
+filename:id_rsa paypal.com
+filename:token paypal.com
+filename:apikey paypal.com
+language:python username paypal.com
+language:python:username
+
+app.secret.key is also a good one to search for.
+
+
+There is a awesome list of dorks located here 
+
+#https://github.com/techgaun/github-dorks/blob/master/github-dorks.txt
+
+
+Its very common for devs to accidently push  
 ```
 
