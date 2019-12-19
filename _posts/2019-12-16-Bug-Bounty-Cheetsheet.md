@@ -97,9 +97,28 @@ Subfinder -d domain.com -o Outfile.txt
 https://opendata.rapid7.com/sonar.fdns_v2/
 
 aptitude install jq pigz
-wget https://scans.io/data/rapid7/sonar.fdns_v2/20170417-fdns.json.gz
+wget https://opendata.rapid7.com/sonar.fdns_v2/2019-11-29-1574985929-fdns_a.json.gz
 cat 20170417-fdns.json.gz | pigz -dc | grep ".target.org" | jq`
 ```
+
+
+
+**Rapid7 FDNS (Part 2)**
+
+```powershell
+https://opendata.rapid7.com/sonar.fdns_v2/
+
+wget https://opendata.rapid7.com/sonar.fdns_v2/2019-11-29-1574985929-fdns_a.json.gz
+2019-11-29-1574985929-fdns_a.json.gz | pigz -dc | grep ".target.org" | jq`
+
+
+This is a huge 19GB and contains A Names there are seperate downloads for other records at 
+
+https://opendata.rapid7.com/sonar.fdns_v2/
+```
+
+
+
 
 
 
@@ -166,6 +185,21 @@ Options:
 
 
 
+**GitHub SubDomain Scrap**
+
+```powershell
+https://github.com/gwen001/github-search/blob/master/github-subdomains.py           
+
+As we have saw from various bug reports in the past, sometimes developers will leave API keys and SSH keys etc in public repos however the same principle applies for developers hard coding hidden endpoints or domains in the source code.
+
+We can use github-subdomains.py to scrape for domains from public repos with the below syntax :) 
+
+
+python3 $Tools/github-subdomains.py -d paypal.com -t 
+```
+
+
+
 **Generate Basic Permutations**
 
 ```bash
@@ -209,7 +243,9 @@ $Tools/subbrute.py $Tools/massdns/lists/names.txt domain.com | massdns -r $Tools
 **Generate Permutations with AltDNS**
 
 ```bash
-altdns -i input_domains.txt -o ./output/path -w $Tools/altdns/words.txt
+altdns -i input_domains.txt -o permutationoutput.txt -w $Tools/altdns/words.txt -r -s resolved_output.txt
+
+This may take a while to run but should always be part of your recon process no matter how little results it yields.
 ```
 
 
@@ -282,7 +318,11 @@ todo - As there is a few methods to talk about here but the best wordlists is Ja
 dnsrecon -d paypal.com -D all.txt -t brt
 
 #Fastest is Probably SubBrute.py
-python $Tools/subbrute/subbrute.py paypal.com paypal.co.uk -t all.txt  
+python $Tools/subbrute/subbrute.py paypal.com paypal.co.uk -t all.txt 
+
+
+#Final method is using GoBuster which is also v fast
+gobuster dns -d paypal.com -w all.txt
 ```
 
 
@@ -304,6 +344,9 @@ dnsrecon -d paypal.com -D commonspeak.txt -t brt
 
 #Fastest is Probably SubBrute.py
 python $Tools/subbrute/subbrute.py paypal.com paypal.co.uk -t commonspeak.txt 
+
+#Final method is using GoBuster which is also v fast
+gobuster dns -d paypal.com -w commonspeak.txt
 ```
 
 
