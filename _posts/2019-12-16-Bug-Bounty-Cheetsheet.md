@@ -410,6 +410,59 @@ Here I will discuss some basic tactics once you have a nice list of live subdoma
 
 
 
+**Basic Crawling**
+
+```powershell
+Crawling a website is typically one of the first places to start once you have discovered the live endpoints. It basically involves recursively visiting and saving each link on a website
+
+The author of Bug Bounty Playbook created a tool to help with this
+
+#https://github.com/ghostlulzhacks/crawler/tree/master
+
+python3 $Tools/crawler/crawler.py -d https://paypal.com -l 2
+
+
+These crawling results can also be combined with the JSearch techniques listed below
+```
+
+
+
+**Wayback Machine Crawling**
+
+```powershell
+#https://github.com/ghostlulzhacks/waybackMachine
+
+Sometimes visiting wayback machine and looking up a domain will yield us some awesome results which we can filter for things like .zip, .config and find old endpoints that are technically still live. s
+
+We can then use this data to find vulns,
+
+Quote from Bug Bounty Playbook
+
+"For instance, if you see the path “example.com/?redirect=something.com” you can test for open redirects and SSRF vulnerabilities. If you see the GET parameter “msg=” you can test for XSS. The list can go on for days."
+
+You can do this manually on the site or using the script linked above
+
+python3 $Tools/waybackMachine/waybackmachine.py paypal.com
+```
+
+
+
+**Common Crawl Data**
+
+```powershell
+#https://github.com/ghostlulzhacks/commoncrawl
+
+Just like The Wayback Machine Common Crawl also regularly crawls the internet for endpoints. Also, like the Wayback Machine this data is publicly available and we can use it to get a list of endpoints on a site passively.
+
+python3 $Tools/commoncrawl/cc.py -d paypal.com
+```
+
+
+
+
+
+
+
 **Find Easy Wins with DirSearch**
 
 ```powershell
