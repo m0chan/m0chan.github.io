@@ -1024,3 +1024,67 @@ wscat -c “https://<DOMAIN>:<PORT>/<Location Header Value>” –no-check
 Its very easy to get RCE from this method :)  
 ```
 
+
+
+#### XML External Entity (XXE)
+
+```powershell
+
+#https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/XXE%20Injection
+
+XML is essential a language designed to transport data in a structured format, ,similar to JSON.
+
+XXE is a vuln that occurs when an application parses XML. 
+
+
+Essentially there are something called ENTITYs within XML that really acts as a var that be called, something like
+
+<?xml version="1.0"?>
+<!DOCTYPE note [
+<!ENTITY user "m0chan">
+<!ENTITY message "m0chanmessage">
+]>
+
+In this example the ENTITY user holds the info m0chan which can be called with &user
+
+Now this is useful as we get something called EXTERNAL ENTITY which will load the data from a external resource in comparison to something "local"
+
+Examples:
+
+<!DOCTYPE foo [ <!ENTITY ext SYSTEM "http://m0chan.github.io" > ]>
+<!DOCTYPE foo [ <!ENTITY ext SYSTEM "file:///etc/passwd" > ]>
+
+This is the basis, if you want the proper example go and buy the Bug Bounty Playbook.pdf :) Its my favourite book for bug bounty.
+```
+
+
+
+
+
+#### Server-Side-Request-Forgery
+
+```powershell
+#https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/Server%20Side%20Request%20Forgery
+I am not going to explain SSRF here as its fairly straight forward and a lot of resources exist, I will drop a few payloads I grabbed off twitter recently though. 
+
+For other payloads check out Payload All The Things
+```
+
+
+
+#### GraphQL Injection
+
+```powershell
+#https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/GraphQL%20Injection
+More on this soon :) 
+
+```
+
+
+#### Server Side Template Injection
+
+```powershell
+#https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/Server%20Side%20Template%20Injection
+More on this soon :) 
+
+```
