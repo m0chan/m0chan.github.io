@@ -966,7 +966,7 @@ Its very common for devs to accidently push
 
 
 
-This is a hard section to type up as some techniques may fall under other headings :) 
+This is a hard section to type up as some techniques may fall under other headings :) also I probably won't mention XSS & SQLi as they are the basics and lots of resources already exist.
 
 
 
@@ -1059,8 +1059,6 @@ This is the basis, if you want the proper example go and buy the Bug Bounty Play
 
 
 
-
-
 #### Server-Side-Request-Forgery
 
 ```powershell
@@ -1088,3 +1086,32 @@ More on this soon :)
 More on this soon :) 
 
 ```
+
+
+
+#### Cross-Site Web Socket Hijacking (CSWSH)
+
+
+
+```powershell
+
+Websockets are fairly rare but essentially they allow an application too set up a full duplex communcation allowing users to read and post data simultaneously
+
+Common apps using WebSockers are Chat applications as they want to read/send data at the same time.
+
+
+CSWSH is similar to CSRF as we use the targets cookie to make the request, we also require the target to visit a page served by us, the difference is instead of sending a POST request in the context of the user we send a websocket connection. 
+
+We can use this website to test for the vuln http://websocket.org/echo.html
+
+To Test for this we do the following 
+
+1) Log into Website using WebSockets
+2) Open Second Tab
+3) Visit Link http://websocket.org/echo.html
+4) Test if we can make connections as the client.
+
+
+There is a nice PoC on the Bug Bounty Playbook 
+```
+
