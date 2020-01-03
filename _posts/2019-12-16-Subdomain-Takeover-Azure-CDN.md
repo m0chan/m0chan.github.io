@@ -9,11 +9,7 @@ thumbnail: https://cdn1.iconfinder.com/data/icons/seo-solid-black/32/seo-solid-s
 
 
 
-# [](#header-1)How I Took Over 2 Subdomains with Azure CDN Profiles - BugBounty
-
-
-
-## [](#header-2) Introduction
+##  Introduction
 
 
 
@@ -25,7 +21,7 @@ While I was carrying out my usual Recon and Subdomain Enumeration I came across 
 
 
 
- ## [](#header-2) Basic Enumeration 
+ ##  Basic Enumeration 
 
 
 
@@ -35,7 +31,7 @@ After a couple hours I finally had a list of around 600 subdomains which I was a
 
 
 
- ## [](#header-2) Exploiting / PoC
+ ## Exploiting / PoC
 
 
 
@@ -70,6 +66,7 @@ I do not want to plagurize Andy's article as he did a great job of explaining bu
 *  Access original domain with `in-scope domain` - Domain should resolve to the `CNAME` before finally routing to your web server :) 
 
 
+
   <img src = "http://i.imgur.com/YLUhICn.png"></img>
 
 
@@ -85,7 +82,7 @@ Also a small note once I configured the `CDN Profile`, I spent over an hour trou
 
 
 
- ## [](#header-2) Timeline
+ ## Timeline
 
 
 
