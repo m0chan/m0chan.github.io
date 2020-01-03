@@ -1,7 +1,7 @@
 ---
 title: How I Took Over 2 Subdomains with Azure CDN Profiles
 tags: [Bug Bounty, Subdomain Takeover, Subjack, Subfinder]
-description: I recently was carrying out some Bug Bounty hunting on a new program on the CESPPA platform and came across 2 subdomains which resolved to a unclaimed Azure CDN Profile which I was able to claim.  
+description: I recently was carrying out some Bug Bounty hunting on a new program and came across 2 subdomains which resolved to a unclaimed Azure CDN Profile which I was able to claim.  
 published: true
 image: https://cdn1.iconfinder.com/data/icons/seo-solid-black/32/seo-solid-set-03-512.png
 thumbnail: https://cdn1.iconfinder.com/data/icons/seo-solid-black/32/seo-solid-set-03-512.png
