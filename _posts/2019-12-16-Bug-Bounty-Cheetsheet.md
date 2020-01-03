@@ -52,6 +52,17 @@ Referral Code: https://www.linode.com/?r=91c07fff7abd148b08880020c558d5cace801cc
 
 
 
+**Burp Regex for Scope Control**
+
+```powershell
+.*\.domain\.com$
+
+Putting this here as I always forget it :)
+
+```
+
+
+
 **Port Scanning IP Ranges**
 
 ```powershell
