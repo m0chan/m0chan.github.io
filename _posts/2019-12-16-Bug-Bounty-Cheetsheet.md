@@ -858,6 +858,9 @@ inurl:gitlab "Tesla"
 #Find S3 Buckets
 site:.s3.amazonaws.com "Tesla"
 
+To simplify this process I copy the above into Sublime and copy replace Tesla with the Target name and then open all queries at once with the following chrome extension ;)
+
+https://chrome.google.com/webstore/detail/openlist/nkpjembldfckmdchbdiclhfedcngbgnl?hl=en
 
 We can also find specific content by appending the "ext:pdf or ext:conf" etc etc
 ```
