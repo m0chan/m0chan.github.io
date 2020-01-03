@@ -21,7 +21,7 @@ While I was carrying out my usual Recon and Subdomain Enumeration I came across 
 
 
 
- ##  Basic Enumeration 
+##  Basic Enumeration
 
 
 
@@ -31,7 +31,7 @@ After a couple hours I finally had a list of around 600 subdomains which I was a
 
 
 
- ## Exploiting / PoC
+## Exploiting / PoC
 
 
 
@@ -60,7 +60,6 @@ I do not want to plagurize Andy's article as he did a great job of explaining bu
  * Create Free / Pay-As-You-Go Account on portal.azure.com
  * Create New `CDN Profile`
  * Configure CDN Endpoint with Previously Enumerated `azureedge.net` Domain
-
    	* If it shows as green when you enter it means it's vulnerable to takeover :) 
 * Configure New CDN Profile to Route to Location of your choice, in my case I pointed it to my own web server with a simple PoC Page. 
 *  Access original domain with `in-scope domain` - Domain should resolve to the `CNAME` before finally routing to your web server :) 
