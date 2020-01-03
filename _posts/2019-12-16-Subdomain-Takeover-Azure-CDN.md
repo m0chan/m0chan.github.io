@@ -66,7 +66,7 @@ I do not want to plagurize Andy's article as he did a great job of explaining bu
 
 
 
-  <img src = "http://i.imgur.com/YLUhICn.png"></img>
+  <img src = "http://i.imgur.com/YLUhICn.png">
 
 
 
