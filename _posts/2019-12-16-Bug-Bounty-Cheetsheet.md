@@ -591,6 +591,10 @@ This will create a /out folder with results from each web server (use this after
 grep -r api
 grep -r phpinfo
 
+Use this wordlist
+
+https://gist.github.com/tomnomnom/57af04c3422aac8c6f04451a4c1daa51
+
 etc etc
 ```
 
