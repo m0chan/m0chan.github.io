@@ -252,6 +252,30 @@ done;
 
 
 
+#### Reverse DNS Lookups on List of IP's
+
+```powershell
+#https://github.com/hakluke/hakrevdns
+
+Sometimes you may have a IP list of targets instead of domains, perhaps from ASN lookup. Here we can use a quick little tool called hakrevdns to carry out numerous reverse DNS lookups.
+
+hakluke~$ prips 173.0.84.0/24 | hakrevdns 
+173.0.84.110	he.paypal.com.
+173.0.84.109	twofasapi.paypal.com.
+173.0.84.114	www-carrier.paypal.com.
+173.0.84.77	twofasapi.paypal.com.
+173.0.84.102	pointofsale.paypal.com.
+173.0.84.104	slc-a-origin-pointofsale.paypal.com.
+173.0.84.111	smsapi.paypal.com.
+173.0.84.203	m.paypal.com.
+173.0.84.105	prm.paypal.com.
+173.0.84.113	mpltapi.paypal.com.
+173.0.84.8	ipnpb.paypal.com.
+173.0.84.2	active-www.paypal.com.
+173.0.84.4	securepayments.paypal.com.
+```
+
+
 #### AMass Basic Active Scan
 
 ```powershell
