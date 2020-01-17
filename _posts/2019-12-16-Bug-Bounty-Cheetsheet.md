@@ -1170,6 +1170,30 @@ For other payloads check out Payload All The Things
 
 
 
+#### Attacking AWS with SSRF
+
+```powershell
+#https://vulp3cula.gitbook.io/hackers-grimoire/exploitation/web-application/ssrf
+
+Amazon AWS has a internal metadata service which can be queired from most instances which gives us a great local service to try query if we believe the underlying platform is being serviced by AWS such as Elastic Beanstalk etc.
+
+Reference: https://medium.com/@GeneralEG/escalating-ssrf-to-rce-f28c482eb8b9
+
+
+169.254.169.254 - Local EC2 Instance Address to Query
+
+From here it can be very easy to escalate to RCE by gaining read/write on the bucket and uploading a shell.
+
+
+
+
+```
+
+
+
+
+
+
 #### GraphQL Injection
 
 ```powershell
@@ -1184,7 +1208,6 @@ More on this soon :)
 ```powershell
 #https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/Server%20Side%20Template%20Injection
 More on this soon :) 
-
 ```
 
 
