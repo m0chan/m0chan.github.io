@@ -1238,3 +1238,13 @@ To Test for this we do the following
 There is a nice PoC on the Bug Bounty Playbook 
 ```
 
+
+
+
+#### Cross-Site Scripting (XSS)
+
+```powershell
+#https://github.com/PortSwigger/xss-validator
+
+#https://github.com/payloadbox/xss-payload-list
+```
