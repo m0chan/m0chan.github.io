@@ -796,6 +796,27 @@ done
 ```
 
 
+#### Fuzzing URL Parameters
+
+```powershell
+#https://www.hackplayers.com/2018/08/aron-parametros-get-post-bruteforce.html
+#https://github.com/m4ll0k/Aron
+
+GET Bruteforce
+
+$ go run aron.go -url http://www.test.com/index.php -get 
+$ go run aron.go -url http://www.test.com/index.php<[?|id=1|id=1&]> -get
+$ go run aron.go -url http://www.test.com/index.php<[?|id=1|id=1&]> -get -wordlist $Tools/Aron/dict.txt
+
+
+POST Bruteforce
+
+$ go run aron.go -url http://www.test.com/index.php -post 
+$ go run aron.go -url http://www.test.com/index.php<[?id=1]> -post
+$ go run aron.go -url http://www.test.com/index.php<[?id=1]> -post -data "user=1"
+$ go run aron.go -url http://www.test.com/index.php<[?id=1]> -post -data "user=1" -wordlist dict.txt
+```
+
 
 
 #### Port Scanning Subdomains 
