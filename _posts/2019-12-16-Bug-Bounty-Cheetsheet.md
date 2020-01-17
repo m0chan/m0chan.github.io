@@ -1247,4 +1247,17 @@ There is a nice PoC on the Bug Bounty Playbook
 #https://github.com/PortSwigger/xss-validator
 
 #https://github.com/payloadbox/xss-payload-list
+
+1) Start xss.js phantomjs $HOME/.BurpSuite/bapps/xss.js
+2) Send Request to Intruder
+3) Mark Position 
+4) Import xss-payload-list from $Tools into xssValidator
+5) Change Payload Type to Extension Generated
+6) Change Payload Process to Invoke-Burp Extension - XSS Validator
+7) Add Grep-Match rule as per XSS Validator
+8) Start.
+
+
+
+
 ```
