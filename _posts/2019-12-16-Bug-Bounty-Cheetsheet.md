@@ -1133,6 +1133,19 @@ Its very easy to get RCE from this method :)
 
 
 
+#### Unauthenticated odoo Manager
+
+```powershell
+Shodan Dork
+
+http.status:200 http.component:odoo port:8069
+
+After finding instances go to /web/database/manager most of the time there is either no password or it's "admin"
+
+Or simply port scan for 8069
+```
+
+
 #### XML External Entity (XXE)
 
 ```powershell
