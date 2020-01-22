@@ -624,6 +624,24 @@ etc etc
 
 
 
+
+#### EyeWitness - Source View
+
+```powershell
+Recently while working on big programs I have had some success with grepping the EyeWitness source for sensitive files for example
+
+VPS:> cd EyeWitness
+VPS:> grep -r Tomcat
+VPS:> grep -r IIS6.0
+
+
+etc etc 
+
+When EyeWitness runs it will save the source of the URLs it screenshots inside the working folder
+```
+
+
+
 #### WaybackURLs - Fetch all URL's that WayBackMachine Knows About a Domain
 
 ```powershell
