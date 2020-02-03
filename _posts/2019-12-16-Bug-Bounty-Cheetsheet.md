@@ -1186,6 +1186,19 @@ Or simply port scan for 8069
 ```
 
 
+#### Unauthenticated Jenkins Instance
+
+```powershell
+Sometimes an application will be running Jenkins which allows Guest/Anonymous signups with /script enabled which allows code exec
+
+Also if you can install plugins there is a terminal plugin
+
+Try dirsearch for /script or use this script to find live Jenkins instances.
+
+Also worth checking Port 8080 alongside 443,80
+```
+
+
 #### XML External Entity (XXE)
 
 ```powershell
