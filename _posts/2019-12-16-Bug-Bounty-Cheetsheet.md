@@ -1199,6 +1199,15 @@ Also worth checking Port 8080 alongside 443,80
 
 
 I recommened if you are working on a big program with thousands of domains to grep for jenkins and pipe all subdomains into full tcp ports scans. Sometimes the instance can be running on a weird port :) 
+
+
+Also grep for these headers
+
+X-Hudson: 1.395
+X-Jenkins: 2.204.2
+X-Jenkins-Session: d615ef86
+X-You-Are-Authenticated-As: anonymous
+X-You-Are-In-Group-Disabled: JENKINS-39402: 
 ```
 
 
