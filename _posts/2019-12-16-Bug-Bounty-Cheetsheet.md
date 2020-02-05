@@ -327,7 +327,10 @@ sed 's/A.*//' livesubdomains.messy | sed 's/CN.*//' | sed 's/\..$//' > domains.r
 #### Find HTTP/HTTPS Servers with HTTProbe
 
 ```powershell
-cat domains.resolved | httprobe -c 50 | tee http.servers
+cat domains.resolved | httprobe -c 50 -p 8080,8081,8089 | tee http.servers
+
+
+the -p flag adds these ports to the scan, will increase time but good for finding secondary http services on non standard ports (80,443)
 ```
 
 
