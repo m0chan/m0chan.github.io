@@ -646,6 +646,29 @@ etc etc
 
 
 
+#### DirSearching with FFUF (New Method)
+
+```powershell
+#https://github.com/ffuf/ffuf
+
+Written in Go so very fast 
+
+Directory Fuzzing
+
+ffuf -c -w /path/to/wordlist -u http://yahoo.com/FUZZ
+
+GET Parameter Fuzzing
+
+ffuf -w /path/to/paramnames.txt -u https://target/script.php?FUZZ=test_value -fs 4242
+
+POST Data Fuzzing
+
+ffuf -w /path/to/postdata.txt -X POST -d "username=admin\&password=FUZZ" -u https://target/login.php -fc 401
+
+```
+
+
+
 #### EyeWitness - Source View
 
 ```powershell
