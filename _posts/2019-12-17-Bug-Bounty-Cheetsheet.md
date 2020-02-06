@@ -332,6 +332,21 @@ This may take a while to run but should always be part of your recon process no 
 
 
 
+#### Generate Permutations with dnsGen (Overall Best Way)
+
+```powershell
+#https://github.com/ProjectAnte/dnsgen
+
+git clone https://github.com/ProjectAnte/dnsgen
+cd dnsgen
+pip3 install -r requirements.txt
+python3 setup.py install
+
+cat domains.txt | dnsgen - | massdns -r /path/to/resolvers.txt -t A -o J --flush 2>/dev/null
+```
+
+
+
 #### Find Resolvable Domains with MassDNS
 
 ```bash
