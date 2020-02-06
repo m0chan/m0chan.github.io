@@ -32,6 +32,12 @@ Also before I continue these are my main references that have helped me build my
 
 
 
+<img align="center" src ="https://pentester.land/assets/img/conference-notes/the-bug-hunters-methodology-v3/recon-summary.png"></img>
+
+*Credit too Jason Haddix for ^*
+
+
+
 ### [](#header-2) Initial Stuff
 
 
