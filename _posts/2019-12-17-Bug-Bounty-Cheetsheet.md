@@ -1337,6 +1337,22 @@ I am not going to explain SSRF here as its fairly straight forward and a lot of 
 For other payloads check out Payload All The Things
 ```
 
+#### Server-Side-Request-Forgery Pt (PDF Convertors)
+
+```powershell
+Sometimes you may run into instances where applications are accepting arbitary file types and converting them to PDF, if so we can try inject html/javascript into the input and see if it is interpreted server side. 
+
+Server Side JavaScript Execution -> XMLHttpRequest -> SSRF
+
+Also 
+
+Server Side JavaScript Execution -> XMLHttpRequest -> Local File Read (file://)
+
+References: https://www.noob.ninja/2017/11/local-file-read-via-xss-in-dynamically.html
+https://www.youtube.com/watch?v=o-tL9ULF0KI&t=753s
+
+```
+
 
 
 #### Attacking AWS with SSRF
