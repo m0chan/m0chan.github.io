@@ -465,6 +465,15 @@ I wasn't sure if I should add this under **Subdomain Enumeration** but doesn't r
 
 
 
+#### ASNLookup
+
+```powershell
+#https://github.com/yassineaboukir/Asnlookup
+
+python asnlookup.py -o <Organization>`
+```
+
+
 #### Find Organistations ASN's
 
 ```bash
