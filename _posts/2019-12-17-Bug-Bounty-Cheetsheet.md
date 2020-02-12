@@ -377,6 +377,24 @@ the -p flag adds these ports to the scan, will increase time but good for findin
 
 
 
+
+#### Find HTTP/HTTPS Servers with nMap and Filtering
+
+```powershell
+
+sudo nmap -sS -p 80,443 -iL List.txt -oA m0chan.xml
+
+import xmltree
+def removeHostname():
+   for host in root.iter('host'):
+        for elem in host.iter():
+            if 'name' in elem.attrib and elem.attrib['name'] == 'ISP_redir_site':
+                root.remove(host)
+tree.write('output.xml')
+```
+
+
+
 #### Pass HTTProbe Results to EyeWitness
 
 ```powershell
