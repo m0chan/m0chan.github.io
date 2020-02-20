@@ -137,6 +137,17 @@ https://opendata.rapid7.com/sonar.fdns_v2/
 
 
 
+#### Rapid7 FDNS (Part 3 with DNSGrep)
+
+```powershell
+#https://github.com/erbbysam/dnsgrep
+
+Not tried this much yet but DNS Grep tool based around Rapid7 Sonar DNS
+
+
+```
+
+
 
 
 
