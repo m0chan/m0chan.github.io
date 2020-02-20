@@ -1182,6 +1182,8 @@ There is a awesome list of dorks located here
 Its very common for devs to accidently push  
 ```
 
+<img align = "center" src="https://miro.medium.com/max/1024/0*ddmcCZ14kuMdHBPC.png">
+
 
 #### GitMiner
 
