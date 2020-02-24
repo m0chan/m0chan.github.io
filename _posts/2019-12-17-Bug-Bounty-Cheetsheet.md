@@ -1555,3 +1555,21 @@ SSRF
 7)Accessing system files with load_file(). and advance exploitation afterwards.
 WAF evasion if any.
 ```
+
+
+
+
+#### JWT Exploiting
+
+```powershell
+#https://github.com/wisec/OWASP-Testing-Guide-v5/blob/master/Testing_for_APIs.md
+
+Full details above.
+
+1) Access JWT Debugger too base64 decode and ensure that nothing sensitive is being transferred. Make sure no PII is being transferred etc.
+	2) Try chang esome values and obtain IDOR, like `id` or `isAdmin`
+	3) Modigy ALG attribute, set HS256 to null
+
+
+4) JWT Crack - https://github.com/brendan-rius/c-jwt-cracker - Secret used to encrypt tokens may be weak.
+```
