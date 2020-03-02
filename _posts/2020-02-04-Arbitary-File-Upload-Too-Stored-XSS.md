@@ -1,10 +1,10 @@
 ---
-title: Arbitary File Upload too Stored XSS
+title: Arbitary File Upload too Stored XSS - Bug Bounty 
 tags: [Bug Bounty, Arbitary File Upload, Stored XSS]
 description: Readacted Writeup of how I got Stored XSS by Exploiting a Unrestricted File Upload bug. 
 published: true
-image: https://dpsvdv74uwwos.cloudfront.net/statics/img/blogposts/exploiting_ssrf_vulnerability.png
-thumbnail: https://dpsvdv74uwwos.cloudfront.net/statics/img/blogposts/exploiting_ssrf_vulnerability.png
+image: https://i.imgur.com/vNZchC3.png
+thumbnail: https://i.imgur.com/vNZchC3.png
 ---
 
 
