@@ -763,6 +763,18 @@ When EyeWitness runs it will save the source of the URLs it screenshots inside t
 cat subdomains | waybackurls > urls
 ```
 
+#### Archive.org Direct URL Access - Really Good
+
+```powershell
+http://web.archive.org/cdx/search/cdx?url=*.visma.com/*&output=text&fl=original&collapse=urlkey
+```
+
+#### GetAllURL's
+
+```powershell
+Bash alias already created in profile on VPS - getallurls or getallurlsloop
+```
+
 
 
 #### Tomnomnom's Concurl
