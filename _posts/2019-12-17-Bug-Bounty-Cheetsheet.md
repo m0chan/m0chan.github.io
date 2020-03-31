@@ -496,6 +496,13 @@ wfuzz -c -f re -w /SecLists/Discovery/DNS/subdomains-top1mil-5000.txt -u "http:/
 ```
 
 
+#### Pull Root Subdomains from Final.txt
+
+```powershell
+cat final | rev | cut -d . -f 1-3 | rev | sort -u | tee root.subdomains
+```
+
+
 
 ### [](#header-3) ASN Enumeration
 
