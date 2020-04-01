@@ -67,15 +67,13 @@ Putting this here as I always forget it :)
 
 ```
 
-
-**Grepping Root Subdomains From File**
+** Pull Root Subdomains from Final.txt** 
 
 ```powershell
-
-
-echo http://aidan.aidan.es-us.aidan.test.test..aidan.news.yahoo.com | rev | cut -d . -f 2-4 | rev
-
+cat final | rev | cut -d . -f 1-3 | rev | sort -u | tee root.subdomains
 ```
+
+
 
 
 **Port Scanning IP Ranges**
@@ -493,13 +491,6 @@ gobuster dns -d paypal.com -w commonspeak.txt
 
 ```bash
 wfuzz -c -f re -w /SecLists/Discovery/DNS/subdomains-top1mil-5000.txt -u "http://domain.htb" -H "Host: FUZZ.domain.htb" --hh 311\
-```
-
-
-#### Pull Root Subdomains from Final.txt
-
-```powershell
-cat final | rev | cut -d . -f 1-3 | rev | sort -u | tee root.subdomains
 ```
 
 
