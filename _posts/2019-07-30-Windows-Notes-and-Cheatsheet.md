@@ -2510,6 +2510,14 @@ $ExecutionContext.SessionState.LanguageMode
 ```
 
 
+#### PowerShDLL - Powershell with no Powershell.exe via DLL's
+
+```
+#https://github.com/p3nt4/PowerShdll
+
+ftp> rundll32.exe C:\temp\PowerShdll.dll,main
+```
+
 
 #### [](#header-4) PowershellVeryLess Bypass
 
