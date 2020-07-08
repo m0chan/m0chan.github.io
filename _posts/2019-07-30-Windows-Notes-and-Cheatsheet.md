@@ -2194,6 +2194,8 @@ Can also inject kirbi with Rebeus
 ## [](#header-2)Lateral Movement
 
 
+**Highly recommened starting by reading this article which covers lateral movement in great depth by SpectreOps- https://posts.specterops.io/offensive-lateral-movement-1744ae62b14f** 
+
 
 #### [](#header-4) Plink
 
