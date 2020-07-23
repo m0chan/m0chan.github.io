@@ -1095,6 +1095,10 @@ Run the demiguise.py file, giving it your encryption-key, payload-type, output f
 
 Example: python demiguise.py -k hello -c "notepad.exe" -p Outlook.Application -o
 
+Since the tool outputs an HTML file containing JavaScript, you can simply take this JS and host it wherever you like. This means that if your clients website is vulnerable to reflected-XSS, you can use this to serve your HTA file from their (highly trusted) domain.
+
+Also, Outlook doesnt block .html attachments by default , and neither do some other applications - use your imagination! :)
+
 ```
 
 
