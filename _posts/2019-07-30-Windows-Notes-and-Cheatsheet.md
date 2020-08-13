@@ -1111,8 +1111,13 @@ Also, Outlook doesnt block .html attachments by default , and neither do some ot
 Find vulnerabilities in AD Group Policy
 
 Grouper2 is a tool for pentesters to help find security-related misconfigurations in Active Directory Group Policy.
+```
 
 
+#### Microsoft SQL Stuff
+
+```
+https://book.hacktricks.xyz/pentesting/pentesting-mssql-microsoft-sql-server
 ```
 
 
