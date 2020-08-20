@@ -1617,3 +1617,12 @@ Full details above.
 4) JWT Crack - https://github.com/brendan-rius/c-jwt-cracker - Secret used to encrypt tokens may be weak.
 ```
 
+
+
+#### Rate Limiting bypass with IP Rotate
+
+```
+Sometimes rate limiting for authentication or OTP are based off source IP, this can be bypassed using Amazon API's and IP Rotate. 
+
+https://portswigger.net/bappstore/2eb2b1cb1cf34cc79cda36f0f9019874
+```
