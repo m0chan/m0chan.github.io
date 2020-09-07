@@ -1626,3 +1626,15 @@ Sometimes rate limiting for authentication or OTP are based off source IP, this 
 
 https://portswigger.net/bappstore/2eb2b1cb1cf34cc79cda36f0f9019874
 ```
+
+
+
+#### IDOR Tricks & Bypasses
+
+```
+If fields are passed in clientside requests try another db Field - https://twitter.com/m0chan98/status/1286215630253850625/photo/1
+
+
+https://www.notion.so/IDOR-Attack-vectors-exploitation-bypasses-and-chains-0b73eb18e9b640ce8c337af83f397a6b
+
+```
