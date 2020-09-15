@@ -183,8 +183,13 @@ Needs SPYSE_API_TOKEN environment variable set (the free version always gives th
 ```
 
 
+#### Chaos - Project Discovery
 
+```
+- Requires a BETA Tester Key to function
 
+chaos -d domain.com
+```
 
 
 
@@ -549,7 +554,7 @@ I have found to have really good results using `amass enum` here + large CIDR ra
 
 
 
-### [](#header-3) Basic Content Finding
+### [](#header-3) Content Discovery
 
 Here I will discuss some basic tactics once you have a nice list of live subdomains
 
@@ -733,6 +738,18 @@ ffuf -w /path/to/postdata.txt -X POST -d "username=admin\&password=FUZZ" -u http
 
 ```
 
+#### DirSearching with FFUF Loop (September 2020)
+
+```powershell
+ffufhttpservices(){
+for i in $(cat newsubs.httprobe); do  ffuf -u $i/FUZZ -w /root/Wordlists/NewWordlist.txt \
+-H "User-Agent: Mozilla/5.0 Windows NT 10.0 Win64 AppleWebKit/537.36 Chrome/69.0.3497.100" -H "X-Forwarded-For: 127.0.0.1" \
+-c -fs 0 -t 30 -mc 200 -recursion ; done | tee xxxxx;
+cat xxxxx | egrep -v "Method|Header|Follow|Calib|Timeout|Thread|Matc|Filt|v1|_|^$" | tee ffuf.results; rm xxxxx;
+
+#Need to add a check if http/https both exist to only run https mayb?
+}
+```
 
 
 #### EyeWitness - Source View
@@ -771,6 +788,22 @@ http://web.archive.org/cdx/search/cdx?url=*.visma.com/*&output=text&fl=original&
 
 ```powershell
 Bash alias already created in profile on VPS - getallurls or getallurlsloop
+```
+
+#### GoSpider
+
+```powershell
+#https://github.com/jaeles-project/gospider
+
+- Run with single site
+
+gospider -s "https://m0chan.co.uk" -c 10 -d 1
+
+- Run with 20 sites & 10 bots each site
+
+gospider -S sites.txt -o output -c 10 -d 1 -t 20
+
+
 ```
 
 
@@ -1430,9 +1463,6 @@ Reference: https://medium.com/@GeneralEG/escalating-ssrf-to-rce-f28c482eb8b9
 
 From here it can be very easy to escalate to RCE by gaining read/write on the bucket and uploading a shell.
 
-
-
-
 ```
 
 
@@ -1637,4 +1667,15 @@ If fields are passed in clientside requests try another db Field - https://twitt
 
 https://www.notion.so/IDOR-Attack-vectors-exploitation-bypasses-and-chains-0b73eb18e9b640ce8c337af83f397a6b
 
+```
+
+
+#### Nuclei
+
+```powershell
+Can take numerous templates across various hosts to find known vulnerabilities. 
+
+Requires you specify a custom user agent unless Cloudfare drops all traffic.
+
+nuclei -l newsubs.httprobe -c 60 -t /root/tools/BotTemplates/ -o newsubs.httprobe.nuclei -H "User-Agent: User-Agent: Mozilla/5.0 Windows NT 10.0 Win64 AppleWebKit/537.36 Chrome/69.0.3497.100"
 ```
