@@ -1679,3 +1679,12 @@ Requires you specify a custom user agent unless Cloudfare drops all traffic.
 
 nuclei -l newsubs.httprobe -c 60 -t /root/tools/BotTemplates/ -o newsubs.httprobe.nuclei -H "User-Agent: User-Agent: Mozilla/5.0 Windows NT 10.0 Win64 AppleWebKit/537.36 Chrome/69.0.3497.100"
 ```
+
+
+
+#### Artifactory Stuff
+
+```powershell
+#https://www.errno.fr/artifactory/Attacking_Artifactory
+
+```
