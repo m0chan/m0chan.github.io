@@ -1692,7 +1692,7 @@ nuclei -l newsubs.httprobe -c 60 -t /root/tools/BotTemplates/ -o newsubs.httprob
 
 #### Cross-Site Scripting Bit n Bobs
 
-```html
+```powershell
 Got a lot to add here (naturally) but for the time being just noting down this bypass.
 
 If exploiting <a href></a> xss and "javasript" is blocked by WAF or URL then try the below.
@@ -1715,6 +1715,6 @@ Can also use the below to get rid of the word JavaScript all together
 
 \x6A\x61\x76\x61\x73\x63\x72\x69\x70\x74\x3aalert(1)
 
-
-
 ```
+
+<img align="center" src ="https://pbs.twimg.com/media/Eir5smxXcAcJ4QX?format=jpg&name=large"></img>
