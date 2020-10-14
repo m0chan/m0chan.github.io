@@ -1030,6 +1030,14 @@ xlarge: 80, 81, 300, 443, 591, 593, 832, 981, 1010, 1311, 2082, 2087, 2095, 2096
 
 ### [](#header-3) Google Dorks
 
+### Bug Bounty Helper Tool (Perfect for All Dorks)
+
+```powershell
+https://dorks.faisalahmed.me/#
+
+Just enter your domain/subdomain and select which you would like to dork for
+```
+
 ```powershell
 https://drive.google.com/file/d/1g-vWLd998xJwLNci7XuZ6L1hRXFpIAaF/view
 
