@@ -1568,6 +1568,16 @@ Empire Module: powershell/credentials/mimikatz/dcsync_hashdump
 ```
 
 
+#### Elevate to System Shell from Admin Account using Windows Terminal
+
+```powershell
+#https://twitter.com/spotheplanet/status/1318487486826504197/photo/1
+
+PsExec.exe -i -s "C:\Program Files\WindowsApps\Microsoft.WindowsTerminal.X.X\WindowsTerminal.exe"
+
+```
+
+
 
 ## [](#header-2)Post Exploitation
 
