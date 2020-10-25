@@ -1726,3 +1726,20 @@ Can also use the below to get rid of the word JavaScript all together
 ```
 
 <img align="center" src ="https://pbs.twimg.com/media/Eir5smxXcAcJ4QX?format=jpg&name=large"></img>
+
+
+
+#### Quick SSTI (RCE) Tip from Twitter
+
+```powershell
+#Full credit goes too - https://twitter.com/MrDamanSingh/status/1317042176337932291
+
+Had to save this here as I thought it was pretty sick
+
+root@m0chan:~ waybackurls http://target.com | qsreplace "m0chan{{9*9}}" > fuzz.txt
+root@m0chan:~ ffuf -u FUZZ -w fuzz.txt -replay-proxy http://127.0.0.1:8080/
+(captured requests in burp)
+search: m0chan81 in burp
+
+Could also apply to a few other things beside SSTI
+```
