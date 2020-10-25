@@ -50,11 +50,11 @@ Also a small tip moving forward, if you are going to get into Bug Bounty I recom
 
 
 
-My personal preference is Linode.com as I have used them for 4/5 years without a single issue and it is not a pay-as-you-go service like DigitalOcean.
+My personal preference is DigitalOcean due to the simplicity of deployment / provisioning and backups. - You can use my referral code below to get $100 **FREE** Credit over a 60-Day Period :)
 
 
 
-Referral Code: https://www.linode.com/?r=91c07fff7abd148b08880020c558d5cace801cc3
+Referral Code: https://m.do.co/c/aa9fa82f580a
 
 
 
@@ -99,6 +99,20 @@ Btw, some people will tell you to use massscan due to the speed but I find it mi
 
 
 *More to follow here....* 
+
+### [](#header-3) Automation Frameworks
+
+As more and more bug bounty hunters and researchers are moving towards continuous automation, with most of them writing or creating there own solutions I thought it would be relevant to share some open-source existing framworks which can be used.
+
+#### Sp1der
+
+```powershell
+#https://github.com/1N3/Sn1per
+
+This is awesome and allows you to automate many things, although it costs $200 for a license it seems worth it.
+
+Considering the average payout of a bounty $200 isnt really much at all :) 
+```
 
 
 
