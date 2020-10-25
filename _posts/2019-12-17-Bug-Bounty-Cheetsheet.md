@@ -1745,3 +1745,25 @@ Could also apply to a few other things beside SSTI
 
 WIP: Could also pass all QReplaced URLs to Nuclei and Grep for 81 and trigger alert?
 ```
+
+
+#### QSReplace
+
+```powershell
+I wasnt sure where to add the section on QSReplace but felt it warranted it's own section.
+
+#https://github.com/tomnomnom/qsreplace
+
+Accept URLs on stdin, replace all query string values with a user-supplied value, only output each combination of query string parameters once per host and path.
+
+
+This can be super useful for findings things such as RXSS, LFI, SSRF , SSTI & RCE.
+
+For example we could replace all parameters with a burp collaborator such as 
+
+root@m0chan:~ cat urls.txt | qsreplace collab.m0chan.co.uk
+https://example.com/path?one=collab.m0chan.co.uk&two=collab.m0chan.co.uk
+https://example.com/pathtwo?one=collab.m0chan.co.uk&two=collab.m0chan.co.ukl
+https://example.net/a/path?one=collab.m0chan.co.uk&two=collab.m0chan.co.uk
+
+```
