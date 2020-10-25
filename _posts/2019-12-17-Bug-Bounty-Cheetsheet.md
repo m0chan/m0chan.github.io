@@ -1742,4 +1742,6 @@ root@m0chan:~ ffuf -u FUZZ -w fuzz.txt -replay-proxy http://127.0.0.1:8080/
 search: m0chan81 in burp
 
 Could also apply to a few other things beside SSTI
+
+WIP: Could also pass all QReplaced URLs to Nuclei and Grep for 81 and trigger alert?
 ```
