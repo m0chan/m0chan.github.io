@@ -994,6 +994,18 @@ python m3-gen.py -p shellcode -i /path/beacon.bin -o output.vba -d yourdomain, m
 ```
 
 
+#### ClickOnce MSBuild Payload
+
+```powershell
+#https://github.com/hausec/MaliciousClickOnceMSBuild
+
+1) Create a new .NET Framework console project in Visual Studio
+2) Import Program.cs from this repository
+3) Add the MSBuild payload file to the project
+4) Publish the project
+
+```
+
 
 #### [](#header-4) WeirdHTA - Undetectable HTA
 
