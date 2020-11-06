@@ -519,6 +519,15 @@ wfuzz -c -f re -w /SecLists/Discovery/DNS/subdomains-top1mil-5000.txt -u "http:/
 I wasn't sure if I should add this under **Subdomain Enumeration** but doesn't really matter. Here are a few techniques to discover subdomains and ports via companies publicly available ASN numbers. 
 
 
+#### Reverse WHOIS on Company Name with Whoxy
+
+```powershell
+#Requires a paid API key, but well worth the money :) 
+
+curl "http://api.whoxy.com/?key=xxxxx&reverse=whois&mode=micro&company=Uber+Technologies,+Inc." | jq -r '.search_result[].domain_name'
+
+```
+
 
 #### ASNLookup
 
@@ -563,7 +572,6 @@ amass enum -d paypal.com -cidr 64.4.240.0/21
 
 I have found to have really good results using `amass enum` here + large CIDR range however sometimes these can be false positives/dead hosts so remember to verifiy with MassDNS if they are live.
 ```
-
 
 
 
