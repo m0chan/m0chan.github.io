@@ -36,7 +36,9 @@ Also before I continue these are my main references that have helped me build my
 
 *Credit too Jason Haddix for ^*
 
+### Random DNS Pic
 
+<img src="https://dz2cdn1.dzone.com/storage/temp/14019029-how-dns-works3.png">
 
 ### [](#header-2) Initial Stuff
 
