@@ -1490,6 +1490,11 @@ I am not going to explain SSRF here as its fairly straight forward and a lot of 
 For other payloads check out Payload All The Things
 ```
 
+
+#### Amazing SSRF Mindmap - Credit @hackerscrolls
+
+![img](https://raw.githubusercontent.com/hackerscrolls/SecurityTips/master/MindMaps/SSRF.png)
+
 #### Server-Side-Request-Forgery Pt (PDF Convertors)
 
 ```powershell
