@@ -1194,6 +1194,12 @@ Modules - Enum_AV
 sudo cme 192.168.215.104 -u 'Administrator' -p 'PASS' --local-auth -m enum_avproducts
 ```
 
+#### SharePoint Stuff
+
+```
+
+https://www.crummie5.club/the-lone-sharepoint/
+```
 
 ## [](#header-2)Privilege Escalation
 
