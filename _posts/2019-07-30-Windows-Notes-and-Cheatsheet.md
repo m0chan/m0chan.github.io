@@ -1197,8 +1197,18 @@ sudo cme 192.168.215.104 -u 'Administrator' -p 'PASS' --local-auth -m enum_avpro
 #### SharePoint Stuff
 
 ```
-
 https://www.crummie5.club/the-lone-sharepoint/
+```
+
+#### IIS Stuff
+
+```
+
+https://drive.google.com/file/d/1O0IARjqP4Pwa-ae1nAP8Nr9qb0ai2XPu/view
+
+Everything you need for Hacking IIS, recent talk from Shubs
+
+
 ```
 
 ## [](#header-2)Privilege Escalation
