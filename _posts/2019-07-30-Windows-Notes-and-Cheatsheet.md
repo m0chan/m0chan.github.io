@@ -2584,6 +2584,14 @@ Rubeus.exe ptt /ticket:[base64blobhere]
 We can now request TGS service tickets to access network resources as this user
 ```
 
+#### [](#header-4) Microsoft SQL Proxy
+
+```powershell
+#https://github.com/blackarrowsec/mssqlproxy
+
+mssqlproxy is a toolkit aimed to perform lateral movement in restricted environments through a compromised Microsoft SQL Server via socket reuse. The client requires impacket and sysadmin privileges on the SQL server.
+```
+
 
 
 ## [](#header-2)Obfuscation / Evasion Techniques 
