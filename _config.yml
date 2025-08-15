@@ -1,55 +1,28 @@
 title: m0chan Blog - Info Sec, CTF & Hacking
 author: m0chan
 email: root@m0chan.co.uk
-description: > # this means to ignore newlines until "show_exerpts:"
+description: >-
   Info Sec, CTF & Hacking
-show_excerpts: true # set to true to show excerpts on the homepage
+show_excerpts: true
 
-# Minima date format
-# refer to http://shopify.github.io/liquid/filters/date/ if you want to customize this
 sass:
   sass_dir: _sass
+
+# USE REMOTE THEME (not theme:)
+remote_theme: thelehhman/plainwhite-jekyll@master
+
+plugins:
+  - jekyll-remote-theme
+  - jekyll-seo-tag
+  - jekyll-feed
+
 plainwhite:
   name: m0chan
   tagline: Penetration Tester
   date_format: "%b %-d, %Y"
-  sitemap: true # set to true to generate sitemap.xml content
-
-  # generate social links in footer
+  sitemap: true
   social_links:
     twitter: m0chan98
-    github:  m0chan
+    github: m0chan
     linkedIn: /in/aidan-preston
     rss: /feed.xml
-    # dribbble: jekyll
-    # facebook: jekyll
-    # flickr:   jekyll
-    # instagram: jekyll
-    # linkedin: jekyll
-    # pinterest: jekyll
-    # youtube: jekyll
-    # youtube_channel: UC8CXR0-3I70i1tfPg1PAE1g
-    # youtube_channel_name: CloudCannon
-    # telegram: jekyll
-    # googleplus: +jekyll
-    # microdotblog: jekyll
-
-    # Mastodon instances
-    # mastodon:
-    # - username: jekyll
-    #   instance: example.com
-    # - username: jekyll2
-    #   instance: example.com
-
-# If you want to link only specific pages in your header, uncomment
-# this and add the path to the pages in order as they should show up
-#header_pages:
-#about.md
-
-# Build settings
-theme: thelehhman/plainwhite-jekyll
-
-plugins:
-  - jekyll-seo-tag
-  - jekyll-feed
-  - jekyll-remote-theme
