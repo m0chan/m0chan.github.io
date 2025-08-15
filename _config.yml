@@ -47,8 +47,9 @@ plainwhite:
 #about.md
 
 # Build settings
-theme: plainwhite
+theme: thelehhman/plainwhite-jekyll
 
 plugins:
   - jekyll-seo-tag
   - jekyll-feed
+  - jekyll-remote-theme
